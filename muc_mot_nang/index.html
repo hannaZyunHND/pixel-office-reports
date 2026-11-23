@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo Cáo Thị Trường Đa Sàn — Mực một nắng</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, system-ui, sans-serif; background:#020617; color:#e2e8f0; line-height:1.5; }
+    .wrap { max-width:1320px; margin:0 auto; padding:20px; }
+    .hero { background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid #334155; border-radius:14px; padding:18px 22px; margin-bottom:14px; }
+    .pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:600; background:rgba(56,189,248,.15); color:#38bdf8; border:1px solid rgba(56,189,248,.4); }
+    .hero h1 { margin:6px 0 8px; font-size:22px; color:#f8fafc; }
+    .hero-narrative { margin:0; font-size:13.5px; color:#cbd5e1; }
+    .tabs-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; position:sticky; top:0; z-index:10; background:rgba(2,6,23,.92); backdrop-filter:blur(6px); padding:8px 0; }
+    .tab-btn { padding:8px 14px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s; }
+    .tab-btn:hover { color:#f8fafc; border-color:#475569; }
+    .tab-btn.active { background:#1e293b; color:#38bdf8; border-color:#38bdf8; box-shadow:0 0 0 1px rgba(56,189,248,.35); }
+    .tab-btn.log-tab.active { color:#fbbf24; border-color:#fbbf24; }
+    .sa-panel { background:#0f172a; border:1px solid #334155; border-radius:14px; padding:18px; margin-bottom:14px; }
+    .sa-sub { font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:8px; }
+    .sa-title { margin:2px 0; font-size:18px; color:#f8fafc; }
+    .sa-hint { font-size:12px; color:#64748b; margin-bottom:12px; }
+    .alert-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:14px; }
+    .alert-card { padding:10px 12px; border-radius:10px; background:#020617; border:1px solid #334155; }
+    .alert-card.warn { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.06); }
+    .alert-card.ok { border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.06); }
+    .alert-card.info { border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06); }
+    .alert-title { font-size:12px; font-weight:700; color:#f8fafc; }
+    .alert-desc { font-size:11px; color:#94a3b8; margin-top:2px; }
+    .overview-split { display:grid; grid-template-columns:270px 1fr; gap:14px; }
+    @media (max-width:860px) { .overview-split { grid-template-columns:1fr; } }
+    .blue-ocean-card { background:#020617; border:1px solid rgba(245,158,11,.45); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+    .bo-caption { font-size:12.5px; font-weight:600; color:#cbd5e1; }
+    .bo-score-line { display:flex; align-items:baseline; gap:6px; }
+    .bo-num { font-size:38px; font-weight:800; line-height:1; }
+    .bo-den { font-size:15px; color:#94a3b8; font-weight:600; }
+    .bo-badge { align-self:flex-start; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; }
+    .bo-track { height:8px; background:#1e293b; border-radius:999px; overflow:hidden; margin:4px 0; }
+    .bo-fill { height:100%; border-radius:999px; }
+    .bo-note { margin:0; font-size:11.5px; color:#94a3b8; }
+    .kpi-panel { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; }
+    .kpi-panel-head { font-size:12.5px; font-weight:700; color:#cbd5e1; margin-bottom:10px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+    .kpi-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px 12px; }
+    .kpi-lbl { font-size:11px; color:#94a3b8; }
+    .kpi-val { font-size:17px; font-weight:800; margin-top:4px; color:#f8fafc; }
+    .kpi-val.blue { color:#38bdf8; } .kpi-val.purple { color:#c084fc; } .kpi-val.amber { color:#fbbf24; } .kpi-val.green { color:#4ade80; }
+    .api-dev { display:inline-block; margin-top:4px; font-size:11px; font-style:italic; color:#94a3b8; background:rgba(148,163,184,.12); border:1px dashed #475569; padding:2px 7px; border-radius:6px; }
+    .table-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+    .filter-controls { display:flex; flex-wrap:wrap; gap:8px; }
+    .ctrl-input, .ctrl-select, .ctrl-btn { background:#020617; border:1px solid #334155; color:#f8fafc; border-radius:8px; padding:6px 10px; font-size:12px; outline:none; }
+    .ctrl-btn { cursor:pointer; background:#1e293b; font-weight:600; } .ctrl-btn:hover { border-color:#38bdf8; color:#38bdf8; }
+    .tbl-wrap { max-height:420px; overflow:auto; border:1px solid #1e293b; border-radius:10px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; }
+    th { background:#020617; color:#94a3b8; font-size:10.5px; text-transform:uppercase; position:sticky; top:0; }
+    a { color:#38bdf8; text-decoration:none; } a:hover { text-decoration:underline; }
+    .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+    .bin-row { display:grid; grid-template-columns:190px 1fr 110px; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; margin-bottom:6px; background:#020617; border:1px solid #1e293b; }
+    .bin-row.sweet { border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.08); }
+    .sweet-tag { font-size:9.5px; background:#10b981; color:#020617; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:4px; }
+    .bin-lbl { font-size:11.5px; font-weight:600; }
+    .bin-line { display:flex; align-items:center; gap:6px; margin:2px 0; }
+    .mini-tag { width:78px; font-size:10px; color:#94a3b8; }
+    .mini-track { flex:1; height:6px; background:#1e293b; border-radius:999px; overflow:hidden; }
+    .mini-fill { height:100%; border-radius:999px; }
+    .mini-fill.blue { background:#38bdf8; } .mini-fill.green { background:#10b981; }
+    .bin-val { text-align:right; font-size:11.5px; font-weight:700; color:#e2e8f0; }
+    .dist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    .dist-card { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:10px 12px; }
+    .dist-top { display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:6px; gap:8px; }
+    .dist-val { font-weight:800; color:#38bdf8; }
+    .dist-sub { font-size:10.5px; color:#64748b; margin-top:5px; }
+    .caps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:8px; }
+    .cap-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:8px; background:#020617; border:1px solid #1e293b; font-size:12px; }
+    .ai-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px; }
+    .ai-sec { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:12px; }
+    .ai-sec h4 { margin:0 0 6px; font-size:13px; color:#38bdf8; } .ai-sec p { margin:0; font-size:12.5px; color:#cbd5e1; }
+    .mode-badge { font-size:10px; font-family:monospace; padding:2px 6px; border-radius:4px; font-weight:700; }
+    .mode-badge.live { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+    .mode-badge.sandbox { background:rgba(245,158,11,.2); color:#fbbf24; border:1px solid rgba(245,158,11,.5); }
+    .mode-badge.partial { background:rgba(56,189,248,.2); color:#38bdf8; border:1px solid rgba(56,189,248,.5); }
+    .plat-pill { font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; }
+    .plat-pill.shopee { background:rgba(249,115,22,.18); color:#fb923c; }
+    .plat-pill.lazada { background:rgba(59,130,246,.18); color:#60a5fa; }
+    .plat-pill.tiktok_shop { background:rgba(236,72,153,.18); color:#f472b6; }
+    .mall-pill { font-size:9.5px; background:#ef4444; color:#fff; padding:1px 4px; border-radius:3px; margin-left:4px; font-weight:700; }
+    .share-pill { padding:2px 7px; border-radius:999px; background:#1e293b; color:#38bdf8; font-weight:700; font-size:11px; }
+    .sub-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; overflow-x:auto; }
+    .sub-card-head { font-size:14px; font-weight:700; color:#f8fafc; margin-bottom:10px; }
+    .log-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; margin-top:14px; }
+    .log-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; padding-bottom:10px; border-bottom:1px solid #1e293b; margin-bottom:10px; }
+    .log-idx { display:inline-block; background:#1e293b; color:#38bdf8; font-family:monospace; font-size:11px; padding:2px 7px; border-radius:6px; margin-right:6px; }
+    .mono-pill { font-family:monospace; font-size:11px; padding:2px 7px; border-radius:4px; background:#0f172a; border:1px solid #334155; color:#cbd5e1; }
+    .log-3col { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+    .log-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px; display:flex; flex-direction:column; min-width:0; }
+    .log-box-title { font-size:11.5px; font-weight:700; color:#cbd5e1; margin-bottom:6px; }
+    .code-pre { margin:0; font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:8px; border-radius:6px; max-height:240px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+    .proc-list { margin:0; padding-left:16px; font-size:12px; color:#cbd5e1; } .proc-list li { margin-bottom:5px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <span class="pill">🎯 PRODUCT HUNTER · BÁO CÁO PHÂN TÍCH THỊ TRƯỜNG ĐA SÀN &bull; gpt-6-luna (codex-cli)</span>
+      <h1>Từ khóa: "Mực một nắng"</h1>
+      <p class="hero-narrative">Thị trường “Mực một nắng” ghi nhận 70 sản phẩm từ 54 shop trên ba sàn, với 32.424 lượt bán và GMV khoảng 4,97 tỷ đồng; giá trung bình đạt 322.576 đồng. HHI toàn thị trường ở mức 0,3529, trong khi điểm ĐĐX đạt 72/100. Lazada đóng góp GMV lớn nhất, khoảng 2,94 tỷ đồng, tiếp đến TikTok Shop với 1,98 tỷ đồng và Shopee với 47,1 triệu đồng. HHI của Lazada và Shopee đều cao (lần lượt 0,7896 và 0,8025), cao hơn TikTok Shop (0,4802). Phản hồi khách hàng tập trung vào khác biệt màu sắc, chất liệu so với ảnh, nhầm lẫn phân loại size/combo và thiếu thông tin kiểm định, nguồn gốc.</p>
+    </div>
+
+    <div class="tabs-bar"><button type="button" class="tab-btn active" data-tab="all" onclick="switchMarketTab('all')">🌐 Tổng Hợp 3 Sàn</button><button type="button" class="tab-btn" data-tab="shopee" onclick="switchMarketTab('shopee')">🟠 Sàn Cam (Shopee)</button><button type="button" class="tab-btn" data-tab="lazada" onclick="switchMarketTab('lazada')">🔵 Sàn Xanh (Lazada)</button><button type="button" class="tab-btn" data-tab="tiktok_shop" onclick="switchMarketTab('tiktok_shop')">⚫ Sàn Đen (TikTok Shop)</button><button type="button" class="tab-btn log-tab" data-tab="logs" onclick="switchMarketTab('logs')">🪵 Logs Request / Response (8)</button></div>
+    
+    <section class="sa-tab-panel" id="panel_all">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🌐 Tổng Hợp 3 Sàn</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Tổng hợp 3 Sàn (Shopee / Lazada / TikTok Shop). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">16.67% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 70 SP từ 54 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 2 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">72</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:72%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.3529), tỷ lệ có đơn (51.4%) và dư địa shop ngoài Mall (98.6%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">70</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">54</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">32,424</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">4.973.306.877 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">322.576 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">41.207 đ – 3.500.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">51.4%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">36</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,3529</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">8,2%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (70 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('all', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('all', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('all')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_all">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="túi như hình 500gram mực đồng tiền ngon ngọt" data-gmv="1264507020" data-sold="6020" data-price="210051">
+          <td><a href="https://shop.tiktok.com/vn/pdp/mini-100-130-con-500g-280k-ngon-de-che-bien-thuc-pham-viet/1731625332902955980" target="_blank" rel="noopener">Túi NHƯ HÌNH 500gram MỰC ĐỒNG TIỀN NGON ngọt</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quyên cua 20</td>
+          <td>210.051 đ</td>
+          <td>6,020</td>
+          <td><strong>1.264.507.020 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.4★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded squid (instant consumption) box of 200 grams, an extremely delicious food experience product from phan thiet seafood specialty shop ngoc dung. expiration date is 12 months from the date of order." data-gmv="1242000000" data-sold="10800" data-price="115000">
+          <td><a href="https://www.lazada.vn/products/pdp-i614460562.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded Squid (Instant Consumption) Box of 200 Grams, an Extremely Delicious Food Experience Product from Phan Thiet Seafood Specialty Shop Ngoc Dung. Expiration Date Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>115.000 đ</td>
+          <td>10,800</td>
+          <td><strong>1.242.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.75★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] mực một nắng ( ăn liền ) là món ăn quá ngon của đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 tháng tính từ ngày đặt hàng." data-gmv="636000000" data-sold="5300" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i606774006.html" target="_blank" rel="noopener">[FREESHIP MAX] Mực Một Nắng ( ăn liền ) là món ăn quá ngon của Đặc Sản Biển Phan Thiết NGỌC DŨNG; hộp 200 gram. HSD 12 tháng tính từ ngày đặt hàng.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>5,300</td>
+          <td><strong>636.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.79★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sét 10 con lớn mực câu tay sông đốc cà mau size 50 con /1kg tặng 5 con nhỏ size (90 con/1kg)" data-gmv="530114640" data-sold="1695" data-price="312752">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735843633404740718" target="_blank" rel="noopener">Sét 10 con lớn mực câu tay sông đốc Cà Mau size 50 con /1kg tặng 5 con nhỏ size (90 con/1kg)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>ẩm thực việt45678</td>
+          <td>312.752 đ</td>
+          <td>1,695</td>
+          <td><strong>530.114.640 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.1★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded squid (instant consumption) 200 gram box is a delicious dish from phan thiet ngoc dung seafood specialty shop. expiration date is 12 months from the date of order." data-gmv="360000000" data-sold="3000" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i614628902.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded Squid (Instant Consumption) 200 Gram Box Is a Delicious Dish from Phan Thiet Ngoc Dung Seafood Specialty Shop. Expiration Date Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>3,000</td>
+          <td><strong>360.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.77★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded squid (instant consumption) box of 200 grams, favorite dish from phan thiet seafood specialty shop ngoc dung. warranty period is 12 months from the date of order." data-gmv="252000000" data-sold="2100" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i595648599.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded Squid (Instant Consumption) Box of 200 Grams, Favorite Dish from Phan Thiet Seafood Specialty Shop Ngoc Dung. Warranty Period Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>2,100</td>
+          <td><strong>252.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.76★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[1kg bag of sun-dried squid (delivery within 4 hours in ho chi minh city),1kg bag of squid (delivery at 4pm in ho chi minh city),]" data-gmv="186000000" data-sold="1200" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1231914070.html" target="_blank" rel="noopener">[1kg Bag of Sun-Dried Squid (Delivery Within 4 Hours in Ho Chi Minh City),1kg Bag of Squid (Delivery at 4Pm in Ho Chi Minh City),]</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Ngocdung_wave</td>
+          <td>155.000 đ</td>
+          <td>1,200</td>
+          <td><strong>186.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.71★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="(500gr) mực khô câu 90-120 con/kg" data-gmv="64198644" data-sold="124" data-price="517731">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-kho-cau-size-80-90-con-kg-500g-ngon-ngot-thit-day/1731294382630865383" target="_blank" rel="noopener">(500gr) Mực khô câu 90-120 con/kg</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Trùm Hải Sản Nha Trang</td>
+          <td>517.731 đ</td>
+          <td>124</td>
+          <td><strong>64.198.644 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="squid one sunny day vacuum-packed bag 1kg 2-3 pieces (hcmc)" data-gmv="63705000" data-sold="411" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2041536183.html" target="_blank" rel="noopener">Squid One Sunny Day Vacuum-Packed Bag 1kg 2-3 Pieces (Hcmc)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Ngọc Dung TP</td>
+          <td>155.000 đ</td>
+          <td>411</td>
+          <td><strong>63.705.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.82★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="(chỉ giao miền nam và miền tây) khô mực dẻo 1 nắng size 4-8 con/1kg loại thượng hạng" data-gmv="59623596" data-sold="57" data-price="1046028">
+          <td><a href="https://shop.tiktok.com/vn/pdp/deo-1-nang-size-4-8-con-kg-thuong-hang-ngon-mieng/1731489600462818167" target="_blank" rel="noopener">(CHỈ GIAO MIỀN NAM VÀ MIỀN TÂY) Khô mực dẻo 1 nắng size 4-8 con/1kg loại thượng hạng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Neoseafood</td>
+          <td>1.046.028 đ</td>
+          <td>57</td>
+          <td><strong>59.623.596 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded one nang squid (instant consumption) 200 gram box is a very delicious dish from phan thiet ngoc dung seafood specialty shop. warranty period is 12 months from the date of order." data-gmv="56120000" data-sold="488" data-price="115000">
+          <td><a href="https://www.lazada.vn/products/pdp-i601960394.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded One Nang Squid (Instant Consumption) 200 Gram Box Is a Very Delicious Dish from Phan Thiet Ngoc Dung Seafood Specialty Shop. Warranty Period Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>115.000 đ</td>
+          <td>488</td>
+          <td><strong>56.120.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.61★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[one sunny squid 1kg bag (fast delivery in ho chi minh city),one-sun-dried squid 1kg bag (express delivery to ho chi minh city),]" data-gmv="54390600" data-sold="369" data-price="147400">
+          <td><a href="https://www.lazada.vn/products/pdp-i1616513110.html" target="_blank" rel="noopener">[One Sunny Squid 1kg Bag (Fast Delivery in Ho Chi Minh City),One-Sun-Dried Squid 1kg Bag (Express Delivery to Ho Chi Minh City),]</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Shop Khả Doanh 1</td>
+          <td>147.400 đ</td>
+          <td>369</td>
+          <td><strong>54.390.600 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.78★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="một quả tạ đơn điều chỉnh dumbell cao cấp đa năng gym tại nhà 24kg (1 quả) - 15 mức trọng lượng - có khay đựng" data-gmv="42053688" data-sold="19" data-price="2213352">
+          <td><a href="https://shopee.vn/product/1477072694/57966326373" target="_blank" rel="noopener">Một Quả Tạ Đơn Điều Chỉnh Dumbell Cao Cấp Đa Năng Gym Tại Nhà 24kg (1 quả) - 15 Mức Trọng Lượng - Có Khay Đựng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>LYSIN GYM</td>
+          <td>2.213.352 đ</td>
+          <td>19</td>
+          <td><strong>42.053.688 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled one sun squid shredded (instant) box of 200 grams is a delicious dish from phan thiet ngoc dung seafood specialty shop. expiration date is 12 months from the date of order." data-gmv="34560000" data-sold="288" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1711115561.html" target="_blank" rel="noopener">[Freeship Max] Grilled One Sun Squid Shredded (Instant) Box of 200 Grams Is a Delicious Dish from Phan Thiet Ngoc Dung Seafood Specialty Shop. Expiration Date Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>288</td>
+          <td><strong>34.560.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.45★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="500g khô mực =18-20 con,  1kg = 35- 40 con 1kg" data-gmv="33768748" data-sold="47" data-price="718484">
+          <td><a href="https://shop.tiktok.com/vn/pdp/500g-18-20-con-1kg-35-40-con-dong-goi-hut-chan-khong/1734595867523057517" target="_blank" rel="noopener">500g Khô mực =18-20 con,  1kg = 35- 40 Con 1kg</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HẢI SẢN MỘC NHIÊN</td>
+          <td>718.484 đ</td>
+          <td>47</td>
+          <td><strong>33.768.748 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="1kg delicious squid (fast delivery within 2 hours in ho chi minh city)" data-gmv="17360000" data-sold="112" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1305243788.html" target="_blank" rel="noopener">1kg Delicious Squid (Fast Delivery Within 2 Hours in Ho Chi Minh City)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>MyVanShop</td>
+          <td>155.000 đ</td>
+          <td>112</td>
+          <td><strong>17.360.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.52★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng size 3 con ki hàng mới ngọt thịt mềm được ua chuộng nhìu? hàng 1 nắng chỉ đi trong thành phố ạ? không đi đc miền trung hay miền bắc nhé khach." data-gmv="13207425" data-sold="25" data-price="528297">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-1-nang-size-3-con-ki-thit-deo-ngot-huong-vi-thom-ngon/1733089983355061799" target="_blank" rel="noopener">Mực 1 nắng size 3 con ki hàng mới ngọt thịt mềm được ua chuộng nhìu? Hàng 1 nắng chỉ đi trong thành phố ạ? Không đi đc miền trung hay miền bắc nhé khach.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thuỳ Oanh Mart</td>
+          <td>528.297 đ</td>
+          <td>25</td>
+          <td><strong>13.207.425 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực ống xẻ 1 nắng size 5-6 con 1kg (giao tphcm)" data-gmv="13120050" data-sold="30" data-price="437335">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-ong-xe-1-nang-size-4-con-1kg-tuoi-ngon-de-bao-quan/1729980596818316201" target="_blank" rel="noopener">Mực ống xẻ 1 nắng size 5-6 con 1kg (giao tphcm)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ngọc dung Food</td>
+          <td>437.335 đ</td>
+          <td>30</td>
+          <td><strong>13.120.050 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="gỏi mực một nắng nướng (ăn liền) là món ăn yêu thích shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 tháng" data-gmv="12120000" data-sold="101" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251650717.html" target="_blank" rel="noopener">Gỏi Mực Một Nắng Nướng (ăn liền) là món ăn yêu thích Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 tháng</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>101</td>
+          <td><strong>12.120.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.86★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] mực xé sợi một nắng nướng ( ăn liền ) là món ăn ngon của shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 tháng kể từ ngày đặt hàng." data-gmv="11040000" data-sold="92" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1769093402.html" target="_blank" rel="noopener">[FREESHIP MAX] Mực Xé Sợi Một Nắng Nướng ( ăn liền ) là món ăn ngon của Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 tháng kể từ ngày đặt hàng.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>92</td>
+          <td><strong>11.040.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="delicious vacuum-packed squid - 1kg tray (ho chi minh city express delivery)" data-gmv="11005000" data-sold="71" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i3002386904.html" target="_blank" rel="noopener">Delicious Vacuum-Packed Squid - 1kg Tray (Ho Chi Minh City Express Delivery)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Minh Anh Food’s</td>
+          <td>155.000 đ</td>
+          <td>71</td>
+          <td><strong>11.005.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.55★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng loại 1 ngon nhất size 2 - 4 con /1kg mực một nắng chất lượng ship hỏa tốc hcm" data-gmv="3479000" data-sold="7" data-price="497000">
+          <td><a href="https://shopee.vn/product/1109665559/28378667713" target="_blank" rel="noopener">Mực 1 Nắng Loại 1 Ngon Nhất Size 2 - 4 con /1kg Mực Một Nắng Chất Lượng Ship Hỏa Tốc HCM</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KHÔ TÁM HOÀNG CÀ MAU</td>
+          <td>497.000 đ</td>
+          <td>7</td>
+          <td><strong>3.479.000 đ</strong></td>
+          <td>5.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="1kg coto 1 nang nang squid - delicious food at a great price (express delivery within 2 hours in hcmc)" data-gmv="3439800" data-sold="18" data-price="191100">
+          <td><a href="https://www.lazada.vn/products/pdp-i1877914515.html" target="_blank" rel="noopener">1kg Coto 1 Nang Nang Squid - Delicious Food at a Great Price (Express Delivery Within 2 Hours in Hcmc)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Thucphamdonglanh Tiến My</td>
+          <td>191.100 đ</td>
+          <td>18</td>
+          <td><strong>3.439.800 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực xé sợi một nắng nướng ( ăn liền ) là món ăn ngon của shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 th" data-gmv="3000000" data-sold="25" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251591824.html" target="_blank" rel="noopener">Mực Xé Sợi Một Nắng Nướng ( ăn liền ) là món ăn ngon của Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 th</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>25</td>
+          <td><strong>3.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực tẩm gia vị 1 nắng vừa ăn (500g)" data-gmv="2757708" data-sold="9" data-price="306412">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-tam-gia-vi-1-nang-vua-an-500g-thom-ngot-tien-loi/1730115777552353953" target="_blank" rel="noopener">Mực tẩm gia vị 1 nắng vừa ăn (500g)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ｈồｎｇ Ｈｉệｐ</td>
+          <td>306.412 đ</td>
+          <td>9</td>
+          <td><strong>2.757.708 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng - hút chân không 1kg (size 4 con)" data-gmv="1172820" data-sold="3" data-price="390940">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-mot-nang-hut-chan-khong-1kg-gion-de-an-qua-tang/1729681650008033987" target="_blank" rel="noopener">Mực Một Nắng - Hút Chân Không 1KG (size 4 Con)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Hải Sản Trung Nam</td>
+          <td>390.940 đ</td>
+          <td>3</td>
+          <td><strong>1.172.820 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dây đeo điện thoại di động ba trong một có thể tháo rời cổ treo cổ đeo chéo dây đeo ba mục đích di động cao cấp sling đa chức năng mở rộng chống mài mòn" data-gmv="618240" data-sold="2" data-price="309120">
+          <td><a href="https://shopee.vn/product/1711600118/50004011335" target="_blank" rel="noopener">Dây đeo điện thoại di động ba trong một có thể tháo rời cổ treo cổ đeo chéo Dây đeo ba mục đích di động cao cấp Sling đa chức năng mở rộng chống mài mòn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>AYOO.vn</td>
+          <td>309.120 đ</td>
+          <td>2</td>
+          <td><strong>618.240 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng - mực ống câu phơi 1 nắng" data-gmv="602258" data-sold="1" data-price="602258">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-1-nang-muc-ong-cau-phoi-1-nang-de-su-dung-cho-cau-ca/1736166003936363827" target="_blank" rel="noopener">Mực 1 nắng - mực ống câu phơi 1 nắng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ninin hải sản</td>
+          <td>602.258 đ</td>
+          <td>1</td>
+          <td><strong>602.258 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[hỏa tốc hcm] 1kg mực một nắng cam ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không" data-gmv="348000" data-sold="1" data-price="348000">
+          <td><a href="https://shopee.vn/product/1624349716/57700605204" target="_blank" rel="noopener">[HỎA TỐC HCM] 1kg Mực một nắng Cam Ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>V-FOOD</td>
+          <td>348.000 đ</td>
+          <td>1</td>
+          <td><strong>348.000 đ</strong></td>
+          <td>15.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng túi hút chân không 1kg(giao hoa toc 2h)" data-gmv="342000" data-sold="2" data-price="171000">
+          <td><a href="https://shopee.vn/product/1394030485/27675497593" target="_blank" rel="noopener">Mực một nắng túi hút chân không 1kg(GIAO HOA TOC 2H)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kha_Doanh_Shop</td>
+          <td>171.000 đ</td>
+          <td>2</td>
+          <td><strong>342.000 đ</strong></td>
+          <td>6.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">41.207 – 617.671 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (89.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:89.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (97.3%)</span><div class="mini-track"><div class="mini-fill green" style="width:97.3%"></div></div></div>
+          </div>
+          <div class="bin-val">4.837.860.845 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">617.672 – 1.194.136 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (7.4%)</span><div class="mini-track"><div class="mini-fill blue" style="width:7.4%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (1.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">93.392.344 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">1.194.137 – 1.770.601 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">1.770.602 – 2.347.066 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (1.5%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.8%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">42.053.688 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">2.347.067 – 2.923.531 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">2.923.532 – 3.500.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (1.5%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (54 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Đặc sản biển Phan Thiết NGỌC DŨNG</strong></td><td>Shop Thường</td><td>12</td><td>22,194</td><td>2.606.840.000 đ</td><td><span class='share-pill'>52.4%</span></td></tr><tr><td><strong>Quyên cua 20</strong></td><td>Shop Thường</td><td>1</td><td>6,020</td><td>1.264.507.020 đ</td><td><span class='share-pill'>25.4%</span></td></tr><tr><td><strong>ẩm thực việt45678</strong></td><td>Shop Thường</td><td>1</td><td>1,695</td><td>530.114.640 đ</td><td><span class='share-pill'>10.7%</span></td></tr><tr><td><strong>Ngocdung_wave</strong></td><td>Shop Thường</td><td>1</td><td>1,200</td><td>186.000.000 đ</td><td><span class='share-pill'>3.7%</span></td></tr><tr><td><strong>Trùm Hải Sản Nha Trang</strong></td><td>Shop Thường</td><td>1</td><td>124</td><td>64.198.644 đ</td><td><span class='share-pill'>1.3%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">52.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:52.4%"></div></div>
+          <div class="dist-sub">Đặc sản biển Phan Thiết NGỌC DŨNG</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">88.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:88.5%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">93.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:93.5%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">1/70 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">97.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:97.3%"></div></div>
+          <div class="dist-sub">41.207 – 617.671 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">87.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:87.1%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">8,2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:32.8%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🌐 Tổng Hợp 3 Sàn"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Mực một nắng&#x27; đạt 70 SKU từ 54 shop, tổng 32,424 lượt bán tương ứng 4.973.306.877 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 72/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 322.576 đ (khoảng giá 41.207 đ – 3.500.000 đ, đã tách 2 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 41.207 – 617.671 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.3529 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 88.5% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là LAZADA.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,2%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_shopee" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🟠 Sàn Cam (Shopee)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: AddLiveTag Market API (LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">16.67% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 30 SP từ 27 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 2 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#d97706">44</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#d97706;background:rgba(217,119,6,.18)">Trung bình</div>
+            <div class="bo-track"><div class="bo-fill" style="width:44%;background:#d97706"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.8025), tỷ lệ có đơn (30.0%) và dư địa shop ngoài Mall (96.7%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">27</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">35</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">47.112.138 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">352.379 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">42.500 đ – 3.500.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">30.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">9</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,8025</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">8,2%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (30 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('shopee', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('shopee', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('shopee')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_shopee">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="một quả tạ đơn điều chỉnh dumbell cao cấp đa năng gym tại nhà 24kg (1 quả) - 15 mức trọng lượng - có khay đựng" data-gmv="42053688" data-sold="19" data-price="2213352">
+          <td><a href="https://shopee.vn/product/1477072694/57966326373" target="_blank" rel="noopener">Một Quả Tạ Đơn Điều Chỉnh Dumbell Cao Cấp Đa Năng Gym Tại Nhà 24kg (1 quả) - 15 Mức Trọng Lượng - Có Khay Đựng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>LYSIN GYM</td>
+          <td>2.213.352 đ</td>
+          <td>19</td>
+          <td><strong>42.053.688 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng loại 1 ngon nhất size 2 - 4 con /1kg mực một nắng chất lượng ship hỏa tốc hcm" data-gmv="3479000" data-sold="7" data-price="497000">
+          <td><a href="https://shopee.vn/product/1109665559/28378667713" target="_blank" rel="noopener">Mực 1 Nắng Loại 1 Ngon Nhất Size 2 - 4 con /1kg Mực Một Nắng Chất Lượng Ship Hỏa Tốc HCM</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KHÔ TÁM HOÀNG CÀ MAU</td>
+          <td>497.000 đ</td>
+          <td>7</td>
+          <td><strong>3.479.000 đ</strong></td>
+          <td>5.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dây đeo điện thoại di động ba trong một có thể tháo rời cổ treo cổ đeo chéo dây đeo ba mục đích di động cao cấp sling đa chức năng mở rộng chống mài mòn" data-gmv="618240" data-sold="2" data-price="309120">
+          <td><a href="https://shopee.vn/product/1711600118/50004011335" target="_blank" rel="noopener">Dây đeo điện thoại di động ba trong một có thể tháo rời cổ treo cổ đeo chéo Dây đeo ba mục đích di động cao cấp Sling đa chức năng mở rộng chống mài mòn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>AYOO.vn</td>
+          <td>309.120 đ</td>
+          <td>2</td>
+          <td><strong>618.240 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[hỏa tốc hcm] 1kg mực một nắng cam ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không" data-gmv="348000" data-sold="1" data-price="348000">
+          <td><a href="https://shopee.vn/product/1624349716/57700605204" target="_blank" rel="noopener">[HỎA TỐC HCM] 1kg Mực một nắng Cam Ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>V-FOOD</td>
+          <td>348.000 đ</td>
+          <td>1</td>
+          <td><strong>348.000 đ</strong></td>
+          <td>15.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng túi hút chân không 1kg(giao hoa toc 2h)" data-gmv="342000" data-sold="2" data-price="171000">
+          <td><a href="https://shopee.vn/product/1394030485/27675497593" target="_blank" rel="noopener">Mực một nắng túi hút chân không 1kg(GIAO HOA TOC 2H)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kha_Doanh_Shop</td>
+          <td>171.000 đ</td>
+          <td>2</td>
+          <td><strong>342.000 đ</strong></td>
+          <td>6.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="đầu nối thoát nước hai giao diện napkery, bộ thoát nước máy giặt hai trong một hai mục đích, nhánh ống thoát nước chống mùi đa chức năng bền bỉ" data-gmv="86020" data-sold="1" data-price="86020">
+          <td><a href="https://shopee.vn/product/1120605850/45206185260" target="_blank" rel="noopener">Đầu nối thoát nước hai giao diện NAPKERY, Bộ thoát nước máy giặt hai trong một hai mục đích, nhánh ống thoát nước chống mùi đa chức năng bền bỉ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>NAPKERY Mall <span class="mall-pill">Mall</span></td>
+          <td>86.020 đ</td>
+          <td>1</td>
+          <td><strong>86.020 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="asvn cnc nhôm đa năng xe máy cảm biến mức dầu nhẹ xe tay ga động cơ thay thế một phần cho xe máy diy hot" data-gmv="71830" data-sold="1" data-price="71830">
+          <td><a href="https://shopee.vn/product/280591832/46618049375" target="_blank" rel="noopener">ASVN CNC Nhôm Đa Năng Xe Máy Cảm Biến Mức Dầu Nhẹ Xe Tay Ga Động Cơ Thay Thế Một Phần Cho Xe Máy DIY HOT</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>AttractivefineSuper.vn</td>
+          <td>71.830 đ</td>
+          <td>1</td>
+          <td><strong>71.830 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="yibar cnc nhôm xe tay ga mức dầu đồng hồ đo đa năng dễ dàng lắp đặt xe máy thay thế một phần cho động cơ nhanh kiểm tra mới" data-gmv="65560" data-sold="1" data-price="65560">
+          <td><a href="https://shopee.vn/product/271698966/55666674371" target="_blank" rel="noopener">YIBAR CNC Nhôm Xe Tay Ga Mức Dầu Đồng Hồ Đo Đa Năng Dễ Dàng Lắp Đặt Xe Máy Thay Thế Một Phần Cho Động Cơ Nhanh Kiểm Tra Mới</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>YIBAR</td>
+          <td>65.560 đ</td>
+          <td>1</td>
+          <td><strong>65.560 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[sgv] micro phụ kiện tự làm micro có dây lõi đầu một chiều độ trung thực cao năng động có dây micro hộp mực đẹp" data-gmv="47800" data-sold="1" data-price="47800">
+          <td><a href="https://shopee.vn/product/716625169/52255006538" target="_blank" rel="noopener">[SGV] Micro Phụ Kiện Tự làm micro có dây lõi đầu một chiều Độ trung thực cao năng động có dây micro hộp mực đẹp</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Strong Fit</td>
+          <td>47.800 đ</td>
+          <td>1</td>
+          <td><strong>47.800 đ</strong></td>
+          <td>5.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo ăn vặt khô bò miếng 150g &amp; mực một nắng sốt mắm 150g bếp bà châu snack" data-gmv="0" data-sold="0" data-price="300000">
+          <td><a href="https://shopee.vn/product/1852566312/54062779527" target="_blank" rel="noopener">Combo Ăn Vặt Khô Bò Miếng 150g &amp; Mực Một Nắng Sốt Mắm 150g Bếp Bà Châu snack</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Bếp Bà Châu Food</td>
+          <td>300.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy cán khô mực bằng điện  - máy cán mềm mực một nắng" data-gmv="0" data-sold="0" data-price="3500000">
+          <td><a href="https://shopee.vn/product/785446707/26057598801" target="_blank" rel="noopener">Máy cán khô mực bằng điện  - Máy cán mềm mực một nắng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>ĐIỆN MÁY VIỆT KD6</td>
+          <td>3.500.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo ăn vặt mực một nắng sốt nước mắm 150g &amp; tóp mỡ rim mắm tỏi 150g bếp bà châu snack" data-gmv="0" data-sold="0" data-price="156000">
+          <td><a href="https://shopee.vn/product/1852566312/50012801782" target="_blank" rel="noopener">Combo ăn vặt mực một nắng sốt nước mắm 150g &amp; tóp mỡ rim mắm tỏi 150g Bếp Bà Châu Snack</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Bếp Bà Châu Food</td>
+          <td>156.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="onemetertomj xe máy đo giám sát mức dầu cao cấp nhôm cnc đa năng xe tay ga thay thế một phần cho sửa chữa gia đình en" data-gmv="0" data-sold="0" data-price="91740">
+          <td><a href="https://shopee.vn/product/348270854/54066397768" target="_blank" rel="noopener">Onemetertomj Xe Máy Đo Giám Sát Mức Dầu Cao Cấp Nhôm CNC Đa Năng Xe Tay Ga Thay Thế Một Phần Cho Sửa Chữa Gia Đình EN</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>OneMetertomj.vn</td>
+          <td>91.740 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bình sữa nano bear / một chai đa chức năng ba mục đích / chống rò rỉ và chống nghẹt thở bình sữa cho bé cỡ lớn bình dung tích lớn chất liệu cấp thực phẩm không chứa bpa không mùi" data-gmv="0" data-sold="0" data-price="163078">
+          <td><a href="https://shopee.vn/product/886105695/46864916140" target="_blank" rel="noopener">Bình sữa Nano Bear / Một Chai đa chức năng ba mục đích / Chống rò rỉ và chống nghẹt thở Bình sữa cho bé cỡ lớn Bình dung tích lớn Chất liệu cấp thực phẩm Không chứa BPA Không mùi</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>QQBaby.vn</td>
+          <td>163.078 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>0.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="kìm kẹp tròn đa năng kìm xoay hai trong một đa chức năng kìm xoay hai mục đích kép bên trong lò xo cong tháo rời" data-gmv="0" data-sold="0" data-price="156200">
+          <td><a href="https://shopee.vn/product/1608670649/44284451373" target="_blank" rel="noopener">Kìm kẹp tròn đa năng Kìm xoay hai trong một đa chức năng Kìm xoay hai mục đích kép bên trong Lò xo cong tháo rời</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>halou076iofg.vn</td>
+          <td>156.200 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="🔥giá sốc🔥một giây hoàn thành/không cần kỹ năng🌿con dấu mắt tích hợp chính xác/mực mắt khô nhanh không lem/bút mắt dạng tem bền lâu nước mắt dạng tem dễ sử dụng/khô tức thì/không lem/bộ tem mắt chống trôi" data-gmv="0" data-sold="0" data-price="100159">
+          <td><a href="https://shopee.vn/product/1020475712/54201532663" target="_blank" rel="noopener">🔥Giá sốc🔥Một Giây Hoàn Thành/Không Cần Kỹ Năng🌿Con Dấu Mắt Tích Hợp Chính Xác/Mực Mắt Khô Nhanh Không Lem/Bút Mắt Dạng Tem Bền Lâu Nước Mắt Dạng Tem Dễ Sử Dụng/Khô Tức Thì/Không Lem/Bộ Tem Mắt Chống Trôi</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>CharmedGlimmer✧</td>
+          <td>100.159 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dụng cụ cắt hành đa chức năng dụng cụ mở chai gia dụng bằng thép không gỉ ba trong một cụ cắt hoa mực cụ nhà bếp cụ tiện mof3" data-gmv="0" data-sold="0" data-price="91746">
+          <td><a href="https://shopee.vn/product/1610777668/47363115888" target="_blank" rel="noopener">Dụng cụ cắt hành đa chức năng Dụng cụ mở chai gia dụng bằng thép không gỉ ba trong một cụ cắt hoa mực cụ nhà bếp cụ tiện MOF3</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>yyuhome8.vn</td>
+          <td>91.746 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="ba trong một nhà bếp đa năng cắt rau bằng thép không gỉ, dụng cụ mở chai, dùng cho gia đình, cắt mực, dụng cụ nhà bếp hu2f" data-gmv="0" data-sold="0" data-price="115104">
+          <td><a href="https://shopee.vn/product/1610099230/54213092495" target="_blank" rel="noopener">Ba trong Một Nhà Bếp Đa Năng Cắt Rau Bằng Thép Không Gỉ, Dụng Cụ Mở Chai, Dùng Cho Gia Đình, Cắt Mực, Dụng Cụ Nhà Bếp HU2F</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>uoiwokk9.vn</td>
+          <td>115.104 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="áo ngực cố định một mảnh kiểu quấn có nắp gập bên, in hoa ren, không có dây lót, cốc nâng ngực, mục vụ" data-gmv="0" data-sold="0" data-price="155274">
+          <td><a href="https://shopee.vn/product/1281073987/26396190967" target="_blank" rel="noopener">Áo ngực cố định một mảnh kiểu quấn có nắp gập bên, in hoa ren, không có dây lót, cốc nâng ngực, mục vụ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>liyefushi.vn</td>
+          <td>155.274 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>15.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn tay cho bé chân mực miếng lót sơ sinh cho bé một trăm ngày cả tháng diy sáng tạo nặng mực lót trẻ em mực chân miếng lót" data-gmv="0" data-sold="0" data-price="259953">
+          <td><a href="https://shopee.vn/product/1796674886/54159632310" target="_blank" rel="noopener">Bàn Tay Cho Bé Chân Mực Miếng Lót Sơ Sinh Cho Bé Một Trăm Ngày Cả Tháng DIY Sáng Tạo Nặng Mực Lót Trẻ Em Mực Chân Miếng Lót</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>BabyLucyQu374</td>
+          <td>259.953 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="hoạt hình hoạt hình ví hộ chiếu quà tặng thư mục nước ngoài lưu trữ khóa hấp thụ tài liệu chống trộm túi từ tính động vật đa năng naka tất cả trong một" data-gmv="0" data-sold="0" data-price="135689">
+          <td><a href="https://shopee.vn/product/1521909190/54217153831" target="_blank" rel="noopener">Hoạt Hình Hoạt Hình Ví Hộ Chiếu Quà Tặng Thư Mục Nước Ngoài Lưu Trữ Khóa Hấp Thụ Tài Liệu Chống Trộm Túi Từ Tính Động Vật Đa Năng Naka Tất Cả Trong Một</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>AuraBea.vn</td>
+          <td>135.689 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>12.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="micrô cminyp phụ kiện diy micro có dây lõi đầu một chiều độ trung thực cao năng động micro có dây hộp mực rỗng" data-gmv="0" data-sold="0" data-price="44200">
+          <td><a href="https://shopee.vn/product/1604197559/54608768262" target="_blank" rel="noopener">Micrô CMINYP Phụ kiện DIY Micro có dây Lõi đầu một chiều Độ trung thực cao Năng động Micro có dây Hộp mực rỗng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Lightinghomell.vn</td>
+          <td>44.200 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dora dora ppsu bình bé có tay cầm cỡ rộng bình bé bình nước cho bé một cốc ba mục đích đa năng 26827np" data-gmv="0" data-sold="0" data-price="352182">
+          <td><a href="https://shopee.vn/product/1821070031/54366861991" target="_blank" rel="noopener">Dora Dora ppsu Bình Bé Có Tay Cầm Cỡ Rộng Bình Bé Bình Nước Cho Bé Một Cốc Ba Mục Đích Đa Năng 26827NP</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>9hjkhu3.vn</td>
+          <td>352.182 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>0.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="kìm miller đa chức năng p9 kìm dây strippers một kìm mở rộng bảy mục đích có thể bị tước và có thể được" data-gmv="0" data-sold="0" data-price="184800">
+          <td><a href="https://shopee.vn/product/1032065426/54564250278" target="_blank" rel="noopener">Kìm Miller đa chức năng P9 Kìm dây Strippers Một kìm mở rộng bảy mục đích có thể bị tước và có thể được</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>halou000817w.vn</td>
+          <td>184.800 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="[ưu đãi đặc biệt] ấm đun nước sức khỏe văn phòng ấm đun nước điện đa năng một mục đích nhỏ cốc giữ nhiệt phong cách mới mini ưu đãi đặc biệt quà tặng trà 1kr2" data-gmv="0" data-sold="0" data-price="411410">
+          <td><a href="https://shopee.vn/product/1885846760/49064065391" target="_blank" rel="noopener">[Ưu đãi đặc biệt] Ấm đun nước sức khỏe Văn phòng Ấm đun nước điện đa năng một mục đích nhỏ Cốc giữ nhiệt phong cách mới Mini Ưu đãi đặc biệt Quà tặng trà 1KR2</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>IvaDay21411.vn</td>
+          <td>411.410 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="ba trong một nhà bếp đa năng cắt rau bằng thép không gỉ, dụng cụ mở chai, dùng cho gia đình, cắt mực, dụng cụ nhà bếp 9lrk" data-gmv="0" data-sold="0" data-price="100782">
+          <td><a href="https://shopee.vn/product/1624614106/27995185763" target="_blank" rel="noopener">Ba trong Một Nhà Bếp Đa Năng Cắt Rau Bằng Thép Không Gỉ, Dụng Cụ Mở Chai, Dùng Cho Gia Đình, Cắt Mực, Dụng Cụ Nhà Bếp 9LRK</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>oioghkk7.vn</td>
+          <td>100.782 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy cắt và gọt rau đa chức năng ba trong một, lưỡi thép không gỉ, có dụng cụ mở chai, thích hợp để cắt hành tây, khoai tây và mực u9yq" data-gmv="0" data-sold="0" data-price="59249">
+          <td><a href="https://shopee.vn/product/1624614106/49115422977" target="_blank" rel="noopener">Máy cắt và gọt rau đa chức năng ba trong một, Lưỡi thép không gỉ, có dụng cụ mở chai, Thích hợp để cắt hành tây, khoai tây và mực U9YQ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>oioghkk7.vn</td>
+          <td>59.249 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="ba trong một hộ gia đình thép không gỉ xẻng hành dụng cụ tiện dụng thương mại đa năng cắt rau mực cắt hoa dụng cụ nhà bếp lột cụ tiện vi2a" data-gmv="0" data-sold="0" data-price="101918">
+          <td><a href="https://shopee.vn/product/1610043808/51313542149" target="_blank" rel="noopener">Ba trong Một Hộ Gia Đình Thép Không Gỉ Xẻng Hành Dụng Cụ Tiện Dụng Thương Mại Đa Năng Cắt Rau Mực Cắt Hoa Dụng Cụ Nhà Bếp Lột Cụ Tiện VI2A</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>mopsonk7.vn</td>
+          <td>101.918 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy cắt hành đa chức năng ba trong một máy cắt rau củ máy cắt mực hoa tiện ích nhà bếp hành tây băm nhỏ vỏ thép không gỉ sắc nét y2xg" data-gmv="0" data-sold="0" data-price="82052">
+          <td><a href="https://shopee.vn/product/1610043808/51313542200" target="_blank" rel="noopener">Máy cắt hành đa chức năng ba trong một Máy cắt rau củ Máy cắt mực Hoa Tiện ích nhà bếp Hành tây băm nhỏ Vỏ thép không gỉ sắc nét Y2XG</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>mopsonk7.vn</td>
+          <td>82.052 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="micro ndy phụ kiện diy micro có dây một chiều độ trung thực cao năng động có dây hộp mực n" data-gmv="0" data-sold="0" data-price="42500">
+          <td><a href="https://shopee.vn/product/1263822154/26069687495" target="_blank" rel="noopener">Micro NDY Phụ kiện DIY Micro có dây Một chiều Độ trung thực cao Năng động có dây Hộp mực N</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Candyy.vn</td>
+          <td>42.500 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">42.500 – 618.749 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (92.9%)</span><div class="mini-track"><div class="mini-fill blue" style="width:92.9%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (10.7%)</span><div class="mini-track"><div class="mini-fill green" style="width:10.7%"></div></div></div>
+          </div>
+          <div class="bin-val">5.058.450 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">618.750 – 1.194.999 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">1.195.000 – 1.771.249 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">1.771.250 – 2.347.499 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.6%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3.6%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (89.3%)</span><div class="mini-track"><div class="mini-fill green" style="width:89.3%"></div></div></div>
+          </div>
+          <div class="bin-val">42.053.688 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">2.347.500 – 2.923.749 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">2.923.750 – 3.500.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.6%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3.6%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (27 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>LYSIN GYM</strong></td><td>Shop Thường</td><td>1</td><td>19</td><td>42.053.688 đ</td><td><span class='share-pill'>89.3%</span></td></tr><tr><td><strong>KHÔ TÁM HOÀNG CÀ MAU</strong></td><td>Shop Thường</td><td>1</td><td>7</td><td>3.479.000 đ</td><td><span class='share-pill'>7.4%</span></td></tr><tr><td><strong>AYOO.vn</strong></td><td>Shop Thường</td><td>1</td><td>2</td><td>618.240 đ</td><td><span class='share-pill'>1.3%</span></td></tr><tr><td><strong>V-FOOD</strong></td><td>Shop Thường</td><td>1</td><td>1</td><td>348.000 đ</td><td><span class='share-pill'>0.7%</span></td></tr><tr><td><strong>Kha_Doanh_Shop</strong></td><td>Shop Thường</td><td>1</td><td>2</td><td>342.000 đ</td><td><span class='share-pill'>0.7%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">89.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:89.3%"></div></div>
+          <div class="dist-sub">LYSIN GYM</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">98.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:98.0%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">99.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:99.4%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0.2%"></div></div>
+          <div class="dist-sub">1/30 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">99.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:99.8%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">89.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:89.3%"></div></div>
+          <div class="dist-sub">1.771.250 – 2.347.499 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">8,2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:32.8%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🟠 Sàn Cam (Shopee)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Mực một nắng&#x27; đạt 70 SKU từ 54 shop, tổng 32,424 lượt bán tương ứng 4.973.306.877 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 72/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 322.576 đ (khoảng giá 41.207 đ – 3.500.000 đ, đã tách 2 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 41.207 – 617.671 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.3529 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 88.5% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là LAZADA.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,2%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_lazada" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🔵 Sàn Xanh (Lazada)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify Lazada Scraper (memo23~lazada-scraper · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 9 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#d97706">61</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#d97706;background:rgba(217,119,6,.18)">Khá tiềm năng</div>
+            <div class="bo-track"><div class="bo-fill" style="width:61%;background:#d97706"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.7896), tỷ lệ có đơn (75.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">9</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">24,375</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">2.942.740.400 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">151.338 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">103.262 đ – 385.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">75.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">15</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,7896</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('lazada', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('lazada', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('lazada')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_lazada">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded squid (instant consumption) box of 200 grams, an extremely delicious food experience product from phan thiet seafood specialty shop ngoc dung. expiration date is 12 months from the date of order." data-gmv="1242000000" data-sold="10800" data-price="115000">
+          <td><a href="https://www.lazada.vn/products/pdp-i614460562.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded Squid (Instant Consumption) Box of 200 Grams, an Extremely Delicious Food Experience Product from Phan Thiet Seafood Specialty Shop Ngoc Dung. Expiration Date Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>115.000 đ</td>
+          <td>10,800</td>
+          <td><strong>1.242.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.75★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] mực một nắng ( ăn liền ) là món ăn quá ngon của đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 tháng tính từ ngày đặt hàng." data-gmv="636000000" data-sold="5300" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i606774006.html" target="_blank" rel="noopener">[FREESHIP MAX] Mực Một Nắng ( ăn liền ) là món ăn quá ngon của Đặc Sản Biển Phan Thiết NGỌC DŨNG; hộp 200 gram. HSD 12 tháng tính từ ngày đặt hàng.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>5,300</td>
+          <td><strong>636.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.79★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded squid (instant consumption) 200 gram box is a delicious dish from phan thiet ngoc dung seafood specialty shop. expiration date is 12 months from the date of order." data-gmv="360000000" data-sold="3000" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i614628902.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded Squid (Instant Consumption) 200 Gram Box Is a Delicious Dish from Phan Thiet Ngoc Dung Seafood Specialty Shop. Expiration Date Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>3,000</td>
+          <td><strong>360.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.77★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded squid (instant consumption) box of 200 grams, favorite dish from phan thiet seafood specialty shop ngoc dung. warranty period is 12 months from the date of order." data-gmv="252000000" data-sold="2100" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i595648599.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded Squid (Instant Consumption) Box of 200 Grams, Favorite Dish from Phan Thiet Seafood Specialty Shop Ngoc Dung. Warranty Period Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>2,100</td>
+          <td><strong>252.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.76★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[1kg bag of sun-dried squid (delivery within 4 hours in ho chi minh city),1kg bag of squid (delivery at 4pm in ho chi minh city),]" data-gmv="186000000" data-sold="1200" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1231914070.html" target="_blank" rel="noopener">[1kg Bag of Sun-Dried Squid (Delivery Within 4 Hours in Ho Chi Minh City),1kg Bag of Squid (Delivery at 4Pm in Ho Chi Minh City),]</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Ngocdung_wave</td>
+          <td>155.000 đ</td>
+          <td>1,200</td>
+          <td><strong>186.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.71★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="squid one sunny day vacuum-packed bag 1kg 2-3 pieces (hcmc)" data-gmv="63705000" data-sold="411" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2041536183.html" target="_blank" rel="noopener">Squid One Sunny Day Vacuum-Packed Bag 1kg 2-3 Pieces (Hcmc)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Ngọc Dung TP</td>
+          <td>155.000 đ</td>
+          <td>411</td>
+          <td><strong>63.705.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.82★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled and shredded one nang squid (instant consumption) 200 gram box is a very delicious dish from phan thiet ngoc dung seafood specialty shop. warranty period is 12 months from the date of order." data-gmv="56120000" data-sold="488" data-price="115000">
+          <td><a href="https://www.lazada.vn/products/pdp-i601960394.html" target="_blank" rel="noopener">[Freeship Max] Grilled and Shredded One Nang Squid (Instant Consumption) 200 Gram Box Is a Very Delicious Dish from Phan Thiet Ngoc Dung Seafood Specialty Shop. Warranty Period Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>115.000 đ</td>
+          <td>488</td>
+          <td><strong>56.120.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.61★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[one sunny squid 1kg bag (fast delivery in ho chi minh city),one-sun-dried squid 1kg bag (express delivery to ho chi minh city),]" data-gmv="54390600" data-sold="369" data-price="147400">
+          <td><a href="https://www.lazada.vn/products/pdp-i1616513110.html" target="_blank" rel="noopener">[One Sunny Squid 1kg Bag (Fast Delivery in Ho Chi Minh City),One-Sun-Dried Squid 1kg Bag (Express Delivery to Ho Chi Minh City),]</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Shop Khả Doanh 1</td>
+          <td>147.400 đ</td>
+          <td>369</td>
+          <td><strong>54.390.600 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.78★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] grilled one sun squid shredded (instant) box of 200 grams is a delicious dish from phan thiet ngoc dung seafood specialty shop. expiration date is 12 months from the date of order." data-gmv="34560000" data-sold="288" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1711115561.html" target="_blank" rel="noopener">[Freeship Max] Grilled One Sun Squid Shredded (Instant) Box of 200 Grams Is a Delicious Dish from Phan Thiet Ngoc Dung Seafood Specialty Shop. Expiration Date Is 12 Months from the Date of Order.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>288</td>
+          <td><strong>34.560.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.45★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="1kg delicious squid (fast delivery within 2 hours in ho chi minh city)" data-gmv="17360000" data-sold="112" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1305243788.html" target="_blank" rel="noopener">1kg Delicious Squid (Fast Delivery Within 2 Hours in Ho Chi Minh City)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>MyVanShop</td>
+          <td>155.000 đ</td>
+          <td>112</td>
+          <td><strong>17.360.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.52★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="gỏi mực một nắng nướng (ăn liền) là món ăn yêu thích shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 tháng" data-gmv="12120000" data-sold="101" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251650717.html" target="_blank" rel="noopener">Gỏi Mực Một Nắng Nướng (ăn liền) là món ăn yêu thích Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 tháng</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>101</td>
+          <td><strong>12.120.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.86★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max] mực xé sợi một nắng nướng ( ăn liền ) là món ăn ngon của shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 tháng kể từ ngày đặt hàng." data-gmv="11040000" data-sold="92" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1769093402.html" target="_blank" rel="noopener">[FREESHIP MAX] Mực Xé Sợi Một Nắng Nướng ( ăn liền ) là món ăn ngon của Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 tháng kể từ ngày đặt hàng.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>92</td>
+          <td><strong>11.040.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="delicious vacuum-packed squid - 1kg tray (ho chi minh city express delivery)" data-gmv="11005000" data-sold="71" data-price="155000">
+          <td><a href="https://www.lazada.vn/products/pdp-i3002386904.html" target="_blank" rel="noopener">Delicious Vacuum-Packed Squid - 1kg Tray (Ho Chi Minh City Express Delivery)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Minh Anh Food’s</td>
+          <td>155.000 đ</td>
+          <td>71</td>
+          <td><strong>11.005.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.55★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="1kg coto 1 nang nang squid - delicious food at a great price (express delivery within 2 hours in hcmc)" data-gmv="3439800" data-sold="18" data-price="191100">
+          <td><a href="https://www.lazada.vn/products/pdp-i1877914515.html" target="_blank" rel="noopener">1kg Coto 1 Nang Nang Squid - Delicious Food at a Great Price (Express Delivery Within 2 Hours in Hcmc)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Thucphamdonglanh Tiến My</td>
+          <td>191.100 đ</td>
+          <td>18</td>
+          <td><strong>3.439.800 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực xé sợi một nắng nướng ( ăn liền ) là món ăn ngon của shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 th" data-gmv="3000000" data-sold="25" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251591824.html" target="_blank" rel="noopener">Mực Xé Sợi Một Nắng Nướng ( ăn liền ) là món ăn ngon của Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 th</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>25</td>
+          <td><strong>3.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực xé một nắng" data-gmv="0" data-sold="0" data-price="275000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2628719613.html" target="_blank" rel="noopener">Mực xé một nắng</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Bà Tư Nem</td>
+          <td>275.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng nướng ( ăn liền ) là món ăn yêu thích của shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram.hsd 12 tháng" data-gmv="0" data-sold="0" data-price="103262">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251637704.html" target="_blank" rel="noopener">Mực Một Nắng Nướng ( ăn liền ) là món ăn yêu thích của shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram.HSD 12 tháng</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>103.262 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="gỏi mực một nắng nướng xé sợi( ăn liền ) là món ăn ngon của đặc sản biển phan thiết ngọc dũng; hộp 200 gram.hsd 12 tháng" data-gmv="0" data-sold="0" data-price="115000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251562966.html" target="_blank" rel="noopener">Gỏi Mực Một Nắng Nướng Xé Sợi( ăn liền ) là món ăn ngon của Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram.HSD 12 tháng</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>115.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng nướng xé sợi ( ăn liền ) là món ăn ngon của shop đặc sản biển phan thiết ngọc dũng; hộp 200 gram. hsd 12 th" data-gmv="0" data-sold="0" data-price="120000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2251576931.html" target="_blank" rel="noopener">Mực Một Nắng Nướng xé sợi ( ăn liền ) là món ăn ngon của Shop Đặc Sản Biển Phan Thiết NGỌC DŨNG; Hộp 200 gram. HSD 12 th</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Đặc sản biển Phan Thiết NGỌC DŨNG</td>
+          <td>120.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="túi 500gr mực 1 nắng xé sợi thơm ngon hấp dẫn" data-gmv="0" data-sold="0" data-price="385000">
+          <td><a href="https://www.lazada.vn/products/pdp-i312064233.html" target="_blank" rel="noopener">Túi 500gr Mực 1 nắng xé sợi thơm ngon hấp dẫn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Món ăn Ngon từ tay Mẹ</td>
+          <td>385.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">103.262 – 150.217 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (65.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:65.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (90.4%)</span><div class="mini-track"><div class="mini-fill green" style="width:90.4%"></div></div></div>
+          </div>
+          <div class="bin-val">2.661.230.600 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">150.218 – 197.173 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (25.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:25.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (9.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:9.6%"></div></div></div>
+          </div>
+          <div class="bin-val">281.509.800 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">197.174 – 244.129 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">244.130 – 291.085 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">291.086 – 338.041 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">338.042 – 385.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (9 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Đặc sản biển Phan Thiết NGỌC DŨNG</strong></td><td>Shop Thường</td><td>12</td><td>22,194</td><td>2.606.840.000 đ</td><td><span class='share-pill'>88.6%</span></td></tr><tr><td><strong>Ngocdung_wave</strong></td><td>Shop Thường</td><td>1</td><td>1,200</td><td>186.000.000 đ</td><td><span class='share-pill'>6.3%</span></td></tr><tr><td><strong>Ngọc Dung TP</strong></td><td>Shop Thường</td><td>1</td><td>411</td><td>63.705.000 đ</td><td><span class='share-pill'>2.2%</span></td></tr><tr><td><strong>Shop Khả Doanh 1</strong></td><td>Shop Thường</td><td>1</td><td>369</td><td>54.390.600 đ</td><td><span class='share-pill'>1.8%</span></td></tr><tr><td><strong>MyVanShop</strong></td><td>Shop Thường</td><td>1</td><td>112</td><td>17.360.000 đ</td><td><span class='share-pill'>0.6%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">88.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:88.6%"></div></div>
+          <div class="dist-sub">Đặc sản biển Phan Thiết NGỌC DŨNG</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">97.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:97.1%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">99.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:99.5%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">90.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:90.4%"></div></div>
+          <div class="dist-sub">103.262 – 150.217 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">70.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:70.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🔵 Sàn Xanh (Lazada)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Mực một nắng&#x27; đạt 70 SKU từ 54 shop, tổng 32,424 lượt bán tương ứng 4.973.306.877 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 72/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 322.576 đ (khoảng giá 41.207 đ – 3.500.000 đ, đã tách 2 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 41.207 – 617.671 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.3529 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 88.5% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là LAZADA.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,2%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_tiktok_shop" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>⚫ Sàn Đen (TikTok Shop)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify TikTok Shop (pro100chok~tiktok-shop-scraper-usage · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 18 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">69</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:69%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.4802), tỷ lệ có đơn (60.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">18</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">8,014</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">1.983.454.339 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">452.088 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">41.207 đ – 1.046.028 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">60.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">12</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,4802</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('tiktok_shop', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('tiktok_shop', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('tiktok_shop')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_tiktok_shop">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="túi như hình 500gram mực đồng tiền ngon ngọt" data-gmv="1264507020" data-sold="6020" data-price="210051">
+          <td><a href="https://shop.tiktok.com/vn/pdp/mini-100-130-con-500g-280k-ngon-de-che-bien-thuc-pham-viet/1731625332902955980" target="_blank" rel="noopener">Túi NHƯ HÌNH 500gram MỰC ĐỒNG TIỀN NGON ngọt</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quyên cua 20</td>
+          <td>210.051 đ</td>
+          <td>6,020</td>
+          <td><strong>1.264.507.020 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.4★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sét 10 con lớn mực câu tay sông đốc cà mau size 50 con /1kg tặng 5 con nhỏ size (90 con/1kg)" data-gmv="530114640" data-sold="1695" data-price="312752">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735843633404740718" target="_blank" rel="noopener">Sét 10 con lớn mực câu tay sông đốc Cà Mau size 50 con /1kg tặng 5 con nhỏ size (90 con/1kg)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>ẩm thực việt45678</td>
+          <td>312.752 đ</td>
+          <td>1,695</td>
+          <td><strong>530.114.640 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.1★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="(500gr) mực khô câu 90-120 con/kg" data-gmv="64198644" data-sold="124" data-price="517731">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-kho-cau-size-80-90-con-kg-500g-ngon-ngot-thit-day/1731294382630865383" target="_blank" rel="noopener">(500gr) Mực khô câu 90-120 con/kg</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Trùm Hải Sản Nha Trang</td>
+          <td>517.731 đ</td>
+          <td>124</td>
+          <td><strong>64.198.644 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="(chỉ giao miền nam và miền tây) khô mực dẻo 1 nắng size 4-8 con/1kg loại thượng hạng" data-gmv="59623596" data-sold="57" data-price="1046028">
+          <td><a href="https://shop.tiktok.com/vn/pdp/deo-1-nang-size-4-8-con-kg-thuong-hang-ngon-mieng/1731489600462818167" target="_blank" rel="noopener">(CHỈ GIAO MIỀN NAM VÀ MIỀN TÂY) Khô mực dẻo 1 nắng size 4-8 con/1kg loại thượng hạng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Neoseafood</td>
+          <td>1.046.028 đ</td>
+          <td>57</td>
+          <td><strong>59.623.596 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="500g khô mực =18-20 con,  1kg = 35- 40 con 1kg" data-gmv="33768748" data-sold="47" data-price="718484">
+          <td><a href="https://shop.tiktok.com/vn/pdp/500g-18-20-con-1kg-35-40-con-dong-goi-hut-chan-khong/1734595867523057517" target="_blank" rel="noopener">500g Khô mực =18-20 con,  1kg = 35- 40 Con 1kg</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HẢI SẢN MỘC NHIÊN</td>
+          <td>718.484 đ</td>
+          <td>47</td>
+          <td><strong>33.768.748 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng size 3 con ki hàng mới ngọt thịt mềm được ua chuộng nhìu? hàng 1 nắng chỉ đi trong thành phố ạ? không đi đc miền trung hay miền bắc nhé khach." data-gmv="13207425" data-sold="25" data-price="528297">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-1-nang-size-3-con-ki-thit-deo-ngot-huong-vi-thom-ngon/1733089983355061799" target="_blank" rel="noopener">Mực 1 nắng size 3 con ki hàng mới ngọt thịt mềm được ua chuộng nhìu? Hàng 1 nắng chỉ đi trong thành phố ạ? Không đi đc miền trung hay miền bắc nhé khach.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thuỳ Oanh Mart</td>
+          <td>528.297 đ</td>
+          <td>25</td>
+          <td><strong>13.207.425 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực ống xẻ 1 nắng size 5-6 con 1kg (giao tphcm)" data-gmv="13120050" data-sold="30" data-price="437335">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-ong-xe-1-nang-size-4-con-1kg-tuoi-ngon-de-bao-quan/1729980596818316201" target="_blank" rel="noopener">Mực ống xẻ 1 nắng size 5-6 con 1kg (giao tphcm)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ngọc dung Food</td>
+          <td>437.335 đ</td>
+          <td>30</td>
+          <td><strong>13.120.050 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực tẩm gia vị 1 nắng vừa ăn (500g)" data-gmv="2757708" data-sold="9" data-price="306412">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-tam-gia-vi-1-nang-vua-an-500g-thom-ngot-tien-loi/1730115777552353953" target="_blank" rel="noopener">Mực tẩm gia vị 1 nắng vừa ăn (500g)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ｈồｎｇ Ｈｉệｐ</td>
+          <td>306.412 đ</td>
+          <td>9</td>
+          <td><strong>2.757.708 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng - hút chân không 1kg (size 4 con)" data-gmv="1172820" data-sold="3" data-price="390940">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-mot-nang-hut-chan-khong-1kg-gion-de-an-qua-tang/1729681650008033987" target="_blank" rel="noopener">Mực Một Nắng - Hút Chân Không 1KG (size 4 Con)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Hải Sản Trung Nam</td>
+          <td>390.940 đ</td>
+          <td>3</td>
+          <td><strong>1.172.820 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng - mực ống câu phơi 1 nắng" data-gmv="602258" data-sold="1" data-price="602258">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-1-nang-muc-ong-cau-phoi-1-nang-de-su-dung-cho-cau-ca/1736166003936363827" target="_blank" rel="noopener">Mực 1 nắng - mực ống câu phơi 1 nắng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ninin hải sản</td>
+          <td>602.258 đ</td>
+          <td>1</td>
+          <td><strong>602.258 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng biển làng chài nhơn lý  / 1 con" data-gmv="306412" data-sold="2" data-price="153206">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1736572281120393030" target="_blank" rel="noopener">Mực Một Nắng biển Làng Chài Nhơn Lý  / 1 con</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Bãi Nồm Beach Homestay</td>
+          <td>153.206 đ</td>
+          <td>2</td>
+          <td><strong>306.412 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đặc sản bình thuận - mực một nắng sốt nước mắm - đầm sen" data-gmv="75018" data-sold="1" data-price="75018">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-mot-nang-sot-nuoc-mam-dam-sen-dac-san-binh-thuan/1731070896439462120" target="_blank" rel="noopener">Đặc sản Bình Thuận - Mực Một Nắng Sốt Nước Mắm - Đầm Sen</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Hải Sản Đầm Sen</td>
+          <td>75.018 đ</td>
+          <td>1</td>
+          <td><strong>75.018 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng 1kg - sản phẩm tối ưu cho nhu cầu sử dụng hàng ngày với thiết kế đơn giản và hiệu quả" data-gmv="0" data-sold="0" data-price="871690">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1737668642235188469" target="_blank" rel="noopener">Mực 1 Nắng 1kg - Sản phẩm tối ưu cho nhu cầu sử dụng hàng ngày với thiết kế đơn giản và hiệu quả</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>ẨM THỰC XỨ THANH</td>
+          <td>871.690 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng ngư thủy 30g - thơm ngon, dai ngọt" data-gmv="0" data-sold="0" data-price="147923">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738343411047564585" target="_blank" rel="noopener">Mực Một Nắng Ngư Thủy 30g - Thơm Ngon, Dai Ngọt</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HTX Ngư Trung Hải sản An Nhung</td>
+          <td>147.923 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực 1 nắng lifood – thịt dày, dai ngọt tự nhiên – size 2–3 con/kg" data-gmv="0" data-sold="0" data-price="252262">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738175904338445434" target="_blank" rel="noopener">Mực 1 Nắng LiFood – Thịt Dày, Dai Ngọt Tự Nhiên – Size 2–3 Con/kg</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>LIFOOD - Tổng Kho Hải Sản</td>
+          <td>252.262 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực ống một nắng làng chài nhơn lý -0.5kg" data-gmv="0" data-sold="0" data-price="792445">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1737710872308123462" target="_blank" rel="noopener">Mực Ống Một Nắng Làng Chài Nhơn Lý -0.5kg</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Bãi Nồm Beach Homestay</td>
+          <td>792.445 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="khô mực câu 1 nắng của vùng biền ba tri bế tre, mực mềm đai ngọt ngay :500g" data-gmv="0" data-sold="0" data-price="871690">
+          <td><a href="https://shop.tiktok.com/vn/pdp/cau-1-nang-ba-tri-be-tre-1000g-tuoi-ngon-khong-chat-bao-quan/1732282996738001803" target="_blank" rel="noopener">Khô mực câu 1 nắng của vùng biền Ba Tri Bế Tre, mực mềm đai ngọt ngay :500g</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Vựa khô Út Lượm</td>
+          <td>871.690 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực một nắng nướng xé sợi ( ăn liền )  món ăn ngon cực kỳ ngon- vựa khô minh triết" data-gmv="0" data-sold="0" data-price="41207">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-mot-nang-nuong-xe-soi-vua-kho-minh-triet-de-an-lien/1730269093639457034" target="_blank" rel="noopener">Mực Một Nắng Nướng Xé Sợi ( ăn liền )  món ăn ngon cực kỳ ngon- Vựa Khô Minh Triết</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>VỰA KHÔ MINH TRIẾT</td>
+          <td>41.207 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực khô một nắng 500g  bao ăn bao đổi trả" data-gmv="0" data-sold="0" data-price="369808">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-kho-mot-nang-500g-doi-tra-hang-de-phoi-hop-bua-an/1732379897787287415" target="_blank" rel="noopener">mực khô một nắng 500g  bao ăn bao đổi trả</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ăn vặt nhà cà chua</td>
+          <td>369.808 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mực khô một nắng 500g bao ngon bao đổi trả" data-gmv="0" data-sold="0" data-price="396223">
+          <td><a href="https://shop.tiktok.com/vn/pdp/muc-kho-mot-nang-500g-bao-ngot-bao-doi-tra-thuc-pham-dinh-duong/1732232314871383927" target="_blank" rel="noopener">mực khô một nắng 500g bao ngon bao đổi trả</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Ăn vặt nhà cà chua</td>
+          <td>396.223 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">41.207 – 208.676 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (20.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:20.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">381.430 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">208.677 – 376.146 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (25.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:25.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (90.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:90.6%"></div></div></div>
+          </div>
+          <div class="bin-val">1.797.379.368 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">376.147 – 543.616 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (25.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:25.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (4.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:4.6%"></div></div></div>
+          </div>
+          <div class="bin-val">91.698.939 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">543.617 – 711.086 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">602.258 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">711.087 – 878.556 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (20.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:20.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (1.7%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">33.768.748 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">878.557 – 1.046.028 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (3.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">59.623.596 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (18 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Quyên cua 20</strong></td><td>Shop Thường</td><td>1</td><td>6,020</td><td>1.264.507.020 đ</td><td><span class='share-pill'>63.8%</span></td></tr><tr><td><strong>ẩm thực việt45678</strong></td><td>Shop Thường</td><td>1</td><td>1,695</td><td>530.114.640 đ</td><td><span class='share-pill'>26.7%</span></td></tr><tr><td><strong>Trùm Hải Sản Nha Trang</strong></td><td>Shop Thường</td><td>1</td><td>124</td><td>64.198.644 đ</td><td><span class='share-pill'>3.2%</span></td></tr><tr><td><strong>Neoseafood</strong></td><td>Shop Thường</td><td>1</td><td>57</td><td>59.623.596 đ</td><td><span class='share-pill'>3.0%</span></td></tr><tr><td><strong>HẢI SẢN MỘC NHIÊN</strong></td><td>Shop Thường</td><td>1</td><td>47</td><td>33.768.748 đ</td><td><span class='share-pill'>1.7%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">63.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:63.8%"></div></div>
+          <div class="dist-sub">Quyên cua 20</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">93.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:93.7%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">98.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:98.4%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">90.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:90.6%"></div></div>
+          <div class="dist-sub">208.677 – 376.146 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">85.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:85.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "⚫ Sàn Đen (TikTok Shop)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Mực một nắng&#x27; đạt 70 SKU từ 54 shop, tổng 32,424 lượt bán tương ứng 4.973.306.877 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 72/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 322.576 đ (khoảng giá 41.207 đ – 3.500.000 đ, đã tách 2 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 41.207 – 617.671 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.3529 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 88.5% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là LAZADA.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,2%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    
+    <section class="sa-tab-panel" id="panel_logs" style="display:none">
+      <div class="sa-panel">
+        <h2 class="sa-title">🪵 Logs Toàn Bộ Request / Response &amp; Cách Xử Lý Dữ Liệu</h2>
+        <div class="sa-hint">Mỗi API key hoặc token trong URL/Headers được che tự động dạng <code>ab***1234</code> để an toàn khi xuất báo cáo hoặc đẩy Git.</div>
+
+        <div class="sub-card" style="margin-top:12px">
+          <div class="sub-card-head">🧮 Bảng Truy Vết Công Thức Ra Số Liệu Thực Tế Của Lần Chạy Này</div>
+          <table>
+            <thead><tr><th>Phạm vi</th><th>Công thức Giá TB (Tách quà tặng)</th><th>Công thức HHI</th><th>Công thức Điểm Đại Dương Xanh (/100)</th></tr></thead>
+            <tbody>
+        <tr>
+          <td><strong>TỔNG HỢP 3 SÀN</strong></td>
+          <td><code>sum(68 non-gift prices) / 68 = 322.576 đ</code></td>
+          <td><code>sum((shop_gmv / 4.973.306.877 đ)^2 across 54 shops) = 0.3529</code></td>
+          <td><code>HHI_pts(29.1) + Demand_pts(18.0) + NonMall_pts(24.6) = 72/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>SHOPEE</strong></td>
+          <td><code>sum(28 non-gift prices) / 28 = 352.379 đ</code></td>
+          <td><code>sum((shop_gmv / 47.112.138 đ)^2 across 27 shops) = 0.8025</code></td>
+          <td><code>HHI_pts(8.9) + Demand_pts(10.5) + NonMall_pts(24.2) = 44/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>TIKTOK_SHOP</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 452.088 đ</code></td>
+          <td><code>sum((shop_gmv / 1.983.454.339 đ)^2 across 18 shops) = 0.4802</code></td>
+          <td><code>HHI_pts(23.4) + Demand_pts(21.0) + NonMall_pts(25.0) = 69/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>LAZADA</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 151.338 đ</code></td>
+          <td><code>sum((shop_gmv / 2.942.740.400 đ)^2 across 9 shops) = 0.7896</code></td>
+          <td><code>HHI_pts(9.5) + Demand_pts(26.2) + NonMall_pts(25.0) = 61/100</code></td>
+        </tr></tbody>
+          </table>
+        </div>
+
+        
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#1</span>
+              <strong style="color:#f8fafc">telegram_receive_request</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_telegram_liaison &bull; 972 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#2</span>
+              <strong style="color:#f8fafc">serper_ecommerce_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_market_strategist &bull; 2514 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://google.serper.dev/search&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-KEY&quot;: &quot;b7***8a2f&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;site:shopee.vn OR site:lazada.vn Mực một nắng&quot;,
+    &quot;gl&quot;: &quot;vn&quot;,
+    &quot;hl&quot;: &quot;vi&quot;,
+    &quot;num&quot;: 8
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (8 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 8,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;organic_sample&quot;: [
+      {
+        &quot;title&quot;: &quot;Mực 1 nắng - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại&quot;,
+        &quot;link&quot;: &quot;https://www.google.com/goto?url=CAEScgHEIkXX8iru1eiCSRFt900EbzLO_vVTyMN5LpN8rv4Cf3ZH91VBcMW7KowgAvpdXjkTY9pBb9-QlVRNdnYrAODJJ6IATTNX_8fXj5-tpzm-VDd87aCjZsFDFRilSoCIVe9VM1VrrpCic-W4NyB2bR65dw&amp;gsessionid=daqGnjrbCp6TWth5m49Wg6Lg0jkOSZxaWMhqD4xHbl5nfoRuqdaW1w&quot;,
+        &quot;snippet&quot;: &quot;[HỎA TỐC HCM] 1kg Mực một nắng Cam Ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không. 378.840₫. 670.000₫. -43%. voucher-icon.&quot;
+      },
+      {
+        &quot;title&quot;: &quot;MỰC MỘT NẮNG TƯƠI NGON. MỰC NGON NGỌT, CHẤT ...&quot;,
+        &quot;link&quot;: &quot;https://shopee.vn/M%E1%BB%B0C-M%E1%BB%98T-N%E1%BA%AENG-LO%E1%BA%A0I-X%E1%BB%8AN-SIZE-5-7-CON-KG.-M%E1%BB%B0C-NGON-NG%E1%BB%8CT-CH%E1%BA%A4T-L%C6%AF%E1%BB%A2NG-LO%E1%BA%A0I-1-i.1105660288.19595114114&quot;,
+        &quot;snippet&quot;: &quot;MỰC MỘT NẮNG TƯƠI NGON. MỰC NGON NGỌT, CHẤT LƯỢNG LOẠI 1. 1/3. 525.000₫. MỰC MỘT NẮNG TƯƠI NGON. MỰC NGON NGỌT, CHẤT LƯỢNG LOẠI 1.&quot;
+      }
+    ],
+    &quot;relatedSearches&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi truy vấn đa sàn Google VN (`gl=vn`, `hl=vi`) tới Serper.dev.</li><li>2. Trích xuất 0 cụm từ khóa tìm kiếm liên quan (`relatedSearches`) làm ma trận mở rộng.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#3</span>
+              <strong style="color:#f8fafc">addlivetag_market_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 535 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/search/market.php?q=M%E1%BB%B1c+m%E1%BB%99t+n%E1%BA%AFng&amp;sort=revenue&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;Mực một nắng&quot;,
+    &quot;sort&quot;: &quot;revenue&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (100 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 100,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;keys&quot;: [
+      &quot;query&quot;,
+      &quot;giftsExcluded&quot;,
+      &quot;market&quot;,
+      &quot;last30Days&quot;,
+      &quot;topShops&quot;,
+      &quot;products&quot;,
+      &quot;paging&quot;,
+      &quot;status&quot;,
+      &quot;cached&quot;,
+      &quot;tookMs&quot;,
+      &quot;scopeNote&quot;
+    ],
+    &quot;market&quot;: {
+      &quot;totalProducts&quot;: 159,
+      &quot;totalShops&quot;: 137,
+      &quot;totalSold&quot;: 35,
+      &quot;totalRevenue&quot;: 47112138,
+      &quot;avgPrice&quot;: 276740,
+      &quot;minPrice&quot;: 23100,
+      &quot;maxPrice&quot;: 3500000,
+      &quot;avgCommissionRate&quot;: 0.086,
+      &quot;maxCommissionRate&quot;: 0.17,
+      &quot;productsWithSales&quot;: 9,
+      &quot;sellThroughRate&quot;: 0.0566,
+      &quot;hhi&quot;: 0.8025,
+      &quot;blueOceanScore&quot;: 14
+    },
+    &quot;last30Days&quot;: {
+      &quot;totalSold&quot;: 34,
+      &quot;totalRevenue&quot;: 71821264,
+      &quot;trackedProducts&quot;: 22,
+      &quot;coverage&quot;: 0.1384,
+      &quot;note&quot;: &quot;Only counts products with 8+ days of history. The `market` block above is all-time and covers 100% of products.&quot;
+    },
+    &quot;total_raw_items&quot;: 100,
+    &quot;sample_items&quot;: [
+      {
+        &quot;itemId&quot;: 28378667713,
+        &quot;productName&quot;: &quot;Mực 1 Nắng Loại 1 Ngon Nhất Size 2 - 4 con /1kg Mực Một Nắng Chất Lượng Ship Hỏa Tốc HCM&quot;,
+        &quot;shopName&quot;: &quot;KHÔ TÁM HOÀNG CÀ MAU&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-7ra0g-m70yw64ridlka3&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1109665559/28378667713&quot;,
+        &quot;price&quot;: 497000,
+        &quot;sales&quot;: 7,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 2,
+        &quot;revenueAll&quot;: 3479000,
+        &quot;revenue30d&quot;: 994000,
+        &quot;priceMin&quot;: 490000,
+        &quot;priceMax&quot;: 497000,
+        &quot;priceCv&quot;: 0.0042,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 10,
+        &quot;commissionRate&quot;: 0.055,
+        &quot;shopId&quot;: 1109665559,
+        &quot;catId&quot;: 100629,
+        &quot;rating&quot;: 4.9
+      },
+      {
+        &quot;itemId&quot;: 57700605204,
+        &quot;productName&quot;: &quot;[HỎA TỐC HCM] 1kg Mực một nắng Cam Ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không&quot;,
+        &quot;shopName&quot;: &quot;V-FOOD&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-81ztc-mvirmmlpdz4188&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1624349716/57700605204&quot;,
+        &quot;price&quot;: 348000,
+        &quot;sales&quot;: 1,
+        &quot;sold7d&quot;: 1,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 348000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 348000,
+        &quot;priceMax&quot;: 348000,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 3,
+        &quot;commissionRate&quot;: 0.155,
+        &quot;shopId&quot;: 1624349716,
+        &quot;catId&quot;: 100629,
+        &quot;rating&quot;: 4.8
+      }
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Bóc danh sách sản phẩm thật từ payload[&#x27;products&#x27;] (100 bản ghi, lấy 30 SKU) + block market/last30Days.</li><li>2. Chuẩn hóa camelCase Shopee: itemId, productName, shopId, shopName, price, sales -&gt; sold_30d, revenueAll -&gt; gmv_30d_vnd, commissionRate*100 -&gt; commission_pct (%).</li><li>3. Độ phủ lịch sử 30d đánh giá theo quy tắc AddLiveTag (`daysTracked &gt;= 8`); quà tặng &lt;= 2.000đ tách khỏi Giá trung bình.</li><li>4. KOC/Creator &amp; phân tách Video/Live nội sàn chưa có trên endpoint search -&gt; gắn cờ (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#4</span>
+              <strong style="color:#f8fafc">addlivetag_product_batch</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 913 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/product-data/product-data-batch.php&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;itemIds&quot;: [
+      28378667713,
+      57700605204,
+      27675497593,
+      54062779527,
+      26057598801
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (5 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 5,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;item_id&quot;: &quot;28378667713&quot;,
+      &quot;product_name&quot;: &quot;Mực 1 Nắng Loại 1 Ngon Nhất Size 2 - 4 con /1kg Mực Một Nắng Chất Lượng Ship Hỏa Tốc HCM&quot;,
+      &quot;cat_name&quot;: &quot;Thực phẩm khô&quot;,
+      &quot;price_vnd&quot;: 497000,
+      &quot;sales&quot;: 9,
+      &quot;shopee_commission_pct&quot;: 8.0,
+      &quot;seller_commission_pct&quot;: 3.0,
+      &quot;total_commission_pct&quot;: 11.0,
+      &quot;is_xtra&quot;: true,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;api&quot;
+    },
+    {
+      &quot;item_id&quot;: &quot;57700605204&quot;,
+      &quot;product_name&quot;: &quot;[HỎA TỐC HCM] 1kg Mực một nắng Cam Ranh hàng to 1-3 con/kg dày mình ngọt thịt mực 1 nắng hút chân không&quot;,
+      &quot;cat_name&quot;: &quot;Hải sản&quot;,
+      &quot;price_vnd&quot;: 435500,
+      &quot;sales&quot;: 0,
+      &quot;shopee_commission_pct&quot;: 8.0,
+      &quot;seller_commission_pct&quot;: 12.0,
+      &quot;total_commission_pct&quot;: 20.0,
+      &quot;is_xtra&quot;: true,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;api&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi mảng itemIds (5 SKU) lên product-data-batch.php trong 1 HTTP POST.</li><li>2. Bóc `productInfo` từ `payload[&#x27;products&#x27;]`: shopeeRatePercent, sellerRatePercent, totalRatePercent, isXtra, catName, cap.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#5</span>
+              <strong style="color:#f8fafc">apify_tiktok_shop_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_tiktok_hunter &bull; 10682 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/pro100chok~tiktok-shop-scraper-usage/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;region&quot;: &quot;vn&quot;,
+    &quot;scrapeType&quot;: &quot;search&quot;,
+    &quot;searchKeywords&quot;: [
+      &quot;Mực một nắng&quot;
+    ],
+    &quot;maxItems&quot;: 20,
+    &quot;sortBy&quot;: &quot;best_sellers&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1733089983355061799&quot;,
+      &quot;title&quot;: &quot;Mực 1 nắng size 3 con ki hàng mới ngọt thịt mềm được ua chuộng nhìu? Hàng 1 nắng chỉ đi trong thành phố ạ? Không đi đc miền trung hay miền bắc nhé khach.&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/muc-1-nang-size-3-con-ki-thit-deo-ngot-huong-vi-thom-ngon/1733089983355061799&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/07947b11a590492f99c7e9cece07ae98~tplv-o3syd03w52-crop-webp:960:960.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;,
+        &quot;https://p21-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/07947b11a590492f99c7e9cece07ae98~tplv-o3syd03w52-crop-webp:960:960.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;528297&quot;,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPercent&quot;: null,
+      &quot;salesVolume&quot;: 25,
+      &quot;rating&quot;: 5,
+      &quot;reviewCount&quot;: &quot;1&quot;,
+      &quot;sellerName&quot;: &quot;Thuỳ Oanh Mart&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 1,
+      &quot;query&quot;: &quot;Mực một nắng&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    },
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1737668642235188469&quot;,
+      &quot;title&quot;: &quot;Mực 1 Nắng 1kg - Sản phẩm tối ưu cho nhu cầu sử dụng hàng ngày với thiết kế đơn giản và hiệu quả&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/1737668642235188469&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5bc26e046ae94b3d97f57ec9739c8889~tplv-aphluv4xwc-crop-webp:750:750.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5bc26e046ae94b3d97f57ec9739c8889~tplv-aphluv4xwc-crop-webp:750:750.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;871690&quot;,
+      &quot;originalPrice&quot;: &quot;956217&quot;,
+      &quot;discountPercent&quot;: &quot;9%&quot;,
+      &quot;salesVolume&quot;: 0,
+      &quot;rating&quot;: 0,
+      &quot;reviewCount&quot;: &quot;0&quot;,
+      &quot;sellerName&quot;: &quot;ẨM THỰC XỨ THANH&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 2,
+      &quot;query&quot;: &quot;Mực một nắng&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Thu thập dataset TikTok Shop (VN) từ Actor `pro100chok~tiktok-shop-scraper-usage` (20 mục).</li><li>2. Ánh xạ `currentPrice`, `salesVolume`, `sellerName`, `rating`, `reviewCount` -&gt; tính GMV = price_vnd * salesVolume.</li><li>3. Kiểm tra thực tế payload: chỉ số KOC / Hoa hồng Affiliate / Video-Live / Lịch sử 30d nếu chưa có trong kết quả tìm kiếm sẽ đánh dấu minh bạch (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#6</span>
+              <strong style="color:#f8fafc">apify_lazada_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_lazada_hunter &bull; 30545 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/memo23~lazada-scraper/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;searchQueries&quot;: [
+      &quot;Mực một nắng&quot;
+    ],
+    &quot;country&quot;: &quot;vn&quot;,
+    &quot;maxItems&quot;: 20,
+    &quot;scrapeDetails&quot;: false
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;name&quot;: &quot;[FREESHIP MAX] Mực Một Nắng ( ăn liền ) là món ăn quá ngon của Đặc Sản Biển Phan Thiết NGỌC DŨNG; hộp 200 gram. HSD 12 tháng tính từ ngày đặt hàng.&quot;,
+      &quot;image&quot;: &quot;https://vn-live-01.slatic.net/p/5677b34c8100e3a026ca4d56b8d8271a.jpg&quot;,
+      &quot;categories&quot;: &quot;8799 &gt; 10003011 &gt; 10003057 &gt; 10003331 &gt; 10003495&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;Đặc sản biển Phan Thiết NGỌC DŨNG&quot;,
+      &quot;sellerId&quot;: &quot;200161164320&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: &quot;5.3K sold&quot;,
+      &quot;reviewCount&quot;: 897,
+      &quot;ratingScore&quot;: 4.787068004459309,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫120,000&quot;,
+      &quot;priceValue&quot;: 120000,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPct&quot;: null,
+      &quot;itemId&quot;: &quot;606774006&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i606774006.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;Mực một nắng&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T05:19:03.322Z&quot;
+    },
+    {
+      &quot;name&quot;: &quot;[Freeship Max] Grilled and Shredded Squid (Instant Consumption) Box of 200 Grams, an Extremely Delicious Food Experience Product from Phan Thiet Seafood Specialty Shop Ngoc Dung. Expiration Date Is 12 Months from the Date of Order.&quot;,
+      &quot;image&quot;: &quot;https://vn-live-01.slatic.net/p/6f21912183d5e22a299fb87c2f69ea91.jpg&quot;,
+      &quot;categories&quot;: &quot;8799 &gt; 10003011 &gt; 14451 &gt; 14763&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;Đặc sản biển Phan Thiết NGỌC DŨNG&quot;,
+      &quot;sellerId&quot;: &quot;200161164320&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: &quot;10.8K sold&quot;,
+      &quot;reviewCount&quot;: 1507,
+      &quot;ratingScore&quot;: 4.751824817518248,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫115,000&quot;,
+      &quot;priceValue&quot;: 115000,
+      &quot;originalPrice&quot;: &quot;120000&quot;,
+      &quot;discountPct&quot;: 4,
+      &quot;itemId&quot;: &quot;614460562&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i614460562.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;Mực một nắng&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T05:19:03.322Z&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gọi đồng bộ Apify Actor `memo23~lazada-scraper` (country=&#x27;vn&#x27;, scrapeDetails=False) nhận 20 bản ghi.</li><li>2. Đọc `priceValue` (fallback chuỗi `price`/`priceShow`) và parse `soldCount` (VD &#x27;494 sold&#x27;, &#x27;1.2K sold&#x27;) -&gt; tính `gmv = price_vnd * sold`.</li><li>3. Nhận diện LazMall qua cờ `isLazMall` hoặc nhãn gian hàng Mall/Official.</li><li>4. Do Lazada Scraper chưa trả Hoa hồng Affiliate &amp; Lịch sử 30 ngày -&gt; gắn nhãn (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#7</span>
+              <strong style="color:#f8fafc">market_metrics_aggregation_pipeline</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_pricing_analyst &bull; 12 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;PIPELINE_REDUCE&quot;,
+  &quot;url&quot;: &quot;internal://analytics/shopee-grade-aggregator&quot;,
+  &quot;headers&quot;: {},
+  &quot;payload&quot;: {
+    &quot;platforms&quot;: [
+      &quot;shopee&quot;,
+      &quot;tiktok_shop&quot;,
+      &quot;lazada&quot;
+    ],
+    &quot;total_raw_skus&quot;: 70,
+    &quot;exclude_keywords&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (70 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 70,
+  &quot;raw_sample&quot;: {
+    &quot;sp_count&quot;: 70,
+    &quot;gift_excluded_from_avg_price&quot;: 2,
+    &quot;avg_price_formula&quot;: &quot;sum(68 non-gift prices) / 68 = 322.576 đ&quot;,
+    &quot;hhi_formula&quot;: &quot;sum((shop_gmv / 4.973.306.877 đ)^2 across 54 shops) = 0.3529&quot;,
+    &quot;blue_ocean_formula&quot;: &quot;HHI_pts(29.1) + Demand_pts(18.0) + NonMall_pts(24.6) = 72/100&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gom nhóm 70 SKU từ 3 sàn; tách 2 SKU quà tặng (&lt;= 2.000đ) ra khỏi Giá trung bình.</li><li>2. Tính Giá trung bình: sum(68 non-gift prices) / 68 = 322.576 đ.</li><li>3. Tính chỉ số tập trung thị phần HHI: sum((shop_gmv / 4.973.306.877 đ)^2 across 54 shops) = 0.3529.</li><li>4. Tính Điểm Đại dương xanh: HHI_pts(29.1) + Demand_pts(18.0) + NonMall_pts(24.6) = 72/100.</li><li>5. Chia dải giá thành 6 bậc đều nhau để tìm Sweet Spot (dải có GMV cao nhất) &amp; xếp Top 5 Shop (CR5).</li><li>6. Các chỉ số API không có (Hoa hồng Lazada, KOC/Live Shopee, Lịch sử 30d Lazada/TikTok) gán nguyên văn &#x27;(API đang phát triển)&#x27;.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#8</span>
+              <strong style="color:#f8fafc">codex_cli_market_synthesis</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_report_architect &bull; 1800 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;CODEX_CLI_EXEC&quot;,
+  &quot;url&quot;: &quot;local://codex.exe exec --skip-git-repo-check --ephemeral -s read-only&quot;,
+  &quot;headers&quot;: {
+    &quot;model&quot;: &quot;gpt-6-luna (codex-cli)&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;prompt&quot;: &quot;Bạn là Chuyên gia Nghiên cứu Thị trường TMĐT Việt Nam. Viết ĐÚNG 1 đoạn tóm tắt điều hành súc tích (85-115 từ, tiếng Việt chuẩn, chỉ phân tích thị trường khách quan, KHÔNG tư vấn giá vốn):\n- Từ khóa: Mực một nắng\n- Tổng quan 3 sàn: 70 SP, 54 shop, 32,424 lượt bán, GMV 4.973.306.877 đ, Giá TB 322.576 đ, HHI 0.3529, ĐĐX 72/100.\n- Chi tiết sàn: SHOPEE: GMV 47.112.138 đ, HHI 0.8025, ĐĐX 44/100, TIKTOK_SHOP: GMV 1.983.454.339 đ, HHI 0.4802, ĐĐX 69/100, LAZADA: GMV 2.942.740.400 đ, HHI 0.7896, ĐĐX 61/100\n- Nỗi đau khách hàng: Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio; Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm; Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (1 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 1,
+  &quot;raw_sample&quot;: {
+    &quot;narrative&quot;: &quot;Thị trường “Mực một nắng” ghi nhận 70 sản phẩm từ 54 shop trên ba sàn, với 32.424 lượt bán và GMV khoảng 4,97 tỷ đồng; giá trung bình đạt 322.576 đồng. HHI toàn thị trường ở mức 0,3529, trong khi điểm ĐĐX đạt 72/100. Lazada đóng góp GMV lớn nhất, khoảng 2,94 tỷ đồng, tiếp đến TikTok Shop với 1,98 tỷ đồng và Shopee với 47,1 triệu đồng. HHI của Lazada và Shopee đều cao (lần lượt 0,7896 và 0,8025), cao hơn TikTok Shop (0,4802). Phản hồi khách hàng tập trung vào khác biệt màu sắc, chất liệu so với ảnh, nhầm lẫn phân loại size/combo và thiếu thông tin kiểm định, nguồn gốc.&quot;,
+    &quot;tokens_used&quot;: 4209
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Nạp toàn bộ KPI đã kiểm toán (SP, Shop, GMV, HHI, ĐĐX, Tỷ lệ có bán, VOC) vào prompt phân tích điều hành.</li><li>2. Trích xuất đoạn tóm tắt điều hành khách quan hiển thị ở phần đầu Báo cáo và sinh 6 khối Phân tích AI chuyên sâu.</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    var tabFilterState = {};
+    function switchMarketTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.sa-tab-panel').forEach(function(panel) {
+        panel.style.display = (panel.id === 'panel_' + tabId) ? 'block' : 'none';
+      });
+    }
+    function filterTabTable(tabId, queryVal, shopFilterVal) {
+      var st = tabFilterState[tabId] || { q: '', shop: 'all' };
+      if (queryVal !== null) st.q = queryVal.toLowerCase().trim();
+      if (shopFilterVal !== null) st.shop = shopFilterVal;
+      tabFilterState[tabId] = st;
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+        var t = tr.getAttribute('data-title') || '';
+        var m = tr.getAttribute('data-mall') === '1';
+        var g = tr.getAttribute('data-gift') === '1';
+        var ok = (!st.q || t.indexOf(st.q) !== -1);
+        if (st.shop === 'mall' && !m) ok = false;
+        if (st.shop === 'nogift' && g) ok = false;
+        tr.style.display = ok ? '' : 'none';
+      });
+    }
+    function exportTabCsv(tabId) {
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      var rows = Array.from(tbl.querySelectorAll('tr')).filter(function(r) { return r.style.display !== 'none'; });
+      var csv = rows.map(function(r) {
+        return Array.from(r.children).map(function(c) {
+          return '"' + (c.innerText || '').replace(/"/g, '""').trim() + '"';
+        }).join(',');
+      }).join('\n');
+      var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'product_hunter_' + tabId + '.csv';
+      a.click();
+    }
+  </script>
+</body>
+</html>
