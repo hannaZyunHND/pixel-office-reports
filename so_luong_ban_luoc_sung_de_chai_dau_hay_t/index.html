@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo Cáo Thị Trường Đa Sàn — số lượng bán lược sừng để chải đầu Hãy t</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, system-ui, sans-serif; background:#020617; color:#e2e8f0; line-height:1.5; }
+    .wrap { max-width:1320px; margin:0 auto; padding:20px; }
+    .hero { background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid #334155; border-radius:14px; padding:18px 22px; margin-bottom:14px; }
+    .pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:600; background:rgba(56,189,248,.15); color:#38bdf8; border:1px solid rgba(56,189,248,.4); }
+    .hero h1 { margin:6px 0 8px; font-size:22px; color:#f8fafc; }
+    .hero-narrative { margin:0; font-size:13.5px; color:#cbd5e1; }
+    .tabs-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; position:sticky; top:0; z-index:10; background:rgba(2,6,23,.92); backdrop-filter:blur(6px); padding:8px 0; }
+    .tab-btn { padding:8px 14px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s; }
+    .tab-btn:hover { color:#f8fafc; border-color:#475569; }
+    .tab-btn.active { background:#1e293b; color:#38bdf8; border-color:#38bdf8; box-shadow:0 0 0 1px rgba(56,189,248,.35); }
+    .tab-btn.log-tab.active { color:#fbbf24; border-color:#fbbf24; }
+    .sa-panel { background:#0f172a; border:1px solid #334155; border-radius:14px; padding:18px; margin-bottom:14px; }
+    .sa-sub { font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:8px; }
+    .sa-title { margin:2px 0; font-size:18px; color:#f8fafc; }
+    .sa-hint { font-size:12px; color:#64748b; margin-bottom:12px; }
+    .alert-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:14px; }
+    .alert-card { padding:10px 12px; border-radius:10px; background:#020617; border:1px solid #334155; }
+    .alert-card.warn { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.06); }
+    .alert-card.ok { border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.06); }
+    .alert-card.info { border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06); }
+    .alert-title { font-size:12px; font-weight:700; color:#f8fafc; }
+    .alert-desc { font-size:11px; color:#94a3b8; margin-top:2px; }
+    .overview-split { display:grid; grid-template-columns:270px 1fr; gap:14px; }
+    @media (max-width:860px) { .overview-split { grid-template-columns:1fr; } }
+    .blue-ocean-card { background:#020617; border:1px solid rgba(245,158,11,.45); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+    .bo-caption { font-size:12.5px; font-weight:600; color:#cbd5e1; }
+    .bo-score-line { display:flex; align-items:baseline; gap:6px; }
+    .bo-num { font-size:38px; font-weight:800; line-height:1; }
+    .bo-den { font-size:15px; color:#94a3b8; font-weight:600; }
+    .bo-badge { align-self:flex-start; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; }
+    .bo-track { height:8px; background:#1e293b; border-radius:999px; overflow:hidden; margin:4px 0; }
+    .bo-fill { height:100%; border-radius:999px; }
+    .bo-note { margin:0; font-size:11.5px; color:#94a3b8; }
+    .kpi-panel { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; }
+    .kpi-panel-head { font-size:12.5px; font-weight:700; color:#cbd5e1; margin-bottom:10px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+    .kpi-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px 12px; }
+    .kpi-lbl { font-size:11px; color:#94a3b8; }
+    .kpi-val { font-size:17px; font-weight:800; margin-top:4px; color:#f8fafc; }
+    .kpi-val.blue { color:#38bdf8; } .kpi-val.purple { color:#c084fc; } .kpi-val.amber { color:#fbbf24; } .kpi-val.green { color:#4ade80; }
+    .api-dev { display:inline-block; margin-top:4px; font-size:11px; font-style:italic; color:#94a3b8; background:rgba(148,163,184,.12); border:1px dashed #475569; padding:2px 7px; border-radius:6px; }
+    .table-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+    .filter-controls { display:flex; flex-wrap:wrap; gap:8px; }
+    .ctrl-input, .ctrl-select, .ctrl-btn { background:#020617; border:1px solid #334155; color:#f8fafc; border-radius:8px; padding:6px 10px; font-size:12px; outline:none; }
+    .ctrl-btn { cursor:pointer; background:#1e293b; font-weight:600; } .ctrl-btn:hover { border-color:#38bdf8; color:#38bdf8; }
+    .tbl-wrap { max-height:420px; overflow:auto; border:1px solid #1e293b; border-radius:10px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; }
+    th { background:#020617; color:#94a3b8; font-size:10.5px; text-transform:uppercase; position:sticky; top:0; }
+    a { color:#38bdf8; text-decoration:none; } a:hover { text-decoration:underline; }
+    .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+    .bin-row { display:grid; grid-template-columns:190px 1fr 110px; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; margin-bottom:6px; background:#020617; border:1px solid #1e293b; }
+    .bin-row.sweet { border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.08); }
+    .sweet-tag { font-size:9.5px; background:#10b981; color:#020617; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:4px; }
+    .bin-lbl { font-size:11.5px; font-weight:600; }
+    .bin-line { display:flex; align-items:center; gap:6px; margin:2px 0; }
+    .mini-tag { width:78px; font-size:10px; color:#94a3b8; }
+    .mini-track { flex:1; height:6px; background:#1e293b; border-radius:999px; overflow:hidden; }
+    .mini-fill { height:100%; border-radius:999px; }
+    .mini-fill.blue { background:#38bdf8; } .mini-fill.green { background:#10b981; }
+    .bin-val { text-align:right; font-size:11.5px; font-weight:700; color:#e2e8f0; }
+    .dist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    .dist-card { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:10px 12px; }
+    .dist-top { display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:6px; gap:8px; }
+    .dist-val { font-weight:800; color:#38bdf8; }
+    .dist-sub { font-size:10.5px; color:#64748b; margin-top:5px; }
+    .caps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:8px; }
+    .cap-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:8px; background:#020617; border:1px solid #1e293b; font-size:12px; }
+    .ai-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px; }
+    .ai-sec { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:12px; }
+    .ai-sec h4 { margin:0 0 6px; font-size:13px; color:#38bdf8; } .ai-sec p { margin:0; font-size:12.5px; color:#cbd5e1; }
+    .mode-badge { font-size:10px; font-family:monospace; padding:2px 6px; border-radius:4px; font-weight:700; }
+    .mode-badge.live { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+    .mode-badge.sandbox { background:rgba(245,158,11,.2); color:#fbbf24; border:1px solid rgba(245,158,11,.5); }
+    .mode-badge.partial { background:rgba(56,189,248,.2); color:#38bdf8; border:1px solid rgba(56,189,248,.5); }
+    .plat-pill { font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; }
+    .plat-pill.shopee { background:rgba(249,115,22,.18); color:#fb923c; }
+    .plat-pill.lazada { background:rgba(59,130,246,.18); color:#60a5fa; }
+    .plat-pill.tiktok_shop { background:rgba(236,72,153,.18); color:#f472b6; }
+    .mall-pill { font-size:9.5px; background:#ef4444; color:#fff; padding:1px 4px; border-radius:3px; margin-left:4px; font-weight:700; }
+    .share-pill { padding:2px 7px; border-radius:999px; background:#1e293b; color:#38bdf8; font-weight:700; font-size:11px; }
+    .sub-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; overflow-x:auto; }
+    .sub-card-head { font-size:14px; font-weight:700; color:#f8fafc; margin-bottom:10px; }
+    .log-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; margin-top:14px; }
+    .log-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; padding-bottom:10px; border-bottom:1px solid #1e293b; margin-bottom:10px; }
+    .log-idx { display:inline-block; background:#1e293b; color:#38bdf8; font-family:monospace; font-size:11px; padding:2px 7px; border-radius:6px; margin-right:6px; }
+    .mono-pill { font-family:monospace; font-size:11px; padding:2px 7px; border-radius:4px; background:#0f172a; border:1px solid #334155; color:#cbd5e1; }
+    .log-3col { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+    .log-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px; display:flex; flex-direction:column; min-width:0; }
+    .log-box-title { font-size:11.5px; font-weight:700; color:#cbd5e1; margin-bottom:6px; }
+    .code-pre { margin:0; font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:8px; border-radius:6px; max-height:240px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+    .proc-list { margin:0; padding-left:16px; font-size:12px; color:#cbd5e1; } .proc-list li { margin-bottom:5px; }
+  </style>
+</head>
+<body>
+<section style="margin:16px auto;max-width:1100px;padding:16px 18px;border:1px solid #38bdf8;border-radius:12px;background:#0f172a;color:#e2e8f0;font-family:system-ui"><h2 style="margin:0 0 8px;font-size:18px">Xếp hạng sản phẩm phù hợp</h2><p style="margin:0;line-height:1.55;font-size:14px">1. Khoảng đo: câu hỏi đã là một tên sản phẩm, đo trực tiếp.<br>
+2. Tên hàng đem đi đo:<br>
+- số lượng bán lược sừng để chải đầu Hãy t: Câu hỏi đã là một tên sản phẩm, đo trực tiếp trên 3 sàn.<br>
+3. Phiếu đo:<br>
+- số lượng bán lược sừng để chải đầu Hãy t: đại dương xanh 94/100 (Đại dương xanh), 70 SP, 53 shop, giá TB 3.813.758 đ (10.739 đ – 99.999.999 đ).<br>
+4. Xếp hạng theo số đo:<br>
+Phù hợp nhất: số lượng bán lược sừng để chải đầu Hãy t.<br>
+Không tách thêm tên khác vì câu hỏi đã chỉ một sản phẩm.<br>
+Link phía dưới là báo cáo đầy đủ của tên này.</p></section>
+  <div class="wrap">
+    <div class="hero">
+      <span class="pill">🎯 PRODUCT HUNTER · BÁO CÁO PHÂN TÍCH THỊ TRƯỜNG ĐA SÀN &bull; gpt-6-luna (codex-cli)</span>
+      <h1>Từ khóa: "số lượng bán lược sừng để chải đầu Hãy t"</h1>
+      <p class="hero-narrative">Thị trường từ khóa “số lượng bán lược sừng để chải đầu Hãy t” ghi nhận 70 sản phẩm, 53 shop và 280.597 lượt bán, với GMV 240.902.312.048 đồng, giá trung bình 3.813.758 đồng, HHI 0,0822 và ĐĐX 94/100. Shopee dẫn đầu với GMV 238.415.101.532 đồng, HHI 0,0839, ĐĐX 92/100; TikTok Shop đạt 822.474.516 đồng, HHI 0,1517, ĐĐX 96/100; Lazada đạt 1.664.736.000 đồng, HHI 0,852, ĐĐX 56/100. Khách hàng phản ánh màu sắc, chất liệu thực tế đôi khi khác ảnh render; phân loại size và combo dễ gây nhầm lẫn; thông tin nguồn gốc, tem kiểm định còn thiếu rõ ràng trong mô tả.</p>
+    </div>
+
+    <div class="keyword-block" id="kwblock_0"><div class="tabs-bar"><button type="button" class="tab-btn active" data-tab="all" onclick="switchMarketTab('all', this)">🌐 Tổng Hợp 3 Sàn</button><button type="button" class="tab-btn" data-tab="shopee" onclick="switchMarketTab('shopee', this)">🟠 Sàn Cam (Shopee)</button><button type="button" class="tab-btn" data-tab="lazada" onclick="switchMarketTab('lazada', this)">🔵 Sàn Xanh (Lazada)</button><button type="button" class="tab-btn" data-tab="tiktok_shop" onclick="switchMarketTab('tiktok_shop', this)">⚫ Sàn Đen (TikTok Shop)</button><button type="button" class="tab-btn log-tab" data-tab="logs" onclick="switchMarketTab('logs', this)">🪵 Logs Request / Response (9)</button></div>
+    <section class="sa-tab-panel" id="panel_all">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🌐 Tổng Hợp 3 Sàn</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Tổng hợp 3 Sàn (Shopee / Lazada / TikTok Shop). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">70.0% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 70 SP từ 53 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 1 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">94</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:94%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.0822), tỷ lệ có đơn (91.4%) và dư địa shop ngoài Mall (87.1%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">70</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">53</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">280,597</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">240.902.312.048 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">3.813.758 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">10.739 đ – 99.999.999 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">91.4%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">64</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,0822</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">6,6%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (70 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('all', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('all', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('all')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_all">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giường 3 tay quay y tế đầy đủ các chức năng nâng hạ chân, lưng, lật trại phải, đặt bô vệ sinh, chậu gội đầu, bàn ăn" data-gmv="23493210000" data-sold="3063" data-price="7670000">
+          <td><a href="https://shopee.vn/product/1713071323/50866274997" target="_blank" rel="noopener">Giường 3 tay quay Y tế đầy đủ các chức năng nâng hạ chân, lưng, lật trại phải, đặt bô vệ sinh, chậu gội đầu, bàn ăn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>haki_001</td>
+          <td>7.670.000 đ</td>
+          <td>3,063</td>
+          <td><strong>23.493.210.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giường y tế 3 tay quay đầy đủ chức năng nâng hạ lưng, chân, lật trái phải, bô vệ sinh, gội đầu -tbyt_001" data-gmv="23431680000" data-sold="3051" data-price="7680000">
+          <td><a href="https://shopee.vn/product/1713071323/51966281735" target="_blank" rel="noopener">Giường Y Tế 3 tay quay đầy đủ chức năng nâng hạ lưng, chân, lật trái phải, bô vệ sinh, gội đầu -TBYT_001</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>haki_001</td>
+          <td>7.680.000 đ</td>
+          <td>3,051</td>
+          <td><strong>23.431.680.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhẫn tiết kiệm ép vỉ bản vị 0.3 chỉ, 0.5 chỉ và 1 chỉ vàng 24k huy thanh jewelry (sản phẩm ép vỉ kèm lì xì)" data-gmv="20336895720" data-sold="2763" data-price="7360440">
+          <td><a href="https://shopee.vn/product/136574250/46019348695" target="_blank" rel="noopener">Nhẫn Tiết Kiệm Ép Vỉ Bản Vị 0.3 Chỉ, 0.5 Chỉ Và 1 Chỉ Vàng 24k Huy Thanh Jewelry (SẢN PHẨM ÉP VỈ KÈM LÌ XÌ)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Huy Thanh Jewelry</td>
+          <td>7.360.440 đ</td>
+          <td>2,763</td>
+          <td><strong>20.336.895.720 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nồi cơm haatz cao cấp dung tích 1.2l 1.8l, lòng nồi men sứ an toàn sức khỏe dễ dàng vệ sinh  - kim hà group" data-gmv="12897420000" data-sold="9998" data-price="1290000">
+          <td><a href="https://shopee.vn/product/500191760/52063531146" target="_blank" rel="noopener">Nồi Cơm Haatz Cao Cấp Dung Tích 1.2L 1.8L, Lòng Nồi Men Sứ An Toàn Sức Khỏe Dễ Dàng Vệ Sinh  - Kim Hà Group</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KIM HÀ GROUP JSC</td>
+          <td>1.290.000 đ</td>
+          <td>9,998</td>
+          <td><strong>12.897.420.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="handin bộ sticker trang trí pin sạc dự phòng họa tiết dễ thương tự do dán theo phong cách cá nhân" data-gmv="10099999899" data-sold="101" data-price="99999999">
+          <td><a href="https://shopee.vn/product/1503624621/44862644823" target="_blank" rel="noopener">Handin Bộ Sticker Trang Trí Pin Sạc Dự Phòng Họa Tiết Dễ Thương Tự Do Dán Theo Phong Cách Cá Nhân</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Handin Tech VN</td>
+          <td>99.999.999 đ</td>
+          <td>101</td>
+          <td><strong>10.099.999.899 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="handin cáp sạc nhanh 30cm cho pin dự phòng nhỏ gọn dễ mang theo phù hợp sạc điện thoại và thiết bị di động" data-gmv="9699999903" data-sold="97" data-price="99999999">
+          <td><a href="https://shopee.vn/product/1503624621/51762600795" target="_blank" rel="noopener">Handin Cáp Sạc Nhanh 30cm Cho Pin Dự Phòng Nhỏ Gọn Dễ Mang Theo Phù Hợp Sạc Điện Thoại Và Thiết Bị Di Động</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Handin Tech VN</td>
+          <td>99.999.999 đ</td>
+          <td>97</td>
+          <td><strong>9.699.999.903 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[có 6 phân loại] nước tẩy trang làm sạch sâu, loại bỏ bụi bẩn &amp; trang điểm 3-in-1 l&#x27;oreal paris micellar water 400ml" data-gmv="8838963000" data-sold="46767" data-price="189000">
+          <td><a href="https://shopee.vn/product/37251933/591989399" target="_blank" rel="noopener">[CÓ 6 PHÂN LOẠI] Nước tẩy trang làm sạch sâu, loại bỏ bụi bẩn &amp; trang điểm 3-in-1 L&#x27;Oreal Paris Micellar Water 400ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>L&#x27;Oreal Paris Official Store <span class="mall-pill">Mall</span></td>
+          <td>189.000 đ</td>
+          <td>46,767</td>
+          <td><strong>8.838.963.000 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nồi chiên hấp olivo steamfy xtra tích hợp nhiều chế độ, vệ sinh dễ dàng nhẹ nhàng - ani bình đồ gia dụng" data-gmv="8473020000" data-sold="998" data-price="8490000">
+          <td><a href="https://shopee.vn/product/562126675/57163653455" target="_blank" rel="noopener">Nồi Chiên Hấp Olivo Steamfy Xtra Tích Hợp Nhiều Chế Độ, Vệ Sinh Dễ Dàng Nhẹ Nhàng - Ani Bình Đồ Gia Dụng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Ani Bình Đồ Gia Dụng</td>
+          <td>8.490.000 đ</td>
+          <td>998</td>
+          <td><strong>8.473.020.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="vb _bộ đôi dầu gội xả ngăn ngừa &amp; giảm gãy rụng tóc, giúp tóc chắc khỏe hơn l’oreal paris full resist 440ml" data-gmv="6905366000" data-sold="11947" data-price="578000">
+          <td><a href="https://shopee.vn/product/37251933/27275840977" target="_blank" rel="noopener">VB _Bộ đôi dầu gội xả ngăn ngừa &amp; giảm gãy rụng tóc, giúp tóc chắc khỏe hơn L’oreal Paris Full Resist 440ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>L&#x27;Oreal Paris Official Store <span class="mall-pill">Mall</span></td>
+          <td>578.000 đ</td>
+          <td>11,947</td>
+          <td><strong>6.905.366.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[mua 2 giảm 42%] combo 2 nước tẩy trang bí đao cocoon tẩy sạch makeup &amp; giảm dầu 500ml" data-gmv="6688236000" data-sold="19164" data-price="349000">
+          <td><a href="https://shopee.vn/product/175753395/24922427465" target="_blank" rel="noopener">[MUA 2 GIẢM 42%] Combo 2 Nước tẩy trang bí đao Cocoon tẩy sạch makeup &amp; giảm dầu 500ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Cocoon Vietnam Chính Hãng</td>
+          <td>349.000 đ</td>
+          <td>19,164</td>
+          <td><strong>6.688.236.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="bộ đôi dầu gội xả hỗ trợ giảm gãy rụng tóc, làm tóc chắc khỏe hơn l’oreal paris elseve full resist 440mlx2" data-gmv="6441719000" data-sold="13913" data-price="463000">
+          <td><a href="https://shopee.vn/product/37251933/26438252127" target="_blank" rel="noopener">Bộ đôi dầu gội xả hỗ trợ giảm gãy rụng tóc, làm tóc chắc khỏe hơn L’oreal Paris Elseve Full Resist 440mlx2</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>L&#x27;Oreal Paris Official Store <span class="mall-pill">Mall</span></td>
+          <td>463.000 đ</td>
+          <td>13,913</td>
+          <td><strong>6.441.719.000 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ dao 4 món eagle gồm dao thái dao chặt dao gọt và dao đa năng phù hợp nhiều nhu cầu sơ chế - gia đình bếp" data-gmv="6343640010" data-sold="9990" data-price="634999">
+          <td><a href="https://shopee.vn/product/1580598191/55409899743" target="_blank" rel="noopener">Bộ Dao 4 Món Eagle Gồm Dao Thái Dao Chặt Dao Gọt Và Dao Đa Năng Phù Hợp Nhiều Nhu Cầu Sơ Chế - Gia Đình Bếp</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gia Đình Bếp</td>
+          <td>634.999 đ</td>
+          <td>9,990</td>
+          <td><strong>6.343.640.010 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="túi refill sữa rửa mặt giúp làm sạch sâu và kiềm dầu cerave foaming cleanser 473ml" data-gmv="6329100000" data-sold="14892" data-price="425000">
+          <td><a href="https://shopee.vn/product/812449960/42200327012" target="_blank" rel="noopener">Túi refill sữa rửa mặt giúp làm sạch sâu và kiềm dầu Cerave Foaming Cleanser 473ML</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>CeraVe Official Store <span class="mall-pill">Mall</span></td>
+          <td>425.000 đ</td>
+          <td>14,892</td>
+          <td><strong>6.329.100.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ sưu tập ngũ hành 24k bản vị 0.1 chỉ huy thanh jewelry (kèm lì xì)" data-gmv="6289822000" data-sold="3950" data-price="1592360">
+          <td><a href="https://shopee.vn/product/136574250/55514527346" target="_blank" rel="noopener">Bộ Sưu Tập Ngũ Hành 24k Bản Vị 0.1 chỉ Huy Thanh Jewelry (KÈM LÌ XÌ)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Huy Thanh Jewelry</td>
+          <td>1.592.360 đ</td>
+          <td>3,950</td>
+          <td><strong>6.289.822.000 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="【4k hdr】tcl 55 inch uhd 55t66, google tv, tần số quét 60hz, chứng nhận dolby atmos0đ" data-gmv="6288130000" data-sold="787" data-price="7990000">
+          <td><a href="https://shopee.vn/product/492764796/11023896813" target="_blank" rel="noopener">【4K HDR】TCL 55 inch UHD 55T66, Google TV, Tần số quét 60Hz, Chứng nhận Dolby Atmos0đ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>TCL Flagship Store</td>
+          <td>7.990.000 đ</td>
+          <td>787</td>
+          <td><strong>6.288.130.000 đ</strong></td>
+          <td>6.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="thùng 24 chai sữa nước ensure abbott 237ml/chai (bao bì thay đổi theo từng đợt nhập)" data-gmv="6231222000" data-sold="4626" data-price="1347000">
+          <td><a href="https://shopee.vn/product/639673459/15746419222" target="_blank" rel="noopener">Thùng 24 chai Sữa nước Ensure Abbott 237ml/chai (bao bì thay đổi theo từng đợt nhập)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gian Hàng Ensure Chính Hãng</td>
+          <td>1.347.000 đ</td>
+          <td>4,626</td>
+          <td><strong>6.231.222.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ chính hãng ] giày pewsii adidas samba đủ mẫu đủ size 36-44 dễ phối đồ cực hot cực đẹp full box." data-gmv="5744250000" data-sold="4995" data-price="1150000">
+          <td><a href="https://shopee.vn/product/1793024821/48962957546" target="_blank" rel="noopener">[ Chính Hãng ] Giày Pewsii Adidas Samba Đủ Mẫu Đủ Size 36-44 Dễ Phối Đồ Cực Hot Cực Đẹp Full Box.</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>PEWSII SNEAKER</td>
+          <td>1.150.000 đ</td>
+          <td>4,995</td>
+          <td><strong>5.744.250.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tai nghe không dây bluetooth vapotek bản cao cấp pin trâu 8h chống ồn 40db mic đàm thoại bảo hành 12 tháng" data-gmv="5668164000" data-sold="20316" data-price="279000">
+          <td><a href="https://shopee.vn/product/1641066017/40534949832" target="_blank" rel="noopener">Tai Nghe Không Dây Bluetooth VAPOTEK Bản Cao Cấp Pin Trâu 8h Chống Ồn 40Db Mic Đàm Thoại Bảo Hành 12 Tháng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VAPOTEK</td>
+          <td>279.000 đ</td>
+          <td>20,316</td>
+          <td><strong>5.668.164.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[d&#x27;alba official] kem viên nang vitamin dưỡng sáng da chống lão hóa white truffle oil capsule cream tube type/jar type 55g (bản nâng cấp)" data-gmv="5644444000" data-sold="7486" data-price="754000">
+          <td><a href="https://shopee.vn/product/562665255/29955996346" target="_blank" rel="noopener">[d&#x27;Alba Official] Kem viên nang Vitamin dưỡng sáng da chống lão hóa White Truffle Oil Capsule Cream Tube type/Jar type 55g (BẢN NÂNG CẤP)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>d&#x27;Alba Official Store <span class="mall-pill">Mall</span></td>
+          <td>754.000 đ</td>
+          <td>7,486</td>
+          <td><strong>5.644.444.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ deal sinh viên ] kệ sách để sàn nhiều ngăn - giá kệ hình chữ u" data-gmv="5497100000" data-sold="7853" data-price="700000">
+          <td><a href="https://shopee.vn/product/1492839943/53216393790" target="_blank" rel="noopener">[ DEAL Sinh Viên ] Kệ Sách Để Sàn Nhiều Ngăn - Giá Kệ Hình Chữ U</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Xưởng Nội Thất DHL</td>
+          <td>700.000 đ</td>
+          <td>7,853</td>
+          <td><strong>5.497.100.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[kol live] thùng 24 chai sữa nước ensure abbott 237ml/chai" data-gmv="5411390000" data-sold="3610" data-price="1499000">
+          <td><a href="https://shopee.vn/product/639673459/29914744461" target="_blank" rel="noopener">[KOL LIVE] Thùng 24 chai Sữa nước Ensure Abbott 237ml/chai</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gian Hàng Ensure Chính Hãng</td>
+          <td>1.499.000 đ</td>
+          <td>3,610</td>
+          <td><strong>5.411.390.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="búa điện di nóng lạnh 2 đầu, máy điện di nóng lạnh vàng, xanh, máy massage đẩy tinh chất cho da mặt dành cho spa" data-gmv="5084310000" data-sold="6603" data-price="770000">
+          <td><a href="https://shopee.vn/product/1159444863/25407474053" target="_blank" rel="noopener">Búa Điện Di Nóng Lạnh 2 Đầu, Máy Điện Di Nóng Lạnh Vàng, Xanh, Máy Massage Đẩy Tinh Chất Cho Da Mặt Dành Cho Spa</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kammi Store</td>
+          <td>770.000 đ</td>
+          <td>6,603</td>
+          <td><strong>5.084.310.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="phấn nén kiềm dầu carslan black magnet soft mist 24h phấn phủ trang điểm mềm mại lâu trôi 8g" data-gmv="5050815000" data-sold="13119" data-price="385000">
+          <td><a href="https://shopee.vn/product/382964977/22877768884" target="_blank" rel="noopener">Phấn Nén kiềm dầu Carslan Black Magnet Soft Mist 24h Phấn Phủ trang điểm Mềm Mại Lâu Trôi 8g</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Carslan Official Store <span class="mall-pill">Mall</span></td>
+          <td>385.000 đ</td>
+          <td>13,119</td>
+          <td><strong>5.050.815.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="nước tẩy trang garnier cho da dầu mụn salicylic bha micellar 50ml" data-gmv="4960900000" data-sold="7087" data-price="700000">
+          <td><a href="https://shopee.vn/product/421677475/25183294450" target="_blank" rel="noopener">Nước tẩy trang Garnier Cho Da Dầu Mụn Salicylic BHA Micellar 50ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Garnier Official Store <span class="mall-pill">Mall</span></td>
+          <td>700.000 đ</td>
+          <td>7,087</td>
+          <td><strong>4.960.900.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy massage toàn thân cầm tay 16 đầu máy mát xa giảm đau có 9 chế độ điều chỉnh động cơ êm 45db" data-gmv="4614435000" data-sold="6939" data-price="665000">
+          <td><a href="https://shopee.vn/product/1581919523/42183358414" target="_blank" rel="noopener">Máy Massage Toàn Thân Cầm Tay 16 Đầu Máy Mát Xa Giảm Đau Có 9 Chế Độ Điều Chỉnh Động Cơ êm 45dB</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gia Dụng Thông Minh SMT</td>
+          <td>665.000 đ</td>
+          <td>6,939</td>
+          <td><strong>4.614.435.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="gift ak xbc- quà tặng đồ tắm dùng để làm sạch khuẩn sáng da 90g ziaja" data-gmv="4476000000" data-sold="2238" data-price="2000000">
+          <td><a href="https://shopee.vn/product/342189282/51111755472" target="_blank" rel="noopener">Gift AK XBC- Quà Tặng Đồ Tắm Dùng Để Làm Sạch Khuẩn Sáng Da 90g Ziaja</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Ziaja Manuka Store</td>
+          <td>2.000.000 đ</td>
+          <td>2,238</td>
+          <td><strong>4.476.000.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="điện thoại oppo a5x 4gb/128gb có nfc, nhân bản ứng dụng - hàng chính hãng" data-gmv="4410000000" data-sold="900" data-price="4900000">
+          <td><a href="https://shopee.vn/product/25452983/48104000773" target="_blank" rel="noopener">Điện thoại OPPO A5x 4GB/128GB có NFC, nhân bản ứng dụng - Hàng chính hãng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>OPPO Official Store <span class="mall-pill">Mall</span></td>
+          <td>4.900.000 đ</td>
+          <td>900</td>
+          <td><strong>4.410.000.000 đ</strong></td>
+          <td>3.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="sữa rửa mặt foaming giúp làm sạch sâu và dưỡng ẩm dịu nhẹ dành cho da dầu - cerave foaming facial cleanser 473ml" data-gmv="4364025000" data-sold="9385" data-price="465000">
+          <td><a href="https://shopee.vn/product/812449960/18832327227" target="_blank" rel="noopener">Sữa rửa mặt foaming giúp làm sạch sâu và dưỡng ẩm dịu nhẹ dành cho da dầu - CeraVe Foaming Facial Cleanser 473ML</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>CeraVe Official Store <span class="mall-pill">Mall</span></td>
+          <td>465.000 đ</td>
+          <td>9,385</td>
+          <td><strong>4.364.025.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[vhl x cocoon] combo 02 tẩy da chết da đầu bồ kết cocoon 200ml" data-gmv="4352942000" data-sold="9031" data-price="482000">
+          <td><a href="https://shopee.vn/product/175753395/53104024340" target="_blank" rel="noopener">[VHL x Cocoon] COMBO 02 Tẩy da chết da đầu bồ kết Cocoon 200ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Cocoon Vietnam Chính Hãng</td>
+          <td>482.000 đ</td>
+          <td>9,031</td>
+          <td><strong>4.352.942.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tai nghe bluetooth zen.3 anc pln trâu 8h bản nâng cấp mới nghe hay, rõ, bảo hành 6 tháng lỗi đổi mới | phụ kiện mario" data-gmv="4347903000" data-sold="10897" data-price="399000">
+          <td><a href="https://shopee.vn/product/1895259443/45521124747" target="_blank" rel="noopener">Tai Nghe Bluetooth Zen.3 ANC PlN TRÂU 8H Bản Nâng Cấp Mới Nghe HAY, RÕ, Bảo Hành 6 Tháng Lỗi Đổi Mới | Phụ Kiện Mario</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Phụ KiệnMario</td>
+          <td>399.000 đ</td>
+          <td>10,897</td>
+          <td><strong>4.347.903.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">10.739 – 16.675.614 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (97.1%)</span><div class="mini-track"><div class="mini-fill blue" style="width:97.1%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (91.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:91.6%"></div></div></div>
+          </div>
+          <div class="bin-val">216.626.312.246 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">16.675.615 – 33.340.490 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">33.340.491 – 50.005.366 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">50.005.367 – 66.670.242 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">66.670.243 – 83.335.118 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">83.335.119 – 99.999.999 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (2.9%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (8.4%)</span><div class="mini-track"><div class="mini-fill green" style="width:8.4%"></div></div></div>
+          </div>
+          <div class="bin-val">19.799.999.802 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (53 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>haki_001</strong></td><td>Shop Thường</td><td>2</td><td>6,114</td><td>46.924.890.000 đ</td><td><span class='share-pill'>19.5%</span></td></tr><tr><td><strong>Huy Thanh Jewelry</strong></td><td>Shop Thường</td><td>2</td><td>6,713</td><td>26.626.717.720 đ</td><td><span class='share-pill'>11.1%</span></td></tr><tr><td><strong>L&#x27;Oreal Paris Official Store</strong></td><td>🏢 Mall</td><td>3</td><td>72,627</td><td>22.186.048.000 đ</td><td><span class='share-pill'>9.2%</span></td></tr><tr><td><strong>Handin Tech VN</strong></td><td>Shop Thường</td><td>2</td><td>198</td><td>19.799.999.802 đ</td><td><span class='share-pill'>8.2%</span></td></tr><tr><td><strong>KIM HÀ GROUP JSC</strong></td><td>Shop Thường</td><td>1</td><td>9,998</td><td>12.897.420.000 đ</td><td><span class='share-pill'>5.4%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">19.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:19.5%"></div></div>
+          <div class="dist-sub">haki_001</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">39.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:39.8%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">53.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:53.4%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">22.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:22.0%"></div></div>
+          <div class="dist-sub">9/70 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">78.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:78.0%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">91.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:91.6%"></div></div>
+          <div class="dist-sub">10.739 – 16.675.614 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">80.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:80.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">6,6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:26.4%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🌐 Tổng Hợp 3 Sàn"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;số lượng bán lược sừng để chải đầu Hãy t&#x27; đạt 70 SKU từ 53 shop, tổng 280,597 lượt bán tương ứng 240.902.312.048 đ. Tỷ lệ có bán đạt 91.4% (64 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 94/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 3.813.758 đ (khoảng giá 10.739 đ – 99.999.999 đ, đã tách 1 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 10.739 – 16.675.614 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0822 (Mall chiếm 22.0% doanh thu). Top 3 shop dẫn đầu giữ 39.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,6%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_shopee" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🟠 Sàn Cam (Shopee)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: AddLiveTag Market API (LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">70.0% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 30 SP từ 22 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 1 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">92</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:92%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.0839), tỷ lệ có đơn (100.0%) và dư địa shop ngoài Mall (70.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">22</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">256,566</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">238.415.101.532 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">8.938.165 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">189.000 đ – 99.999.999 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">100.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,0839</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">6,6%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (30 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('shopee', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('shopee', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('shopee')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_shopee">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giường 3 tay quay y tế đầy đủ các chức năng nâng hạ chân, lưng, lật trại phải, đặt bô vệ sinh, chậu gội đầu, bàn ăn" data-gmv="23493210000" data-sold="3063" data-price="7670000">
+          <td><a href="https://shopee.vn/product/1713071323/50866274997" target="_blank" rel="noopener">Giường 3 tay quay Y tế đầy đủ các chức năng nâng hạ chân, lưng, lật trại phải, đặt bô vệ sinh, chậu gội đầu, bàn ăn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>haki_001</td>
+          <td>7.670.000 đ</td>
+          <td>3,063</td>
+          <td><strong>23.493.210.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giường y tế 3 tay quay đầy đủ chức năng nâng hạ lưng, chân, lật trái phải, bô vệ sinh, gội đầu -tbyt_001" data-gmv="23431680000" data-sold="3051" data-price="7680000">
+          <td><a href="https://shopee.vn/product/1713071323/51966281735" target="_blank" rel="noopener">Giường Y Tế 3 tay quay đầy đủ chức năng nâng hạ lưng, chân, lật trái phải, bô vệ sinh, gội đầu -TBYT_001</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>haki_001</td>
+          <td>7.680.000 đ</td>
+          <td>3,051</td>
+          <td><strong>23.431.680.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhẫn tiết kiệm ép vỉ bản vị 0.3 chỉ, 0.5 chỉ và 1 chỉ vàng 24k huy thanh jewelry (sản phẩm ép vỉ kèm lì xì)" data-gmv="20336895720" data-sold="2763" data-price="7360440">
+          <td><a href="https://shopee.vn/product/136574250/46019348695" target="_blank" rel="noopener">Nhẫn Tiết Kiệm Ép Vỉ Bản Vị 0.3 Chỉ, 0.5 Chỉ Và 1 Chỉ Vàng 24k Huy Thanh Jewelry (SẢN PHẨM ÉP VỈ KÈM LÌ XÌ)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Huy Thanh Jewelry</td>
+          <td>7.360.440 đ</td>
+          <td>2,763</td>
+          <td><strong>20.336.895.720 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nồi cơm haatz cao cấp dung tích 1.2l 1.8l, lòng nồi men sứ an toàn sức khỏe dễ dàng vệ sinh  - kim hà group" data-gmv="12897420000" data-sold="9998" data-price="1290000">
+          <td><a href="https://shopee.vn/product/500191760/52063531146" target="_blank" rel="noopener">Nồi Cơm Haatz Cao Cấp Dung Tích 1.2L 1.8L, Lòng Nồi Men Sứ An Toàn Sức Khỏe Dễ Dàng Vệ Sinh  - Kim Hà Group</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KIM HÀ GROUP JSC</td>
+          <td>1.290.000 đ</td>
+          <td>9,998</td>
+          <td><strong>12.897.420.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="handin bộ sticker trang trí pin sạc dự phòng họa tiết dễ thương tự do dán theo phong cách cá nhân" data-gmv="10099999899" data-sold="101" data-price="99999999">
+          <td><a href="https://shopee.vn/product/1503624621/44862644823" target="_blank" rel="noopener">Handin Bộ Sticker Trang Trí Pin Sạc Dự Phòng Họa Tiết Dễ Thương Tự Do Dán Theo Phong Cách Cá Nhân</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Handin Tech VN</td>
+          <td>99.999.999 đ</td>
+          <td>101</td>
+          <td><strong>10.099.999.899 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="handin cáp sạc nhanh 30cm cho pin dự phòng nhỏ gọn dễ mang theo phù hợp sạc điện thoại và thiết bị di động" data-gmv="9699999903" data-sold="97" data-price="99999999">
+          <td><a href="https://shopee.vn/product/1503624621/51762600795" target="_blank" rel="noopener">Handin Cáp Sạc Nhanh 30cm Cho Pin Dự Phòng Nhỏ Gọn Dễ Mang Theo Phù Hợp Sạc Điện Thoại Và Thiết Bị Di Động</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Handin Tech VN</td>
+          <td>99.999.999 đ</td>
+          <td>97</td>
+          <td><strong>9.699.999.903 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[có 6 phân loại] nước tẩy trang làm sạch sâu, loại bỏ bụi bẩn &amp; trang điểm 3-in-1 l&#x27;oreal paris micellar water 400ml" data-gmv="8838963000" data-sold="46767" data-price="189000">
+          <td><a href="https://shopee.vn/product/37251933/591989399" target="_blank" rel="noopener">[CÓ 6 PHÂN LOẠI] Nước tẩy trang làm sạch sâu, loại bỏ bụi bẩn &amp; trang điểm 3-in-1 L&#x27;Oreal Paris Micellar Water 400ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>L&#x27;Oreal Paris Official Store <span class="mall-pill">Mall</span></td>
+          <td>189.000 đ</td>
+          <td>46,767</td>
+          <td><strong>8.838.963.000 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nồi chiên hấp olivo steamfy xtra tích hợp nhiều chế độ, vệ sinh dễ dàng nhẹ nhàng - ani bình đồ gia dụng" data-gmv="8473020000" data-sold="998" data-price="8490000">
+          <td><a href="https://shopee.vn/product/562126675/57163653455" target="_blank" rel="noopener">Nồi Chiên Hấp Olivo Steamfy Xtra Tích Hợp Nhiều Chế Độ, Vệ Sinh Dễ Dàng Nhẹ Nhàng - Ani Bình Đồ Gia Dụng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Ani Bình Đồ Gia Dụng</td>
+          <td>8.490.000 đ</td>
+          <td>998</td>
+          <td><strong>8.473.020.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="vb _bộ đôi dầu gội xả ngăn ngừa &amp; giảm gãy rụng tóc, giúp tóc chắc khỏe hơn l’oreal paris full resist 440ml" data-gmv="6905366000" data-sold="11947" data-price="578000">
+          <td><a href="https://shopee.vn/product/37251933/27275840977" target="_blank" rel="noopener">VB _Bộ đôi dầu gội xả ngăn ngừa &amp; giảm gãy rụng tóc, giúp tóc chắc khỏe hơn L’oreal Paris Full Resist 440ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>L&#x27;Oreal Paris Official Store <span class="mall-pill">Mall</span></td>
+          <td>578.000 đ</td>
+          <td>11,947</td>
+          <td><strong>6.905.366.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[mua 2 giảm 42%] combo 2 nước tẩy trang bí đao cocoon tẩy sạch makeup &amp; giảm dầu 500ml" data-gmv="6688236000" data-sold="19164" data-price="349000">
+          <td><a href="https://shopee.vn/product/175753395/24922427465" target="_blank" rel="noopener">[MUA 2 GIẢM 42%] Combo 2 Nước tẩy trang bí đao Cocoon tẩy sạch makeup &amp; giảm dầu 500ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Cocoon Vietnam Chính Hãng</td>
+          <td>349.000 đ</td>
+          <td>19,164</td>
+          <td><strong>6.688.236.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="bộ đôi dầu gội xả hỗ trợ giảm gãy rụng tóc, làm tóc chắc khỏe hơn l’oreal paris elseve full resist 440mlx2" data-gmv="6441719000" data-sold="13913" data-price="463000">
+          <td><a href="https://shopee.vn/product/37251933/26438252127" target="_blank" rel="noopener">Bộ đôi dầu gội xả hỗ trợ giảm gãy rụng tóc, làm tóc chắc khỏe hơn L’oreal Paris Elseve Full Resist 440mlx2</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>L&#x27;Oreal Paris Official Store <span class="mall-pill">Mall</span></td>
+          <td>463.000 đ</td>
+          <td>13,913</td>
+          <td><strong>6.441.719.000 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ dao 4 món eagle gồm dao thái dao chặt dao gọt và dao đa năng phù hợp nhiều nhu cầu sơ chế - gia đình bếp" data-gmv="6343640010" data-sold="9990" data-price="634999">
+          <td><a href="https://shopee.vn/product/1580598191/55409899743" target="_blank" rel="noopener">Bộ Dao 4 Món Eagle Gồm Dao Thái Dao Chặt Dao Gọt Và Dao Đa Năng Phù Hợp Nhiều Nhu Cầu Sơ Chế - Gia Đình Bếp</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gia Đình Bếp</td>
+          <td>634.999 đ</td>
+          <td>9,990</td>
+          <td><strong>6.343.640.010 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="túi refill sữa rửa mặt giúp làm sạch sâu và kiềm dầu cerave foaming cleanser 473ml" data-gmv="6329100000" data-sold="14892" data-price="425000">
+          <td><a href="https://shopee.vn/product/812449960/42200327012" target="_blank" rel="noopener">Túi refill sữa rửa mặt giúp làm sạch sâu và kiềm dầu Cerave Foaming Cleanser 473ML</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>CeraVe Official Store <span class="mall-pill">Mall</span></td>
+          <td>425.000 đ</td>
+          <td>14,892</td>
+          <td><strong>6.329.100.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ sưu tập ngũ hành 24k bản vị 0.1 chỉ huy thanh jewelry (kèm lì xì)" data-gmv="6289822000" data-sold="3950" data-price="1592360">
+          <td><a href="https://shopee.vn/product/136574250/55514527346" target="_blank" rel="noopener">Bộ Sưu Tập Ngũ Hành 24k Bản Vị 0.1 chỉ Huy Thanh Jewelry (KÈM LÌ XÌ)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Huy Thanh Jewelry</td>
+          <td>1.592.360 đ</td>
+          <td>3,950</td>
+          <td><strong>6.289.822.000 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="【4k hdr】tcl 55 inch uhd 55t66, google tv, tần số quét 60hz, chứng nhận dolby atmos0đ" data-gmv="6288130000" data-sold="787" data-price="7990000">
+          <td><a href="https://shopee.vn/product/492764796/11023896813" target="_blank" rel="noopener">【4K HDR】TCL 55 inch UHD 55T66, Google TV, Tần số quét 60Hz, Chứng nhận Dolby Atmos0đ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>TCL Flagship Store</td>
+          <td>7.990.000 đ</td>
+          <td>787</td>
+          <td><strong>6.288.130.000 đ</strong></td>
+          <td>6.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="thùng 24 chai sữa nước ensure abbott 237ml/chai (bao bì thay đổi theo từng đợt nhập)" data-gmv="6231222000" data-sold="4626" data-price="1347000">
+          <td><a href="https://shopee.vn/product/639673459/15746419222" target="_blank" rel="noopener">Thùng 24 chai Sữa nước Ensure Abbott 237ml/chai (bao bì thay đổi theo từng đợt nhập)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gian Hàng Ensure Chính Hãng</td>
+          <td>1.347.000 đ</td>
+          <td>4,626</td>
+          <td><strong>6.231.222.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ chính hãng ] giày pewsii adidas samba đủ mẫu đủ size 36-44 dễ phối đồ cực hot cực đẹp full box." data-gmv="5744250000" data-sold="4995" data-price="1150000">
+          <td><a href="https://shopee.vn/product/1793024821/48962957546" target="_blank" rel="noopener">[ Chính Hãng ] Giày Pewsii Adidas Samba Đủ Mẫu Đủ Size 36-44 Dễ Phối Đồ Cực Hot Cực Đẹp Full Box.</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>PEWSII SNEAKER</td>
+          <td>1.150.000 đ</td>
+          <td>4,995</td>
+          <td><strong>5.744.250.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tai nghe không dây bluetooth vapotek bản cao cấp pin trâu 8h chống ồn 40db mic đàm thoại bảo hành 12 tháng" data-gmv="5668164000" data-sold="20316" data-price="279000">
+          <td><a href="https://shopee.vn/product/1641066017/40534949832" target="_blank" rel="noopener">Tai Nghe Không Dây Bluetooth VAPOTEK Bản Cao Cấp Pin Trâu 8h Chống Ồn 40Db Mic Đàm Thoại Bảo Hành 12 Tháng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VAPOTEK</td>
+          <td>279.000 đ</td>
+          <td>20,316</td>
+          <td><strong>5.668.164.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[d&#x27;alba official] kem viên nang vitamin dưỡng sáng da chống lão hóa white truffle oil capsule cream tube type/jar type 55g (bản nâng cấp)" data-gmv="5644444000" data-sold="7486" data-price="754000">
+          <td><a href="https://shopee.vn/product/562665255/29955996346" target="_blank" rel="noopener">[d&#x27;Alba Official] Kem viên nang Vitamin dưỡng sáng da chống lão hóa White Truffle Oil Capsule Cream Tube type/Jar type 55g (BẢN NÂNG CẤP)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>d&#x27;Alba Official Store <span class="mall-pill">Mall</span></td>
+          <td>754.000 đ</td>
+          <td>7,486</td>
+          <td><strong>5.644.444.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ deal sinh viên ] kệ sách để sàn nhiều ngăn - giá kệ hình chữ u" data-gmv="5497100000" data-sold="7853" data-price="700000">
+          <td><a href="https://shopee.vn/product/1492839943/53216393790" target="_blank" rel="noopener">[ DEAL Sinh Viên ] Kệ Sách Để Sàn Nhiều Ngăn - Giá Kệ Hình Chữ U</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Xưởng Nội Thất DHL</td>
+          <td>700.000 đ</td>
+          <td>7,853</td>
+          <td><strong>5.497.100.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[kol live] thùng 24 chai sữa nước ensure abbott 237ml/chai" data-gmv="5411390000" data-sold="3610" data-price="1499000">
+          <td><a href="https://shopee.vn/product/639673459/29914744461" target="_blank" rel="noopener">[KOL LIVE] Thùng 24 chai Sữa nước Ensure Abbott 237ml/chai</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gian Hàng Ensure Chính Hãng</td>
+          <td>1.499.000 đ</td>
+          <td>3,610</td>
+          <td><strong>5.411.390.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="búa điện di nóng lạnh 2 đầu, máy điện di nóng lạnh vàng, xanh, máy massage đẩy tinh chất cho da mặt dành cho spa" data-gmv="5084310000" data-sold="6603" data-price="770000">
+          <td><a href="https://shopee.vn/product/1159444863/25407474053" target="_blank" rel="noopener">Búa Điện Di Nóng Lạnh 2 Đầu, Máy Điện Di Nóng Lạnh Vàng, Xanh, Máy Massage Đẩy Tinh Chất Cho Da Mặt Dành Cho Spa</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kammi Store</td>
+          <td>770.000 đ</td>
+          <td>6,603</td>
+          <td><strong>5.084.310.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="phấn nén kiềm dầu carslan black magnet soft mist 24h phấn phủ trang điểm mềm mại lâu trôi 8g" data-gmv="5050815000" data-sold="13119" data-price="385000">
+          <td><a href="https://shopee.vn/product/382964977/22877768884" target="_blank" rel="noopener">Phấn Nén kiềm dầu Carslan Black Magnet Soft Mist 24h Phấn Phủ trang điểm Mềm Mại Lâu Trôi 8g</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Carslan Official Store <span class="mall-pill">Mall</span></td>
+          <td>385.000 đ</td>
+          <td>13,119</td>
+          <td><strong>5.050.815.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="nước tẩy trang garnier cho da dầu mụn salicylic bha micellar 50ml" data-gmv="4960900000" data-sold="7087" data-price="700000">
+          <td><a href="https://shopee.vn/product/421677475/25183294450" target="_blank" rel="noopener">Nước tẩy trang Garnier Cho Da Dầu Mụn Salicylic BHA Micellar 50ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Garnier Official Store <span class="mall-pill">Mall</span></td>
+          <td>700.000 đ</td>
+          <td>7,087</td>
+          <td><strong>4.960.900.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy massage toàn thân cầm tay 16 đầu máy mát xa giảm đau có 9 chế độ điều chỉnh động cơ êm 45db" data-gmv="4614435000" data-sold="6939" data-price="665000">
+          <td><a href="https://shopee.vn/product/1581919523/42183358414" target="_blank" rel="noopener">Máy Massage Toàn Thân Cầm Tay 16 Đầu Máy Mát Xa Giảm Đau Có 9 Chế Độ Điều Chỉnh Động Cơ êm 45dB</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Gia Dụng Thông Minh SMT</td>
+          <td>665.000 đ</td>
+          <td>6,939</td>
+          <td><strong>4.614.435.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="gift ak xbc- quà tặng đồ tắm dùng để làm sạch khuẩn sáng da 90g ziaja" data-gmv="4476000000" data-sold="2238" data-price="2000000">
+          <td><a href="https://shopee.vn/product/342189282/51111755472" target="_blank" rel="noopener">Gift AK XBC- Quà Tặng Đồ Tắm Dùng Để Làm Sạch Khuẩn Sáng Da 90g Ziaja</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Ziaja Manuka Store</td>
+          <td>2.000.000 đ</td>
+          <td>2,238</td>
+          <td><strong>4.476.000.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="điện thoại oppo a5x 4gb/128gb có nfc, nhân bản ứng dụng - hàng chính hãng" data-gmv="4410000000" data-sold="900" data-price="4900000">
+          <td><a href="https://shopee.vn/product/25452983/48104000773" target="_blank" rel="noopener">Điện thoại OPPO A5x 4GB/128GB có NFC, nhân bản ứng dụng - Hàng chính hãng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>OPPO Official Store <span class="mall-pill">Mall</span></td>
+          <td>4.900.000 đ</td>
+          <td>900</td>
+          <td><strong>4.410.000.000 đ</strong></td>
+          <td>3.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="sữa rửa mặt foaming giúp làm sạch sâu và dưỡng ẩm dịu nhẹ dành cho da dầu - cerave foaming facial cleanser 473ml" data-gmv="4364025000" data-sold="9385" data-price="465000">
+          <td><a href="https://shopee.vn/product/812449960/18832327227" target="_blank" rel="noopener">Sữa rửa mặt foaming giúp làm sạch sâu và dưỡng ẩm dịu nhẹ dành cho da dầu - CeraVe Foaming Facial Cleanser 473ML</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>CeraVe Official Store <span class="mall-pill">Mall</span></td>
+          <td>465.000 đ</td>
+          <td>9,385</td>
+          <td><strong>4.364.025.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[vhl x cocoon] combo 02 tẩy da chết da đầu bồ kết cocoon 200ml" data-gmv="4352942000" data-sold="9031" data-price="482000">
+          <td><a href="https://shopee.vn/product/175753395/53104024340" target="_blank" rel="noopener">[VHL x Cocoon] COMBO 02 Tẩy da chết da đầu bồ kết Cocoon 200ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Cocoon Vietnam Chính Hãng</td>
+          <td>482.000 đ</td>
+          <td>9,031</td>
+          <td><strong>4.352.942.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tai nghe bluetooth zen.3 anc pln trâu 8h bản nâng cấp mới nghe hay, rõ, bảo hành 6 tháng lỗi đổi mới | phụ kiện mario" data-gmv="4347903000" data-sold="10897" data-price="399000">
+          <td><a href="https://shopee.vn/product/1895259443/45521124747" target="_blank" rel="noopener">Tai Nghe Bluetooth Zen.3 ANC PlN TRÂU 8H Bản Nâng Cấp Mới Nghe HAY, RÕ, Bảo Hành 6 Tháng Lỗi Đổi Mới | Phụ Kiện Mario</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Phụ KiệnMario</td>
+          <td>399.000 đ</td>
+          <td>10,897</td>
+          <td><strong>4.347.903.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">189.000 – 16.824.165 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (93.1%)</span><div class="mini-track"><div class="mini-fill blue" style="width:93.1%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (91.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:91.5%"></div></div></div>
+          </div>
+          <div class="bin-val">214.139.101.730 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">16.824.166 – 33.459.331 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">33.459.332 – 50.094.497 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">50.094.498 – 66.729.663 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">66.729.664 – 83.364.829 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">83.364.830 – 99.999.999 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (6.9%)</span><div class="mini-track"><div class="mini-fill blue" style="width:6.9%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (8.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:8.5%"></div></div></div>
+          </div>
+          <div class="bin-val">19.799.999.802 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (22 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>haki_001</strong></td><td>Shop Thường</td><td>2</td><td>6,114</td><td>46.924.890.000 đ</td><td><span class='share-pill'>19.7%</span></td></tr><tr><td><strong>Huy Thanh Jewelry</strong></td><td>Shop Thường</td><td>2</td><td>6,713</td><td>26.626.717.720 đ</td><td><span class='share-pill'>11.2%</span></td></tr><tr><td><strong>L&#x27;Oreal Paris Official Store</strong></td><td>🏢 Mall</td><td>3</td><td>72,627</td><td>22.186.048.000 đ</td><td><span class='share-pill'>9.3%</span></td></tr><tr><td><strong>Handin Tech VN</strong></td><td>Shop Thường</td><td>2</td><td>198</td><td>19.799.999.802 đ</td><td><span class='share-pill'>8.3%</span></td></tr><tr><td><strong>KIM HÀ GROUP JSC</strong></td><td>Shop Thường</td><td>1</td><td>9,998</td><td>12.897.420.000 đ</td><td><span class='share-pill'>5.4%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">19.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:19.7%"></div></div>
+          <div class="dist-sub">haki_001</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">40.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:40.2%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">53.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:53.9%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">22.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:22.2%"></div></div>
+          <div class="dist-sub">9/30 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">77.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:77.8%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">91.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:91.5%"></div></div>
+          <div class="dist-sub">189.000 – 16.824.165 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">96.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:96.7%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">6,6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:26.4%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🟠 Sàn Cam (Shopee)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;số lượng bán lược sừng để chải đầu Hãy t&#x27; đạt 70 SKU từ 53 shop, tổng 280,597 lượt bán tương ứng 240.902.312.048 đ. Tỷ lệ có bán đạt 91.4% (64 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 94/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 3.813.758 đ (khoảng giá 10.739 đ – 99.999.999 đ, đã tách 1 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 10.739 – 16.675.614 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0822 (Mall chiếm 22.0% doanh thu). Top 3 shop dẫn đầu giữ 39.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,6%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_lazada" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🔵 Sàn Xanh (Lazada)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify Lazada Scraper (memo23~lazada-scraper · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 13 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#d97706">56</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#d97706;background:rgba(217,119,6,.18)">Khá tiềm năng</div>
+            <div class="bo-track"><div class="bo-fill" style="width:56%;background:#d97706"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.852), tỷ lệ có đơn (70.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">13</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">5,617</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">1.664.736.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">127.700 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">47.000 đ – 717.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">70.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">14</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,852</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('lazada', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('lazada', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('lazada')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_lazada">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="shuguifei | green sandalwood multi-functional finger ring scalp massage comb" data-gmv="1533000000" data-sold="4200" data-price="365000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13413957892.html" target="_blank" rel="noopener">Shuguifei | Green Sandalwood Multi-functional Finger Ring Scalp Massage Comb</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Beauty Concept  Store</td>
+          <td>365.000 đ</td>
+          <td>4,200</td>
+          <td><strong>1.533.000.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng chuôi trơn (đủ size) | mỹ nghệ hà phương, lược sừng chải tóc giúp ngăn ngừa rụng tóc" data-gmv="63315000" data-sold="469" data-price="135000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1577650110.html" target="_blank" rel="noopener">Lược sừng chuôi trơn (Đủ size) | Mỹ nghệ Hà Phương, lược sừng chải tóc giúp ngăn ngừa rụng tóc</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ nghệ Hà Phương</td>
+          <td>135.000 đ</td>
+          <td>469</td>
+          <td><strong>63.315.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.93★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược đa năng thần thánh làm đẹp/ massage bằng sừng  (size 12*6cm)" data-gmv="15525000" data-sold="115" data-price="135000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1972812849.html" target="_blank" rel="noopener">Lược đa năng thần thánh làm đẹp/ massage bằng sừng  (size 12*6cm)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ nghệ Hà Phương</td>
+          <td>135.000 đ</td>
+          <td>115</td>
+          <td><strong>15.525.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[v.i.p] double heads teeth horn comb for home handicraft gifts" data-gmv="15120000" data-sold="280" data-price="54000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1432755788.html" target="_blank" rel="noopener">[V.I.P] Double heads teeth horn comb for home handicraft gifts</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ nghệ Hà Phương</td>
+          <td>54.000 đ</td>
+          <td>280</td>
+          <td><strong>15.120.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="horn comb" data-gmv="11741000" data-sold="199" data-price="59000">
+          <td><a href="https://www.lazada.vn/products/pdp-i251139054.html" target="_blank" rel="noopener">Horn Comb</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Công Ty HAHANCO</td>
+          <td>59.000 đ</td>
+          <td>199</td>
+          <td><strong>11.741.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="horn comb" data-gmv="6860000" data-sold="98" data-price="70000">
+          <td><a href="https://www.lazada.vn/products/pdp-i235341032.html" target="_blank" rel="noopener">Horn Comb</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Công Ty HAHANCO</td>
+          <td>70.000 đ</td>
+          <td>98</td>
+          <td><strong>6.860.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng răng thưa massage đầu giúp lưu thông máu (size: l-20cm)" data-gmv="6080000" data-sold="64" data-price="95000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1918639851.html" target="_blank" rel="noopener">Lược Sừng răng thưa massage đầu giúp lưu thông máu (size: L-20cm)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ nghệ Hà Phương</td>
+          <td>95.000 đ</td>
+          <td>64</td>
+          <td><strong>6.080.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.95★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng me khía - mỹ nghệ hà phương - lược sừng chải tóc và massage da đầu" data-gmv="3160000" data-sold="40" data-price="79000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2770334829.html" target="_blank" rel="noopener">Lược sừng me khía - Mỹ nghệ Hà Phương - lược sừng chải tóc và massage da đầu</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ nghệ Hà Phương</td>
+          <td>79.000 đ</td>
+          <td>40</td>
+          <td><strong>3.160.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng 5 răng thưa dùng massage ấn huyệt chải êm, lược chải tóc gỡ rối  - my nghe phuong chi" data-gmv="2898000" data-sold="42" data-price="69000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1884881452.html" target="_blank" rel="noopener">Lược sừng 5 răng thưa dùng massage ấn huyệt chải êm, lược chải tóc gỡ rối  - My Nghe Phuong Chi</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ Nghệ Phương Chi</td>
+          <td>69.000 đ</td>
+          <td>42</td>
+          <td><strong>2.898.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.92★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[lược sừng trâu cao cấp] lược sừng thật trâu thật 100%, lưu thông khí huyết, cải thiện đau đầu" data-gmv="2848000" data-sold="32" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1507015574.html" target="_blank" rel="noopener">[LƯỢC SỪNG TRÂU CAO CẤP] Lược sừng thật trâu thật 100%, lưu thông khí huyết, cải thiện đau đầu</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Spa Đông Y- Kho Dưỡng Sinh</td>
+          <td>89.000 đ</td>
+          <td>32</td>
+          <td><strong>2.848.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="01 lược chải tóc sừng bò châu phi (l23 chuôi đen)" data-gmv="1664000" data-sold="32" data-price="52000">
+          <td><a href="https://www.lazada.vn/products/pdp-i135687644.html" target="_blank" rel="noopener">01 Lược chải tóc sừng bò châu Phi (L23 Chuôi đen)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Hà home</td>
+          <td>52.000 đ</td>
+          <td>32</td>
+          <td><strong>1.664.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.75★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="horn comb" data-gmv="1056000" data-sold="22" data-price="48000">
+          <td><a href="https://www.lazada.vn/products/pdp-i362902250.html" target="_blank" rel="noopener">Horn comb</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Công Ty HAHANCO</td>
+          <td>48.000 đ</td>
+          <td>22</td>
+          <td><strong>1.056.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[vip] lược sừng gội đầu dưỡng sinh (size m-12cm) - mỹ nghệ hà phương, lược massage,chải tóc,day huyệt,chải thông kinh lạc" data-gmv="858000" data-sold="11" data-price="78000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1429913417.html" target="_blank" rel="noopener">[VIP] Lược sừng gội đầu dưỡng sinh (size M-12cm) - Mỹ nghệ Hà Phương, lược massage,chải tóc,day huyệt,chải thông kinh lạc</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Mỹ nghệ Hà Phương</td>
+          <td>78.000 đ</td>
+          <td>11</td>
+          <td><strong>858.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="buffalo horn comb with 2 types of teeth and hahanco head. many convenient sizes." data-gmv="611000" data-sold="13" data-price="47000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1508846190.html" target="_blank" rel="noopener">Buffalo Horn Comb with 2 Types of Teeth and Hahanco Head. Many Convenient Sizes.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>bepmoc</td>
+          <td>47.000 đ</td>
+          <td>13</td>
+          <td><strong>611.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.2★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng đa năng mandala - chải tóc, massage, gội đầu, đã thông kinh lạc, ấn nguyệt - sừng trâu/ bò thật nguyên chất" data-gmv="0" data-sold="0" data-price="150000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2420546634.html" target="_blank" rel="noopener">Lược sừng đa năng Mandala - Chải tóc, massage, gội đầu, đã thông kinh lạc, ấn nguyệt - Sừng trâu/ bò thật nguyên chất</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>nhasu.com</td>
+          <td>150.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng trâu massage, lược sừng trâu tròn gội đầu dưỡng sinh giúp thư giãn, thoải mái" data-gmv="0" data-sold="0" data-price="100000">
+          <td><a href="https://www.lazada.vn/products/pdp-i3181002053.html" target="_blank" rel="noopener">Lược Sừng Trâu Massage, Lược Sừng Trâu Tròn Gội Đầu Dưỡng Sinh Giúp Thư Giãn, Thoải Mái</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Thùng Gỗ Trường Sơn</td>
+          <td>100.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="{all sizes} round buffalo horn comb for nourishing hair washing and massage" data-gmv="0" data-sold="0" data-price="69999">
+          <td><a href="https://www.lazada.vn/products/pdp-i13363605605.html" target="_blank" rel="noopener">{All Sizes} Round Buffalo Horn Comb for Nourishing Hair Washing and Massage</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Hoàng Long Biên Hòa</td>
+          <td>69.999 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược cạo gió sừng /masssage toàn thân /bằng sừng có lợi cho da [mh822]" data-gmv="0" data-sold="0" data-price="60000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1431439286.html" target="_blank" rel="noopener">Lược cạo gió sừng /masssage toàn thân /bằng sừng có lợi cho da [MH822]</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lược Sừng Thụy Ứng Store</td>
+          <td>60.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="wide-toothed horn comb for massage, 7-tooth comb for unblocking meridians" data-gmv="0" data-sold="0" data-price="82000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2662876547.html" target="_blank" rel="noopener">Wide-Toothed Horn Comb for Massage, 7-Tooth Comb for Unblocking Meridians</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xưởng Minh Đức</td>
+          <td>82.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="yuxiaodie | massaging wooden comb female health scalp" data-gmv="0" data-sold="0" data-price="717000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13471424734.html" target="_blank" rel="noopener">YUXIAODIE | Massaging Wooden Comb Female Health Scalp</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>YUXIAODIE</td>
+          <td>717.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.93★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">47.000 – 158.665 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (90.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:90.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (7.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:7.9%"></div></div></div>
+          </div>
+          <div class="bin-val">131.736.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">158.666 – 270.331 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">270.332 – 381.997 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (92.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:92.1%"></div></div></div>
+          </div>
+          <div class="bin-val">1.533.000.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">381.998 – 493.663 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">493.664 – 605.329 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">605.330 – 717.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (13 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Beauty Concept  Store</strong></td><td>Shop Thường</td><td>1</td><td>4,200</td><td>1.533.000.000 đ</td><td><span class='share-pill'>92.1%</span></td></tr><tr><td><strong>Mỹ nghệ Hà Phương</strong></td><td>Shop Thường</td><td>6</td><td>979</td><td>104.058.000 đ</td><td><span class='share-pill'>6.3%</span></td></tr><tr><td><strong>Công Ty HAHANCO</strong></td><td>Shop Thường</td><td>3</td><td>319</td><td>19.657.000 đ</td><td><span class='share-pill'>1.2%</span></td></tr><tr><td><strong>Mỹ Nghệ Phương Chi</strong></td><td>Shop Thường</td><td>1</td><td>42</td><td>2.898.000 đ</td><td><span class='share-pill'>0.2%</span></td></tr><tr><td><strong>Spa Đông Y- Kho Dưỡng Sinh</strong></td><td>Shop Thường</td><td>1</td><td>32</td><td>2.848.000 đ</td><td><span class='share-pill'>0.2%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">92.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:92.1%"></div></div>
+          <div class="dist-sub">Beauty Concept  Store</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">99.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:99.6%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">92.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:92.1%"></div></div>
+          <div class="dist-sub">270.332 – 381.997 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">75.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:75.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🔵 Sàn Xanh (Lazada)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;số lượng bán lược sừng để chải đầu Hãy t&#x27; đạt 70 SKU từ 53 shop, tổng 280,597 lượt bán tương ứng 240.902.312.048 đ. Tỷ lệ có bán đạt 91.4% (64 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 94/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 3.813.758 đ (khoảng giá 10.739 đ – 99.999.999 đ, đã tách 1 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 10.739 – 16.675.614 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0822 (Mall chiếm 22.0% doanh thu). Top 3 shop dẫn đầu giữ 39.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,6%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_tiktok_shop" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>⚫ Sàn Đen (TikTok Shop)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify TikTok Shop (pro100chok~tiktok-shop-scraper-usage · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 18 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">96</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:96%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.1517), tỷ lệ có đơn (100.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">18</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">18,414</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">822.474.516 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">69.424 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">10.739 đ – 133.642 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">100.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,1517</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('tiktok_shop', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('tiktok_shop', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('tiktok_shop')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_tiktok_shop">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược cắt tóc nam barber - lược sừng bakelite cao cấp - đa dạng kích thước và kiểu dáng - đã mài chuốt sắc nét.  - cắt uốn tóc - lược sừng cắt tóc nam - lược bản to-lược bản nhỏ" data-gmv="174470688" data-sold="2331" data-price="74848">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-cat-toc-nam-barber-bang-sung-bakelite-da-dang-kich-thuoc/1730331729859218121" target="_blank" rel="noopener">Lược Cắt Tóc Nam Barber - Lược Sừng Bakelite Cao Cấp - Đa Dạng Kích Thước Và Kiểu Dáng - Đã Mài Chuốt Sắc Nét.  - Cắt Uốn Tóc - Lược Sừng Cắt Tóc Nam - Lược Bản To-Lược Bản Nhỏ</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đinh.X.Đức</td>
+          <td>74.848 đ</td>
+          <td>2,331</td>
+          <td><strong>174.470.688 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dụng cụ massage kinh lạc đầu bằng sừng hươu, lược massage, dụng cụ trị liệu da đầu, dụng cụ gãi đầu, dụng cụ massage bấm huyệt sáu răng, dụng cụ giải phóng cân cơ." data-gmv="138701450" data-sold="2498" data-price="55525">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735951594667869753" target="_blank" rel="noopener">Dụng cụ massage kinh lạc đầu bằng sừng hươu, lược massage, dụng cụ trị liệu da đầu, dụng cụ gãi đầu, dụng cụ massage bấm huyệt sáu răng, dụng cụ giải phóng cân cơ.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Home Warm Store</td>
+          <td>55.525 đ</td>
+          <td>2,498</td>
+          <td><strong>138.701.450 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ dsdy nl] lược mát xa sừng chất liệu gỗ mụn, lược kinh tuyến da đầu, đả thông đường kinh lạc trung hoa" data-gmv="102126684" data-sold="2414" data-price="42306">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-massage-sung-go-tu-nhien-thoai-mai-hieu-qua-cho-da-dau/1732288288984893290" target="_blank" rel="noopener">[ DSDY NL] Lược mát xa sừng chất liệu gỗ mụn, lược kinh tuyến da đầu, đả thông đường kinh lạc Trung Hoa</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Bích Phương-TPCN CSSK&amp;Sắc đẹp</td>
+          <td>42.306 đ</td>
+          <td>2,414</td>
+          <td><strong>102.126.684 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng gội đầu vò đầu dưỡng sinh, lược bạch tuộc mát xa đầu | mỹ nghệ thu nhàn" data-gmv="70839421" data-sold="907" data-price="78103">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-goi-dau-vo-dau-massage-thu-gian-my-nghe-thu-nhan-chat-lieu-tu-nhien-chong-tinh-dien-kich-thich-luu-mau/1732054926880377438" target="_blank" rel="noopener">Lược sừng gội đầu vò đầu dưỡng sinh, Lược bạch tuộc mát xa đầu | Mỹ nghệ Thu Nhàn</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mỹ Nghệ Thu Nhàn</td>
+          <td>78.103 đ</td>
+          <td>907</td>
+          <td><strong>70.839.421 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược massage kinh tuyến 2 in 1 bằng nhựa giả gỗ, massage đầu, mắt mũi, tai... lược sừng hươu 2 đầu" data-gmv="62069269" data-sold="4087" data-price="15187">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-massage-kinh-tuyen-2-trong-1-nhua-gia-go-thu-gian-toan-than/1733749089631635019" target="_blank" rel="noopener">Lược massage Kinh tuyến 2 in 1 bằng nhựa giả gỗ, massage đầu, mắt mũi, tai... Lược sừng hươu 2 đầu</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia dụng Pings</td>
+          <td>15.187 đ</td>
+          <td>4,087</td>
+          <td><strong>62.069.269 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.3★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược cắt tóc nam barber bản không cán - lược sừng - nhiều kích thước và kiểu dáng. chuyên dùng thợ tóc barber - cắt uốn tóc" data-gmv="61315940" data-sold="595" data-price="103052">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-cat-toc-nam-barber-ban-khong-can-da-mai-da-dang-kieu-dang/1730336589229624009" target="_blank" rel="noopener">Lược Cắt Tóc Nam BarBer Bản Không Cán - Lược Sừng - Nhiều Kích Thước Và Kiểu Dáng. Chuyên dùng thợ tóc BarBer - Cắt Uốn Tóc</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đinh.X.Đức</td>
+          <td>103.052 đ</td>
+          <td>595</td>
+          <td><strong>61.315.940 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng chuôi khía xuất nhật, lược chải tóc-mỹ nghệ lâm khang" data-gmv="56225351" data-sold="589" data-price="95459">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-chuoi-khia-nhat-ban-cham-soc-toc-chuyen-sau-ben-dep/1731364952960043580" target="_blank" rel="noopener">Lược sừng chuôi khía xuất Nhật, lược chải tóc-Mỹ nghệ Lâm Khang</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mỹ nghệ Lâm Khang</td>
+          <td>95.459 đ</td>
+          <td>589</td>
+          <td><strong>56.225.351 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng gấp cho nam  nhỏ gọn bỏ túi dùng chải tóc chải râu thuận tiện - coh153 cắt tóc" data-gmv="54096960" data-sold="1480" data-price="36552">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-gap-cho-nam-nho-gon-bo-tui-chai-toc-rau-coh153/1729853077650508269" target="_blank" rel="noopener">Lược Sừng Gấp Cho Nam  Nhỏ Gọn Bỏ Túi Dùng Chải Tóc Chải Râu Thuận Tiện - COH153 Cắt Tóc</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HAHANCO Store</td>
+          <td>36.552 đ</td>
+          <td>1,480</td>
+          <td><strong>54.096.960 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng massage 4in1 đa năng, mát xa toàn thân đầu, mặt, mũi đa năng  | mỹ nghệ phương chi" data-gmv="26130819" data-sold="221" data-price="118239">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-massage-4in1-da-nang-mat-xa-toan-than-khuon-mat/1732095625708406529" target="_blank" rel="noopener">Lược sừng massage 4in1 đa năng, mát xa toàn thân đầu, mặt, mũi đa năng  | Mỹ Nghệ Phương Chi</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mỹ Nghệ Phương Chi</td>
+          <td>118.239 đ</td>
+          <td>221</td>
+          <td><strong>26.130.819 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược massage đầu sừng hươu nhựa giả gỗ, cổ, vai gáy lược nhựa giả gỗ dụng cụ thư giãn day ấn huyệt" data-gmv="25956163" data-sold="2417" data-price="10739">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1737018336041010706" target="_blank" rel="noopener">Lược Massage Đầu Sừng Hươu Nhựa Giả Gỗ, Cổ, Vai Gáy Lược Nhựa Giả Gỗ Dụng Cụ Thư Giãn Day Ấn Huyệt</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HUHAstore</td>
+          <td>10.739 đ</td>
+          <td>2,417</td>
+          <td><strong>25.956.163 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng đốt trúc dài 22cm - lược chải tóc gỡ rối , massage đầu" data-gmv="8717092" data-sold="82" data-price="106306">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735948540681684540" target="_blank" rel="noopener">Lược sừng đốt trúc dài 22cm - Lược chải tóc gỡ rối , massage đầu</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mỹ Nghệ Hạnh Chung</td>
+          <td>106.306 đ</td>
+          <td>82</td>
+          <td><strong>8.717.092 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="￼lược sừng cắt tóc nam bản to" data-gmv="7983852" data-sold="92" data-price="86781">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-cat-toc-nam-ban-to-ben-dep-phu-hop-salon-barber/1731555961776146439" target="_blank" rel="noopener">￼Lược Sừng Cắt Tóc Nam Bản To</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Phukientoc2.0</td>
+          <td>86.781 đ</td>
+          <td>92</td>
+          <td><strong>7.983.852 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.2★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng chảy tóc.lược sừng cắt tóc.lược nhọn sừng.lược  gỗ" data-gmv="7316550" data-sold="355" data-price="20610">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-chai-toc-do-ben-cao-thiet-ke-sang-trong-khong-gay-dau-cho-toc/1730523021873154066" target="_blank" rel="noopener">lược sừng chảy tóc.lược sừng cắt tóc.lược nhọn sừng.lược  gỗ</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>NGÂN 92 STORE</td>
+          <td>20.610 đ</td>
+          <td>355</td>
+          <td><strong>7.316.550 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng bản to cắt tóc nam đã mài chuốt 2059-4" data-gmv="7040116" data-sold="118" data-price="59662">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-ban-to-cat-toc-nam-da-mai-chuot-de-su-dung-tien-loi/1729732614113364824" target="_blank" rel="noopener">Lược sừng bản to cắt tóc nam đã mài chuốt 2059-4</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>SHOP KÉO NHẬT</td>
+          <td>59.662 đ</td>
+          <td>118</td>
+          <td><strong>7.040.116 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng đa năng matxa chăm sóc tóc/da đầu giúp đả thông kinh mạch- coh209t" data-gmv="6548458" data-sold="49" data-price="133642">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-da-nang-matxa-cham-s-soc-toc-da-dau-hahanco/1734911265920288237" target="_blank" rel="noopener">Lược Sừng Đa Năng Matxa Chăm Sóc Tóc/Da Đầu Giúp Đả Thông Kinh Mạch- COH209T</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HAHANCO Store</td>
+          <td>133.642 đ</td>
+          <td>49</td>
+          <td><strong>6.548.458 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng bản to đã mài chuốc chuyên cắt tông đơ" data-gmv="5147157" data-sold="73" data-price="70509">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-ban-to-da-mai-chuot-chuyen-cat-tong-do-de-su-dung/1729679689127267105" target="_blank" rel="noopener">Lược sừng bản to đã mài chuốc chuyên cắt tông đơ</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>PHỤ LIỆU HỒNG ĐÔ</td>
+          <td>70.509 đ</td>
+          <td>73</td>
+          <td><strong>5.147.157 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="~~lược sừng trâu~~  ️lược sừng có thể dùng chải đầu dưỡng sinh và mát xa cơ thể ️" data-gmv="3368160" data-sold="45" data-price="74848">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-trau-cham-soc-da-mat-body-giam-stress-hieu-qua/1732136279164748932" target="_blank" rel="noopener">~~LƯỢC SỪNG TRÂU~~  ️Lược sừng có thể dùng chải đầu dưỡng sinh và mát xa cơ thể ️</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>TRÙM DƯỠNG SINH HÙNG DOAN</td>
+          <td>74.848 đ</td>
+          <td>45</td>
+          <td><strong>3.368.160 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược bí sừng chải tóc, chải chấy, chải chí bằng sừng trâu tự nhiên, lược gội đầu massage" data-gmv="3037320" data-sold="40" data-price="75933">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-tu-nhien-cham-soc-toc-mat-xa-kich-thuoc-11x5-cm/1732326390136342294" target="_blank" rel="noopener">lược bí sừng chải tóc, chải chấy, chải chí bằng sừng trâu tự nhiên, lược gội đầu massage</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mỹ Nghệ Xịn Việt Nam</td>
+          <td>75.933 đ</td>
+          <td>40</td>
+          <td><strong>3.037.320 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng chải tóc massage gội đầu dưỡng sinh, lược vò đầu, massage đầu" data-gmv="846108" data-sold="12" data-price="70509">
+          <td><a href="https://shop.tiktok.com/vn/pdp/luoc-sung-chai-toc-massage-goi-dau-da-nang-rang-thua-tron/1730129448825096278" target="_blank" rel="noopener">Lược Sừng Chải Tóc Massage Gội Đầu Dưỡng Sinh, Lược Vò Đầu, Massage Đầu</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thiết Bị Spa Ola</td>
+          <td>70.509 đ</td>
+          <td>12</td>
+          <td><strong>846.108 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="lược sừng trâu đen sừng trâu tự nhiên an toàn lành tính răng lược tròn mịn giúp tóc chắc khỏe nhã gọn dễ mang theo" data-gmv="536958" data-sold="9" data-price="59662">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1736434970516686379" target="_blank" rel="noopener">Lược sừng trâu đen sừng trâu tự nhiên an toàn lành tính răng lược tròn mịn giúp tóc chắc khỏe nhã gọn dễ mang theo</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mỹ Nghệ Sừng Trâu Hà Tây</td>
+          <td>59.662 đ</td>
+          <td>9</td>
+          <td><strong>536.958 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">10.739 – 31.221 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (15.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:15.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (11.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:11.6%"></div></div></div>
+          </div>
+          <div class="bin-val">95.341.982 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">31.222 – 51.704 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (10.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:10.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (19.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:19.0%"></div></div></div>
+          </div>
+          <div class="bin-val">156.223.644 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">51.705 – 72.187 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (25.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:25.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (18.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:18.5%"></div></div></div>
+          </div>
+          <div class="bin-val">152.271.789 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">72.188 – 92.670 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (25.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:25.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (31.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:31.6%"></div></div></div>
+          </div>
+          <div class="bin-val">259.699.441 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">92.671 – 113.153 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (15.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:15.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (15.4%)</span><div class="mini-track"><div class="mini-fill green" style="width:15.4%"></div></div></div>
+          </div>
+          <div class="bin-val">126.258.383 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">113.154 – 133.642 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (10.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:10.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (4.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:4.0%"></div></div></div>
+          </div>
+          <div class="bin-val">32.679.277 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (18 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Đinh.X.Đức</strong></td><td>Shop Thường</td><td>2</td><td>2,926</td><td>235.786.628 đ</td><td><span class='share-pill'>28.7%</span></td></tr><tr><td><strong>Home Warm Store</strong></td><td>Shop Thường</td><td>1</td><td>2,498</td><td>138.701.450 đ</td><td><span class='share-pill'>16.9%</span></td></tr><tr><td><strong>Bích Phương-TPCN CSSK&amp;Sắc đẹp</strong></td><td>Shop Thường</td><td>1</td><td>2,414</td><td>102.126.684 đ</td><td><span class='share-pill'>12.4%</span></td></tr><tr><td><strong>Mỹ Nghệ Thu Nhàn</strong></td><td>Shop Thường</td><td>1</td><td>907</td><td>70.839.421 đ</td><td><span class='share-pill'>8.6%</span></td></tr><tr><td><strong>Gia dụng Pings</strong></td><td>Shop Thường</td><td>1</td><td>4,087</td><td>62.069.269 đ</td><td><span class='share-pill'>7.5%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">28.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:28.7%"></div></div>
+          <div class="dist-sub">Đinh.X.Đức</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">58.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:58.0%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">74.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:74.1%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">31.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:31.6%"></div></div>
+          <div class="dist-sub">72.188 – 92.670 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">60.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:60.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "⚫ Sàn Đen (TikTok Shop)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;số lượng bán lược sừng để chải đầu Hãy t&#x27; đạt 70 SKU từ 53 shop, tổng 280,597 lượt bán tương ứng 240.902.312.048 đ. Tỷ lệ có bán đạt 91.4% (64 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 94/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 3.813.758 đ (khoảng giá 10.739 đ – 99.999.999 đ, đã tách 1 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 10.739 – 16.675.614 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0822 (Mall chiếm 22.0% doanh thu). Top 3 shop dẫn đầu giữ 39.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,6%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_logs" style="display:none">
+      <div class="sa-panel">
+        <h2 class="sa-title">🪵 Logs Toàn Bộ Request / Response &amp; Cách Xử Lý Dữ Liệu</h2>
+        <div class="sa-hint">Mỗi API key hoặc token trong URL/Headers được che tự động dạng <code>ab***1234</code> để an toàn khi xuất báo cáo hoặc đẩy Git.</div>
+
+        <div class="sub-card" style="margin-top:12px">
+          <div class="sub-card-head">🧮 Bảng Truy Vết Công Thức Ra Số Liệu Thực Tế Của Lần Chạy Này</div>
+          <table>
+            <thead><tr><th>Phạm vi</th><th>Công thức Giá TB (Tách quà tặng)</th><th>Công thức HHI</th><th>Công thức Điểm Đại Dương Xanh (/100)</th></tr></thead>
+            <tbody>
+        <tr>
+          <td><strong>TỔNG HỢP 3 SÀN</strong></td>
+          <td><code>sum(69 non-gift prices) / 69 = 3.813.758 đ</code></td>
+          <td><code>sum((shop_gmv / 240.902.312.048 đ)^2 across 53 shops) = 0.0822</code></td>
+          <td><code>HHI_pts(40.0) + Demand_pts(32.0) + NonMall_pts(21.8) = 94/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>SHOPEE</strong></td>
+          <td><code>sum(29 non-gift prices) / 29 = 8.938.165 đ</code></td>
+          <td><code>sum((shop_gmv / 238.415.101.532 đ)^2 across 22 shops) = 0.0839</code></td>
+          <td><code>HHI_pts(40.0) + Demand_pts(35.0) + NonMall_pts(17.5) = 92/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>TIKTOK_SHOP</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 69.424 đ</code></td>
+          <td><code>sum((shop_gmv / 822.474.516 đ)^2 across 18 shops) = 0.1517</code></td>
+          <td><code>HHI_pts(38.2) + Demand_pts(35.0) + NonMall_pts(25.0) = 96/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>LAZADA</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 127.700 đ</code></td>
+          <td><code>sum((shop_gmv / 1.664.736.000 đ)^2 across 13 shops) = 0.852</code></td>
+          <td><code>HHI_pts(6.8) + Demand_pts(24.5) + NonMall_pts(25.0) = 56/100</code></td>
+        </tr></tbody>
+          </table>
+        </div>
+
+        
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#1</span>
+              <strong style="color:#f8fafc">telegram_receive_request</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_telegram_liaison &bull; 863 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#2</span>
+              <strong style="color:#f8fafc">interpret_chairman_brief</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_brief_officer &bull; 1 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#3</span>
+              <strong style="color:#f8fafc">serper_ecommerce_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_market_strategist &bull; 2758 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://google.serper.dev/search&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-KEY&quot;: &quot;b7***8a2f&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;site:shopee.vn OR site:lazada.vn số lượng bán lược sừng để chải đầu Hãy t&quot;,
+    &quot;gl&quot;: &quot;vn&quot;,
+    &quot;hl&quot;: &quot;vi&quot;,
+    &quot;num&quot;: 8
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (8 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 8,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;organic_sample&quot;: [
+      {
+        &quot;title&quot;: &quot;Lược sừng 2 đầu răng ( size: L-19cm) dùng chải tóc giúp suôn ...&quot;,
+        &quot;link&quot;: &quot;https://www.lazada.vn/videodetail/?video_id=8000052934883&amp;srsltid=AYCX9vI_KMgOcNaPQ7fZfFWlQ33Tp1e8BixFeZaPSTFO3zNNc1NP5PfU&quot;,
+        &quot;snippet&quot;: &quot;... hãy tham khảo shop mình nha!=========================MÔ TẢ SẢN PHẨM:- Tên sản phẩm: Lược sừng 2 đầu răng xuất Nhật- Số lượng: 1 chiếc- Kích thước: Dài 19cm ...&quot;
+      },
+      {
+        &quot;title&quot;: &quot;[VIP] Lược sừng nguyên chóp dài 25-27cm, Mỹ nghệ Hà ...&quot;,
+        &quot;link&quot;: &quot;https://www.lazada.vn/products/pdp-i1618636995.html?srsltid=AYCX9vK3_Eq80ml3COuudTEwbrpVjYipe17tpsbRpWtcCCJVUAHEFAZs&quot;,
+        &quot;snippet&quot;: &quot;[VIP] Lược sừng nguyên chóp dài 25-27cm, Mỹ nghệ Hà Phương, chăm sóc mái tóc ... Miễn phí vận chuyển khi mua từ 299.000 ₫ sản phẩm của Mỹ nghệ Hà Phương .&quot;
+      }
+    ],
+    &quot;relatedSearches&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi truy vấn đa sàn Google VN (`gl=vn`, `hl=vi`) tới Serper.dev.</li><li>2. Trích xuất 0 cụm từ khóa tìm kiếm liên quan (`relatedSearches`) làm ma trận mở rộng.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#4</span>
+              <strong style="color:#f8fafc">addlivetag_market_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 7110 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/search/market.php?q=s%E1%BB%91+l%C6%B0%E1%BB%A3ng+b%C3%A1n+l%C6%B0%E1%BB%A3c+s%E1%BB%ABng+%C4%91%E1%BB%83+ch%E1%BA%A3i+%C4%91%E1%BA%A7u+H%C3%A3y+t&amp;sort=revenue&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;,
+    &quot;sort&quot;: &quot;revenue&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (100 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 100,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;keys&quot;: [
+      &quot;query&quot;,
+      &quot;giftsExcluded&quot;,
+      &quot;market&quot;,
+      &quot;last30Days&quot;,
+      &quot;topShops&quot;,
+      &quot;products&quot;,
+      &quot;paging&quot;,
+      &quot;status&quot;,
+      &quot;cached&quot;,
+      &quot;tookMs&quot;,
+      &quot;scopeNote&quot;
+    ],
+    &quot;market&quot;: {
+      &quot;totalProducts&quot;: 5995679,
+      &quot;totalShops&quot;: 145424,
+      &quot;totalSold&quot;: 38059343,
+      &quot;totalRevenue&quot;: 5496313256112,
+      &quot;avgPrice&quot;: 278978,
+      &quot;minPrice&quot;: 1000,
+      &quot;maxPrice&quot;: 390577000,
+      &quot;avgCommissionRate&quot;: 0.0911,
+      &quot;maxCommissionRate&quot;: 0.88,
+      &quot;productsWithSales&quot;: 918749,
+      &quot;sellThroughRate&quot;: 0.1532,
+      &quot;hhi&quot;: 0.0003,
+      &quot;blueOceanScore&quot;: 33.7
+    },
+    &quot;last30Days&quot;: {
+      &quot;totalSold&quot;: 4278665,
+      &quot;totalRevenue&quot;: 661575854490,
+      &quot;trackedProducts&quot;: 1068245,
+      &quot;coverage&quot;: 0.1782,
+      &quot;note&quot;: &quot;Only counts products with 8+ days of history. The `market` block above is all-time and covers 100% of products.&quot;
+    },
+    &quot;total_raw_items&quot;: 100,
+    &quot;sample_items&quot;: [
+      {
+        &quot;itemId&quot;: 50866274997,
+        &quot;productName&quot;: &quot;Giường 3 tay quay Y tế đầy đủ các chức năng nâng hạ chân, lưng, lật trại phải, đặt bô vệ sinh, chậu gội đầu, bàn ăn&quot;,
+        &quot;shopName&quot;: &quot;haki_001&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134201-81ztc-ms2vk82elngle2&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1713071323/50866274997&quot;,
+        &quot;price&quot;: 7670000,
+        &quot;sales&quot;: 3063,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 23493210000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 7670000,
+        &quot;priceMax&quot;: 7670000,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 8,
+        &quot;commissionRate&quot;: 0.04,
+        &quot;shopId&quot;: 1713071323,
+        &quot;catId&quot;: 100001,
+        &quot;rating&quot;: 5
+      },
+      {
+        &quot;itemId&quot;: 51966281735,
+        &quot;productName&quot;: &quot;Giường Y Tế 3 tay quay đầy đủ chức năng nâng hạ lưng, chân, lật trái phải, bô vệ sinh, gội đầu -TBYT_001&quot;,
+        &quot;shopName&quot;: &quot;haki_001&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134201-81ztc-ms2wphpj2gp1d6&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1713071323/51966281735&quot;,
+        &quot;price&quot;: 7680000,
+        &quot;sales&quot;: 3051,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 23431680000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 7680000,
+        &quot;priceMax&quot;: 7680000,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 8,
+        &quot;commissionRate&quot;: 0.04,
+        &quot;shopId&quot;: 1713071323,
+        &quot;catId&quot;: 100001,
+        &quot;rating&quot;: 5
+      }
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Bóc danh sách sản phẩm thật từ payload[&#x27;products&#x27;] (100 bản ghi, lấy 30 SKU) + block market/last30Days.</li><li>2. Chuẩn hóa camelCase Shopee: itemId, productName, shopId, shopName, price, sales -&gt; sold_30d, revenueAll -&gt; gmv_30d_vnd, commissionRate*100 -&gt; commission_pct (%).</li><li>3. Độ phủ lịch sử 30d đánh giá theo quy tắc AddLiveTag (`daysTracked &gt;= 8`); quà tặng &lt;= 2.000đ tách khỏi Giá trung bình.</li><li>4. KOC/Creator &amp; phân tách Video/Live nội sàn chưa có trên endpoint search -&gt; gắn cờ (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#5</span>
+              <strong style="color:#f8fafc">addlivetag_product_batch</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 504 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/product-data/product-data-batch.php&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;itemIds&quot;: [
+      50866274997,
+      51966281735,
+      46019348695,
+      52063531146,
+      44862644823
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (5 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 5,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;item_id&quot;: &quot;50866274997&quot;,
+      &quot;product_name&quot;: &quot;Giường 3 tay quay Y tế đầy đủ các chức năng nâng hạ chân, lưng, lật trại phải, đặt bô vệ sinh, chậu gội đầu, bàn ăn&quot;,
+      &quot;cat_name&quot;: &quot;Hỗ trợ chấn thương và khuyết tật&quot;,
+      &quot;price_vnd&quot;: 7670000,
+      &quot;sales&quot;: 0,
+      &quot;shopee_commission_pct&quot;: 2.5,
+      &quot;seller_commission_pct&quot;: 0.0,
+      &quot;total_commission_pct&quot;: 2.5,
+      &quot;is_xtra&quot;: false,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;api&quot;
+    },
+    {
+      &quot;item_id&quot;: &quot;51966281735&quot;,
+      &quot;product_name&quot;: &quot;Giường Y Tế 3 tay quay đầy đủ chức năng nâng hạ lưng, chân, lật trái phải, bô vệ sinh, gội đầu -TBYT_001&quot;,
+      &quot;cat_name&quot;: &quot;Hỗ trợ chấn thương và khuyết tật&quot;,
+      &quot;price_vnd&quot;: 7680000,
+      &quot;sales&quot;: 0,
+      &quot;shopee_commission_pct&quot;: 2.5,
+      &quot;seller_commission_pct&quot;: 0.0,
+      &quot;total_commission_pct&quot;: 2.5,
+      &quot;is_xtra&quot;: false,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;api&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi mảng itemIds (5 SKU) lên product-data-batch.php trong 1 HTTP POST.</li><li>2. Bóc `productInfo` từ `payload[&#x27;products&#x27;]`: shopeeRatePercent, sellerRatePercent, totalRatePercent, isXtra, catName, cap.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#6</span>
+              <strong style="color:#f8fafc">apify_tiktok_shop_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_tiktok_hunter &bull; 33824 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/pro100chok~tiktok-shop-scraper-usage/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;region&quot;: &quot;vn&quot;,
+    &quot;scrapeType&quot;: &quot;search&quot;,
+    &quot;searchKeywords&quot;: [
+      &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;
+    ],
+    &quot;maxItems&quot;: 20,
+    &quot;sortBy&quot;: &quot;best_sellers&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1736434970516686379&quot;,
+      &quot;title&quot;: &quot;Lược sừng trâu đen sừng trâu tự nhiên an toàn lành tính răng lược tròn mịn giúp tóc chắc khỏe nhã gọn dễ mang theo&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/1736434970516686379&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5de82d4c56ad4e398139380ef849746c~tplv-aphluv4xwc-crop-webp:1024:1024.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/5de82d4c56ad4e398139380ef849746c~tplv-aphluv4xwc-crop-webp:1024:1024.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;59662&quot;,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPercent&quot;: null,
+      &quot;salesVolume&quot;: 9,
+      &quot;rating&quot;: 0,
+      &quot;reviewCount&quot;: &quot;0&quot;,
+      &quot;sellerName&quot;: &quot;Mỹ Nghệ Sừng Trâu Hà Tây&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 1,
+      &quot;query&quot;: &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    },
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1729679689127267105&quot;,
+      &quot;title&quot;: &quot;Lược sừng bản to đã mài chuốc chuyên cắt tông đơ&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/luoc-sung-ban-to-da-mai-chuot-chuyen-cat-tong-do-de-su-dung/1729679689127267105&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/f9d5a2af38b74e478bb4bf4d4a9e77ee~tplv-o3syd03w52-crop-webp:956:956.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/f9d5a2af38b74e478bb4bf4d4a9e77ee~tplv-o3syd03w52-crop-webp:956:956.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;70509&quot;,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPercent&quot;: null,
+      &quot;salesVolume&quot;: 73,
+      &quot;rating&quot;: 5,
+      &quot;reviewCount&quot;: &quot;5&quot;,
+      &quot;sellerName&quot;: &quot;PHỤ LIỆU HỒNG ĐÔ&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 2,
+      &quot;query&quot;: &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Thu thập dataset TikTok Shop (VN) từ Actor `pro100chok~tiktok-shop-scraper-usage` (20 mục).</li><li>2. Ánh xạ `currentPrice`, `salesVolume`, `sellerName`, `rating`, `reviewCount` -&gt; tính GMV = price_vnd * salesVolume.</li><li>3. Kiểm tra thực tế payload: chỉ số KOC / Hoa hồng Affiliate / Video-Live / Lịch sử 30d nếu chưa có trong kết quả tìm kiếm sẽ đánh dấu minh bạch (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#7</span>
+              <strong style="color:#f8fafc">apify_lazada_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_lazada_hunter &bull; 53081 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/memo23~lazada-scraper/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;searchQueries&quot;: [
+      &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;
+    ],
+    &quot;country&quot;: &quot;vn&quot;,
+    &quot;maxItems&quot;: 20,
+    &quot;scrapeDetails&quot;: false
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;name&quot;: &quot;Horn Comb&quot;,
+      &quot;image&quot;: &quot;https://vn-live-01.slatic.net/original/6158abc1ce27cf007b60fd9f3939895d.jpg&quot;,
+      &quot;categories&quot;: &quot;4405 &gt; 4956 &gt; 4879 &gt; 4949 &gt; 4953&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;Công Ty HAHANCO&quot;,
+      &quot;sellerId&quot;: &quot;100228068&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: &quot;199 sold&quot;,
+      &quot;reviewCount&quot;: 52,
+      &quot;ratingScore&quot;: 4.903846153846154,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫59,000&quot;,
+      &quot;priceValue&quot;: 59000,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPct&quot;: null,
+      &quot;itemId&quot;: &quot;251139054&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i251139054.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T15:31:05.514Z&quot;
+    },
+    {
+      &quot;name&quot;: &quot;[V.I.P] Double heads teeth horn comb for home handicraft gifts&quot;,
+      &quot;image&quot;: &quot;https://filebroker-cdn.lazada.vn/kf/S8d034fbbae2b4a75adafbf6c45c68891w.jpg&quot;,
+      &quot;categories&quot;: &quot;4405 &gt; 4956 &gt; 4879 &gt; 4949 &gt; 4953&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;Mỹ nghệ Hà Phương&quot;,
+      &quot;sellerId&quot;: &quot;200168064620&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: &quot;280 sold&quot;,
+      &quot;reviewCount&quot;: 93,
+      &quot;ratingScore&quot;: 4.903225806451613,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫54,000&quot;,
+      &quot;priceValue&quot;: 54000,
+      &quot;originalPrice&quot;: &quot;69000&quot;,
+      &quot;discountPct&quot;: 22,
+      &quot;itemId&quot;: &quot;1432755788&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i1432755788.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;số lượng bán lược sừng để chải đầu Hãy t&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T15:31:05.514Z&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gọi đồng bộ Apify Actor `memo23~lazada-scraper` (country=&#x27;vn&#x27;, scrapeDetails=False) nhận 20 bản ghi.</li><li>2. Đọc `priceValue` (fallback chuỗi `price`/`priceShow`) và parse `soldCount` (VD &#x27;494 sold&#x27;, &#x27;1.2K sold&#x27;) -&gt; tính `gmv = price_vnd * sold`.</li><li>3. Nhận diện LazMall qua cờ `isLazMall` hoặc nhãn gian hàng Mall/Official.</li><li>4. Do Lazada Scraper chưa trả Hoa hồng Affiliate &amp; Lịch sử 30 ngày -&gt; gắn nhãn (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#8</span>
+              <strong style="color:#f8fafc">market_metrics_aggregation_pipeline</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_pricing_analyst &bull; 12 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;PIPELINE_REDUCE&quot;,
+  &quot;url&quot;: &quot;internal://analytics/shopee-grade-aggregator&quot;,
+  &quot;headers&quot;: {},
+  &quot;payload&quot;: {
+    &quot;platforms&quot;: [
+      &quot;shopee&quot;,
+      &quot;tiktok_shop&quot;,
+      &quot;lazada&quot;
+    ],
+    &quot;total_raw_skus&quot;: 70,
+    &quot;exclude_keywords&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (70 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 70,
+  &quot;raw_sample&quot;: {
+    &quot;sp_count&quot;: 70,
+    &quot;gift_excluded_from_avg_price&quot;: 1,
+    &quot;avg_price_formula&quot;: &quot;sum(69 non-gift prices) / 69 = 3.813.758 đ&quot;,
+    &quot;hhi_formula&quot;: &quot;sum((shop_gmv / 240.902.312.048 đ)^2 across 53 shops) = 0.0822&quot;,
+    &quot;blue_ocean_formula&quot;: &quot;HHI_pts(40.0) + Demand_pts(32.0) + NonMall_pts(21.8) = 94/100&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gom nhóm 70 SKU từ 3 sàn; tách 1 SKU quà tặng (&lt;= 2.000đ) ra khỏi Giá trung bình.</li><li>2. Tính Giá trung bình: sum(69 non-gift prices) / 69 = 3.813.758 đ.</li><li>3. Tính chỉ số tập trung thị phần HHI: sum((shop_gmv / 240.902.312.048 đ)^2 across 53 shops) = 0.0822.</li><li>4. Tính Điểm Đại dương xanh: HHI_pts(40.0) + Demand_pts(32.0) + NonMall_pts(21.8) = 94/100.</li><li>5. Chia dải giá thành 6 bậc đều nhau để tìm Sweet Spot (dải có GMV cao nhất) &amp; xếp Top 5 Shop (CR5).</li><li>6. Các chỉ số API không có (Hoa hồng Lazada, KOC/Live Shopee, Lịch sử 30d Lazada/TikTok) gán nguyên văn &#x27;(API đang phát triển)&#x27;.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#9</span>
+              <strong style="color:#f8fafc">codex_cli_market_synthesis</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_report_architect &bull; 1800 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;CODEX_CLI_EXEC&quot;,
+  &quot;url&quot;: &quot;local://codex.exe exec --skip-git-repo-check --ephemeral -s read-only&quot;,
+  &quot;headers&quot;: {
+    &quot;model&quot;: &quot;gpt-6-luna (codex-cli)&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;prompt&quot;: &quot;Bạn là Chuyên gia Nghiên cứu Thị trường TMĐT Việt Nam. Viết ĐÚNG 1 đoạn tóm tắt điều hành súc tích (85-115 từ, tiếng Việt chuẩn, chỉ phân tích thị trường khách quan, KHÔNG tư vấn giá vốn):\n- Từ khóa: số lượng bán lược sừng để chải đầu Hãy t\n- Tổng quan 3 sàn: 70 SP, 53 shop, 280,597 lượt bán, GMV 240.902.312.048 đ, Giá TB 3.813.758 đ, HHI 0.0822, ĐĐX 94/100.\n- Chi tiết sàn: SHOPEE: GMV 238.415.101.532 đ, HHI 0.0839, ĐĐX 92/100, TIKTOK_SHOP: GMV 822.474.516 đ, HHI 0.1517, ĐĐX 96/100, LAZADA: GMV 1.664.736.000 đ, HHI 0.852, ĐĐX 56/100\n- Nỗi đau khách hàng: Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio; Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm; Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (1 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 1,
+  &quot;raw_sample&quot;: {
+    &quot;narrative&quot;: &quot;Thị trường từ khóa “số lượng bán lược sừng để chải đầu Hãy t” ghi nhận 70 sản phẩm, 53 shop và 280.597 lượt bán, với GMV 240.902.312.048 đồng, giá trung bình 3.813.758 đồng, HHI 0,0822 và ĐĐX 94/100. Shopee dẫn đầu với GMV 238.415.101.532 đồng, HHI 0,0839, ĐĐX 92/100; TikTok Shop đạt 822.474.516 đồng, HHI 0,1517, ĐĐX 96/100; Lazada đạt 1.664.736.000 đồng, HHI 0,852, ĐĐX 56/100. Khách hàng phản ánh màu sắc, chất liệu thực tế đôi khi khác ảnh render; phân loại size và combo dễ gây nhầm lẫn; thông tin nguồn gốc, tem kiểm định còn thiếu rõ ràng trong mô tả.&quot;,
+    &quot;tokens_used&quot;: 4980
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Nạp toàn bộ KPI đã kiểm toán (SP, Shop, GMV, HHI, ĐĐX, Tỷ lệ có bán, VOC) vào prompt phân tích điều hành.</li><li>2. Trích xuất đoạn tóm tắt điều hành khách quan hiển thị ở phần đầu Báo cáo và sinh 6 khối Phân tích AI chuyên sâu.</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section></div>
+  </div>
+
+  <script>
+    var tabFilterState = {};
+    function showKeyword(id) {
+      document.querySelectorAll('.keyword-block').forEach(function(el) {
+        el.style.display = el.id === id ? 'block' : 'none';
+      });
+      document.querySelectorAll('.kw-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-kw') === id);
+      });
+    }
+    function switchMarketTab(tabId, btn) {
+      var root = (btn && btn.closest) ? (btn.closest('.keyword-block') || document) : document;
+      root.querySelectorAll('.tab-btn').forEach(function(b) {
+        if (b.classList.contains('kw-btn')) return;
+        b.classList.toggle('active', b.getAttribute('data-tab') === tabId);
+      });
+      root.querySelectorAll('.sa-tab-panel').forEach(function(panel) {
+        panel.style.display = (panel.id === 'panel_' + tabId) ? 'block' : 'none';
+      });
+    }
+    function filterTabTable(tabId, queryVal, shopFilterVal) {
+      var st = tabFilterState[tabId] || { q: '', shop: 'all' };
+      if (queryVal !== null) st.q = queryVal.toLowerCase().trim();
+      if (shopFilterVal !== null) st.shop = shopFilterVal;
+      tabFilterState[tabId] = st;
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+        var t = tr.getAttribute('data-title') || '';
+        var m = tr.getAttribute('data-mall') === '1';
+        var g = tr.getAttribute('data-gift') === '1';
+        var ok = (!st.q || t.indexOf(st.q) !== -1);
+        if (st.shop === 'mall' && !m) ok = false;
+        if (st.shop === 'nogift' && g) ok = false;
+        tr.style.display = ok ? '' : 'none';
+      });
+    }
+    function exportTabCsv(tabId) {
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      var rows = Array.from(tbl.querySelectorAll('tr')).filter(function(r) { return r.style.display !== 'none'; });
+      var csv = rows.map(function(r) {
+        return Array.from(r.children).map(function(c) {
+          return '"' + (c.innerText || '').replace(/"/g, '""').trim() + '"';
+        }).join(',');
+      }).join('\n');
+      var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'product_hunter_' + tabId + '.csv';
+      a.click();
+    }
+  </script>
+</body>
+</html>
