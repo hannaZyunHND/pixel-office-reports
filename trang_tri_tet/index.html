@@ -1,0 +1,2699 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo Cáo Thị Trường Đa Sàn — trang trí tết</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, system-ui, sans-serif; background:#020617; color:#e2e8f0; line-height:1.5; }
+    .wrap { max-width:1320px; margin:0 auto; padding:20px; }
+    .hero { background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid #334155; border-radius:14px; padding:18px 22px; margin-bottom:14px; }
+    .pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:600; background:rgba(56,189,248,.15); color:#38bdf8; border:1px solid rgba(56,189,248,.4); }
+    .hero h1 { margin:6px 0 8px; font-size:22px; color:#f8fafc; }
+    .hero-narrative { margin:0; font-size:13.5px; color:#cbd5e1; }
+    .tabs-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; position:sticky; top:0; z-index:10; background:rgba(2,6,23,.92); backdrop-filter:blur(6px); padding:8px 0; }
+    .tab-btn { padding:8px 14px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s; }
+    .tab-btn:hover { color:#f8fafc; border-color:#475569; }
+    .tab-btn.active { background:#1e293b; color:#38bdf8; border-color:#38bdf8; box-shadow:0 0 0 1px rgba(56,189,248,.35); }
+    .tab-btn.log-tab.active { color:#fbbf24; border-color:#fbbf24; }
+    .sa-panel { background:#0f172a; border:1px solid #334155; border-radius:14px; padding:18px; margin-bottom:14px; }
+    .sa-sub { font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:8px; }
+    .sa-title { margin:2px 0; font-size:18px; color:#f8fafc; }
+    .sa-hint { font-size:12px; color:#64748b; margin-bottom:12px; }
+    .alert-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:14px; }
+    .alert-card { padding:10px 12px; border-radius:10px; background:#020617; border:1px solid #334155; }
+    .alert-card.warn { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.06); }
+    .alert-card.ok { border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.06); }
+    .alert-card.info { border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06); }
+    .alert-title { font-size:12px; font-weight:700; color:#f8fafc; }
+    .alert-desc { font-size:11px; color:#94a3b8; margin-top:2px; }
+    .overview-split { display:grid; grid-template-columns:270px 1fr; gap:14px; }
+    @media (max-width:860px) { .overview-split { grid-template-columns:1fr; } }
+    .blue-ocean-card { background:#020617; border:1px solid rgba(245,158,11,.45); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+    .bo-caption { font-size:12.5px; font-weight:600; color:#cbd5e1; }
+    .bo-score-line { display:flex; align-items:baseline; gap:6px; }
+    .bo-num { font-size:38px; font-weight:800; line-height:1; }
+    .bo-den { font-size:15px; color:#94a3b8; font-weight:600; }
+    .bo-badge { align-self:flex-start; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; }
+    .bo-track { height:8px; background:#1e293b; border-radius:999px; overflow:hidden; margin:4px 0; }
+    .bo-fill { height:100%; border-radius:999px; }
+    .bo-note { margin:0; font-size:11.5px; color:#94a3b8; }
+    .kpi-panel { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; }
+    .kpi-panel-head { font-size:12.5px; font-weight:700; color:#cbd5e1; margin-bottom:10px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+    .kpi-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px 12px; }
+    .kpi-lbl { font-size:11px; color:#94a3b8; }
+    .kpi-val { font-size:17px; font-weight:800; margin-top:4px; color:#f8fafc; }
+    .kpi-val.blue { color:#38bdf8; } .kpi-val.purple { color:#c084fc; } .kpi-val.amber { color:#fbbf24; } .kpi-val.green { color:#4ade80; }
+    .api-dev { display:inline-block; margin-top:4px; font-size:11px; font-style:italic; color:#94a3b8; background:rgba(148,163,184,.12); border:1px dashed #475569; padding:2px 7px; border-radius:6px; }
+    .table-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+    .filter-controls { display:flex; flex-wrap:wrap; gap:8px; }
+    .ctrl-input, .ctrl-select, .ctrl-btn { background:#020617; border:1px solid #334155; color:#f8fafc; border-radius:8px; padding:6px 10px; font-size:12px; outline:none; }
+    .ctrl-btn { cursor:pointer; background:#1e293b; font-weight:600; } .ctrl-btn:hover { border-color:#38bdf8; color:#38bdf8; }
+    .tbl-wrap { max-height:420px; overflow:auto; border:1px solid #1e293b; border-radius:10px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; }
+    th { background:#020617; color:#94a3b8; font-size:10.5px; text-transform:uppercase; position:sticky; top:0; }
+    a { color:#38bdf8; text-decoration:none; } a:hover { text-decoration:underline; }
+    .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+    .bin-row { display:grid; grid-template-columns:190px 1fr 110px; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; margin-bottom:6px; background:#020617; border:1px solid #1e293b; }
+    .bin-row.sweet { border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.08); }
+    .sweet-tag { font-size:9.5px; background:#10b981; color:#020617; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:4px; }
+    .bin-lbl { font-size:11.5px; font-weight:600; }
+    .bin-line { display:flex; align-items:center; gap:6px; margin:2px 0; }
+    .mini-tag { width:78px; font-size:10px; color:#94a3b8; }
+    .mini-track { flex:1; height:6px; background:#1e293b; border-radius:999px; overflow:hidden; }
+    .mini-fill { height:100%; border-radius:999px; }
+    .mini-fill.blue { background:#38bdf8; } .mini-fill.green { background:#10b981; }
+    .bin-val { text-align:right; font-size:11.5px; font-weight:700; color:#e2e8f0; }
+    .dist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    .dist-card { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:10px 12px; }
+    .dist-top { display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:6px; gap:8px; }
+    .dist-val { font-weight:800; color:#38bdf8; }
+    .dist-sub { font-size:10.5px; color:#64748b; margin-top:5px; }
+    .caps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:8px; }
+    .cap-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:8px; background:#020617; border:1px solid #1e293b; font-size:12px; }
+    .ai-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px; }
+    .ai-sec { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:12px; }
+    .ai-sec h4 { margin:0 0 6px; font-size:13px; color:#38bdf8; } .ai-sec p { margin:0; font-size:12.5px; color:#cbd5e1; }
+    .mode-badge { font-size:10px; font-family:monospace; padding:2px 6px; border-radius:4px; font-weight:700; }
+    .mode-badge.live { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+    .mode-badge.sandbox { background:rgba(245,158,11,.2); color:#fbbf24; border:1px solid rgba(245,158,11,.5); }
+    .mode-badge.partial { background:rgba(56,189,248,.2); color:#38bdf8; border:1px solid rgba(56,189,248,.5); }
+    .plat-pill { font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; }
+    .plat-pill.shopee { background:rgba(249,115,22,.18); color:#fb923c; }
+    .plat-pill.lazada { background:rgba(59,130,246,.18); color:#60a5fa; }
+    .plat-pill.tiktok_shop { background:rgba(236,72,153,.18); color:#f472b6; }
+    .mall-pill { font-size:9.5px; background:#ef4444; color:#fff; padding:1px 4px; border-radius:3px; margin-left:4px; font-weight:700; }
+    .share-pill { padding:2px 7px; border-radius:999px; background:#1e293b; color:#38bdf8; font-weight:700; font-size:11px; }
+    .sub-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; overflow-x:auto; }
+    .sub-card-head { font-size:14px; font-weight:700; color:#f8fafc; margin-bottom:10px; }
+    .log-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; margin-top:14px; }
+    .log-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; padding-bottom:10px; border-bottom:1px solid #1e293b; margin-bottom:10px; }
+    .log-idx { display:inline-block; background:#1e293b; color:#38bdf8; font-family:monospace; font-size:11px; padding:2px 7px; border-radius:6px; margin-right:6px; }
+    .mono-pill { font-family:monospace; font-size:11px; padding:2px 7px; border-radius:4px; background:#0f172a; border:1px solid #334155; color:#cbd5e1; }
+    .log-3col { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+    .log-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px; display:flex; flex-direction:column; min-width:0; }
+    .log-box-title { font-size:11.5px; font-weight:700; color:#cbd5e1; margin-bottom:6px; }
+    .code-pre { margin:0; font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:8px; border-radius:6px; max-height:240px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+    .proc-list { margin:0; padding-left:16px; font-size:12px; color:#cbd5e1; } .proc-list li { margin-bottom:5px; }
+  </style>
+</head>
+<body>
+<section style="margin:16px auto;max-width:1100px;padding:16px 18px;border:1px solid #38bdf8;border-radius:12px;background:#0f172a;color:#e2e8f0;font-family:system-ui"><h2 style="margin:0 0 8px;font-size:18px">Xếp hạng sản phẩm phù hợp</h2><p style="margin:0;line-height:1.55;font-size:14px">1. Khoảng đo: câu hỏi đã là một tên sản phẩm, đo trực tiếp.<br>
+2. Tên hàng đem đi đo:<br>
+- trang trí tết: Câu hỏi đã là một tên sản phẩm, đo trực tiếp trên 3 sàn.<br>
+3. Phiếu đo:<br>
+- trang trí tết: đại dương xanh 90/100 (Đại dương xanh), 70 SP, 55 shop, giá TB 95.599 đ (1.000 đ – 470.400 đ).<br>
+4. Xếp hạng theo số đo:<br>
+Phù hợp nhất: trang trí tết.<br>
+Không tách thêm tên khác vì câu hỏi đã chỉ một sản phẩm.<br>
+Link phía dưới là báo cáo đầy đủ của tên này.</p></section>
+  <div class="wrap">
+    <div class="hero">
+      <span class="pill">🎯 PRODUCT HUNTER · BÁO CÁO PHÂN TÍCH THỊ TRƯỜNG ĐA SÀN &bull; gpt-6-luna (codex-cli)</span>
+      <h1>Từ khóa: "trang trí tết"</h1>
+      <p class="hero-narrative">Thị trường “trang trí tết” ghi nhận 70 sản phẩm từ 55 shop, với 129.464 lượt bán và GMV 8,98 tỷ đồng; giá trung bình đạt 95.599 đồng. TikTok Shop dẫn đầu GMV với 5,24 tỷ đồng, tiếp đến là Shopee (3,59 tỷ) và Lazada (144,1 triệu). HHI toàn thị trường ở mức 0,2068; theo sàn, Shopee có HHI cao nhất (0,445), còn Lazada thấp nhất (0,2168). Điểm đề xuất chung đạt 90/100, các sàn dao động 78–85. Phản hồi khách hàng tập trung vào khác biệt màu sắc, chất liệu so với ảnh, nhầm lẫn phân loại size/combo và thông tin kiểm định, nguồn gốc chưa rõ.</p>
+    </div>
+
+    <div class="keyword-block" id="kwblock_0"><div class="tabs-bar"><button type="button" class="tab-btn active" data-tab="all" onclick="switchMarketTab('all', this)">🌐 Tổng Hợp 3 Sàn</button><button type="button" class="tab-btn" data-tab="shopee" onclick="switchMarketTab('shopee', this)">🟠 Sàn Cam (Shopee)</button><button type="button" class="tab-btn" data-tab="lazada" onclick="switchMarketTab('lazada', this)">🔵 Sàn Xanh (Lazada)</button><button type="button" class="tab-btn" data-tab="tiktok_shop" onclick="switchMarketTab('tiktok_shop', this)">⚫ Sàn Đen (TikTok Shop)</button><button type="button" class="tab-btn log-tab" data-tab="logs" onclick="switchMarketTab('logs', this)">🪵 Logs Request / Response (9)</button></div>
+    <section class="sa-tab-panel" id="panel_all">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🌐 Tổng Hợp 3 Sàn</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Tổng hợp 3 Sàn (Shopee / Lazada / TikTok Shop). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">43.33% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 70 SP từ 55 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 3 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">90</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:90%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.2068), tỷ lệ có đơn (84.3%) và dư địa shop ngoài Mall (97.1%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">70</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">55</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">129,464</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">8.979.323.179 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">95.599 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">1.000 đ – 470.400 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">84.3%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">59</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,2068</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">8,0%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (70 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('all', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('all', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('all')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_all">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="(2 cái)(tặng đèn led 10m)combo 1 cặp (2 cái) lồng đèn điện quay 360 độ led 3d, phản quang,xu trang trí ngày tết 2026 cầu tài cầu, cầu lộc, may mắn lồng  đèn" data-gmv="3109647000" data-sold="6780" data-price="458650">
+          <td><a href="https://shop.tiktok.com/vn/pdp/combo-2-long-den-dien-quay-360deg-led-3d-phan-quang-may-man/1730964373163706520" target="_blank" rel="noopener">(2 cái)(Tặng Đèn Led 10M)COMBO 1 CẶP (2 cái) Lồng Đèn Điện Quay 360 Độ Led 3D, Phản Quang,XU Trang Trí Ngày Tết 2026 Cầu Tài Cầu, Cầu Lộc, May Mắn lồng  đèn</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia Dụng Nhà Cam 02</td>
+          <td>458.650 đ</td>
+          <td>6,780</td>
+          <td><strong>3.109.647.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set trang trí tết chữ tết đỏ may mắn có đèn led – decor treo tường, trang trí nhà cửa, cửa hàng" data-gmv="1480500000" data-sold="5922" data-price="250000">
+          <td><a href="https://shopee.vn/product/1402475072/55867653974" target="_blank" rel="noopener">Set Trang Trí Tết Chữ Tết Đỏ May Mắn Có Đèn LED – Decor Treo Tường, Trang Trí Nhà Cửa, Cửa Hàng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>250.000 đ</td>
+          <td>5,922</td>
+          <td><strong>1.480.500.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led hình đèn lồng 8 khía dài 10m 36 bóng nhiều chế độ nháy treo cây trang trí tết" data-gmv="690807480" data-sold="12694" data-price="54420">
+          <td><a href="https://shop.tiktok.com/vn/pdp/den-led-hinh-den-long-8-khia-10m-36-bong-chong-nuoc-trang-tri-tet/1731138542640334871" target="_blank" rel="noopener">Đèn Led hình Đèn Lồng 8 khía dài 10M 36 bóng nhiều chế độ nháy treo cây trang trí Tết</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>DUSIHA - Led Trang Trí</td>
+          <td>54.420 đ</td>
+          <td>12,694</td>
+          <td><strong>690.807.480 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 6 quạt giấy đỏ tròn trang trí tết sẵn keo - quạt giấy xếp đỏ decor nhà cửa" data-gmv="639865600" data-sold="32780" data-price="19520">
+          <td><a href="https://shop.tiktok.com/vn/pdp/set-6-quat-giay-do-tron-trang-tri-tet-kich-thuoc-da-dang/1729905906194811280" target="_blank" rel="noopener">Set 6 Quạt Giấy Đỏ tròn trang trí Tết sẵn keo - Quạt Giấy Xếp Đỏ decor nhà cửa</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>DungTrum</td>
+          <td>19.520 đ</td>
+          <td>32,780</td>
+          <td><strong>639.865.600 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng siêu sáng thần tài vạn phúc cao cấp, đèn lồng trang trí tết 2027, dải lụa may mắn, đèn lồng trang trí nhà cửa, phụ kiện trang trí tết." data-gmv="588907456" data-sold="1712" data-price="343988">
+          <td><a href="https://shop.tiktok.com/vn/pdp/den-long-meca-dai-lua-cao-cap-trang-tri-tet-2026-may-man/1733192326469682234" target="_blank" rel="noopener">Đèn Lồng Siêu Sáng Thần Tài Vạn Phúc Cao Cấp, Đèn Lồng Trang Trí Tết 2027, Dải Lụa May Mắn, Đèn Lồng Trang Trí Nhà Cửa, Phụ Kiện Trang Trí Tết.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia Dụng Hoàng Thành Phát</td>
+          <td>343.988 đ</td>
+          <td>1,712</td>
+          <td><strong>588.907.456 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sét trang trí tết , decor tag treo tường tết  chữ tết đỏ may mắn tặng kèm đèn led - settet" data-gmv="494750000" data-sold="1979" data-price="250000">
+          <td><a href="https://shopee.vn/product/1402454391/56266179264" target="_blank" rel="noopener">Sét trang trí tết , decor tag treo tường TẾT  CHỮ TẾT đỏ may mắn tặng kèm đèn LED - SETTET</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KHO TIỆN ÍCH HIP</td>
+          <td>250.000 đ</td>
+          <td>1,979</td>
+          <td><strong>494.750.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set quạt trang trí tết màu đỏ may mắn – decor treo tường nhà cửa, cửa hàng, quán cafe thu hút tài lộc setcd" data-gmv="444750000" data-sold="2965" data-price="150000">
+          <td><a href="https://shopee.vn/product/1402475072/46717695710" target="_blank" rel="noopener">Set Quạt Trang Trí Tết Màu Đỏ May Mắn – Decor Treo Tường Nhà Cửa, Cửa Hàng, Quán Cafe Thu Hút Tài Lộc SETCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>150.000 đ</td>
+          <td>2,965</td>
+          <td><strong>444.750.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set mẹt tre trang trí tết diy – phụ kiện lì xì, quạt đỏ, hoa mai đào decor treo tường, treo cửa + tặng keo nến" data-gmv="295950000" data-sold="5919" data-price="50000">
+          <td><a href="https://shopee.vn/product/1402475072/53117657981" target="_blank" rel="noopener">Set Mẹt Tre Trang Trí Tết DIY – Phụ Kiện Lì Xì, Quạt Đỏ, Hoa Mai Đào Decor Treo Tường, Treo Cửa + Tặng Keo Nến</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>50.000 đ</td>
+          <td>5,919</td>
+          <td><strong>295.950.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led xương cá lõi đồng xanh 50m 30m đèn trang trí cây thông giáng sinh dây led trang trí tết noel" data-gmv="116963600" data-sold="542" data-price="215800">
+          <td><a href="https://shopee.vn/product/463699876/23949723855" target="_blank" rel="noopener">Đèn LED Xương Cá Lõi Đồng Xanh 50M 30M Đèn Trang Trí Cây Thông Giáng Sinh Dây Led Trang Trí Tết Noel</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Led Song Ngân</td>
+          <td>215.800 đ</td>
+          <td>542</td>
+          <td><strong>116.963.600 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dải treo chữ phúc-lộc-thọ-tết thần tài có đèn led trang trí tết" data-gmv="112975959" data-sold="1511" data-price="74769">
+          <td><a href="https://shop.tiktok.com/vn/pdp/combo-2-doi-lac-may-man-trang-tri-tet-dep-tham-cho-phong-khach/1731242349701728370" target="_blank" rel="noopener">Dải Treo Chữ Phúc-Lộc-Thọ-Tết Thần Tài Có Đèn Led Trang Trí Tết</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gia Dụng Huy Tưởng</td>
+          <td>74.769 đ</td>
+          <td>1,511</td>
+          <td><strong>112.975.959 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.2★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ đôi dây treo trang trí tết 2027 dán cửa hình dê may mắn, phúc lộc tài, câu đối chúc mừng năm mới 30x80 cm" data-gmv="108705772" data-sold="2098" data-price="51814">
+          <td><a href="https://shopee.vn/product/1016824956/24438391041" target="_blank" rel="noopener">Bộ Đôi Dây Treo Trang Trí Tết 2027 Dán Cửa Hình Dê May Mắn, Phúc Lộc Tài, Câu Đối Chúc Mừng Năm Mới 30x80 cm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Đông xưởng Tân Thanh</td>
+          <td>51.814 đ</td>
+          <td>2,098</td>
+          <td><strong>108.705.772 đ</strong></td>
+          <td>12.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[deal mở bán tặng quạt 2027] sét 2 khánh treo trang trí tết 2027 hình dê may mắn d phúc tài tua rua đỏ al chúc mừng năm mới cung hỷ phát tài van sư nhự y" data-gmv="77800800" data-sold="2400" data-price="32417">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738251307238786813" target="_blank" rel="noopener">[Deal Mở Bán Tặng Quạt 2027] Sét 2 Khánh Treo Trang Trí Tết 2027 Hình Dê May Mắn D Phúc Tài Tua Rua Đỏ AL Chúc Mừng Năm Mới Cung Hỷ Phát Tài Van Sư Nhự Y</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>TT79.Store</td>
+          <td>32.417 đ</td>
+          <td>2,400</td>
+          <td><strong>77.800.800 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.4★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bó 50/100 sợi kẽm nhung loại 1 dày mịn màu pastel làm hoa kẽm nhung hoa trang trí handmade trang trí tết vyshop" data-gmv="59712870" data-sold="4145" data-price="14406">
+          <td><a href="https://shopee.vn/product/39369140/9335435111" target="_blank" rel="noopener">Bó 50/100 Sợi Kẽm Nhung Loại 1 Dày Mịn Màu Pastel Làm Hoa Kẽm Nhung Hoa Trang Trí Handmade Trang Trí Tết VYSHOP</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VYSHOP DIY &amp; MORE</td>
+          <td>14.406 đ</td>
+          <td>4,145</td>
+          <td><strong>59.712.870 đ</strong></td>
+          <td>11.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 3 khánh quạt phúc lộc thọ 45cm dây treo nhung đỏ – quạt trang trí tết treo tường, treo cửa may mắn tài lộc" data-gmv="59280000" data-sold="2964" data-price="20000">
+          <td><a href="https://shopee.vn/product/1402475072/47167683111" target="_blank" rel="noopener">Set 3 Khánh Quạt Phúc Lộc Thọ 45cm Dây Treo Nhung Đỏ – Quạt Trang Trí Tết Treo Tường, Treo Cửa May Mắn Tài Lộc</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>20.000 đ</td>
+          <td>2,964</td>
+          <td><strong>59.280.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="vải nhung đỏ, vải công phượng trang trí tết làm background decor quán cafe, phông nền chụp ảnh studio, trang trí nhà cửa" data-gmv="49300000" data-sold="986" data-price="50000">
+          <td><a href="https://shopee.vn/product/1402475072/50667667772" target="_blank" rel="noopener">Vải Nhung Đỏ, Vải Công Phượng Trang Trí Tết Làm Background Decor Quán Cafe, Phông Nền Chụp Ảnh Studio, Trang Trí Nhà Cửa</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>50.000 đ</td>
+          <td>986</td>
+          <td><strong>49.300.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[tặng dây led 40m khi mua combo] đèn lồng điện led kim cương trang trí tết 2027 - bản chữ việt, xoay 360 -kimcuong" data-gmv="49280000" data-sold="224" data-price="220000">
+          <td><a href="https://shopee.vn/product/329244146/27143065644" target="_blank" rel="noopener">[TẶNG DÂY LED 40M KHI MUA COMBO] Đèn lồng điện Led Kim Cương trang trí Tết 2027 - bản chữ Việt, xoay 360 -KIMCUONG</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Hoshi Japan</td>
+          <td>220.000 đ</td>
+          <td>224</td>
+          <td><strong>49.280.000 đ</strong></td>
+          <td>14.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giấy đỏ trang trí tết làm quạt, trang trí chậu cây, phông nền truyền thống - brendo store" data-gmv="43650000" data-sold="9700" data-price="4500">
+          <td><a href="https://www.lazada.vn/products/pdp-i1999602004.html" target="_blank" rel="noopener">Giấy đỏ trang trí tết làm quạt, trang trí chậu cây, phông nền truyền thống - Brendo Store</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Giấy gói quà &amp; phụ kiện Brendo</td>
+          <td>4.500 đ</td>
+          <td>9,700</td>
+          <td><strong>43.650.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.94★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo 5/10 cái đèn ngôi sao trung thu diydecorsg, lồng đèn ngôi sao truyền thống trang trí tết trung thu 23cm/35cm/45cm" data-gmv="35620000" data-sold="548" data-price="65000">
+          <td><a href="https://shopee.vn/product/73262516/28856624355" target="_blank" rel="noopener">Combo 5/10 cái đèn ngôi sao Trung thu DIYDECORSG, lồng đèn ngôi sao truyền thống trang trí Tết Trung thu 23cm/35cm/45cm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>DIY Decor SG</td>
+          <td>65.000 đ</td>
+          <td>548</td>
+          <td><strong>35.620.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="( sỉ 1.9k )[ hỏa tốc ] combo 100 dây đèn led vàng, đèn màu 1m có 3 chế độ nháy kèm pin, dùng trang trí tết, noel, lồng đ" data-gmv="29798769" data-sold="231" data-price="128999">
+          <td><a href="https://shopee.vn/product/29041909/42470963717" target="_blank" rel="noopener">( sỉ 1.9k )[ HỎA TỐC ] COMBO 100 Dây Đèn Led Vàng, Đèn Màu 1M Có 3 Chế Độ Nháy Kèm Pin, Dùng Trang Trí Tết, Noel, Lồng Đ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Tiemcuabin</td>
+          <td>128.999 đ</td>
+          <td>231</td>
+          <td><strong>29.798.769 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dây led rgb 2025, dải led usb đèn 16 triệu màu  trang trí decor phòng, điều khiển bằng remote đèn trang trí tết" data-gmv="29325000" data-sold="425" data-price="69000">
+          <td><a href="https://shopee.vn/product/1297127080/40559417524" target="_blank" rel="noopener">Dây Led RGB 2025, Dải LED USB Đèn 16 Triệu Màu  Trang Trí Decor Phòng, Điều Khiển Bằng Remote Đèn trang trí Tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>NovaBuy</td>
+          <td>69.000 đ</td>
+          <td>425</td>
+          <td><strong>29.325.000 đ</strong></td>
+          <td>17.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dải treo ông thần tài lắc lư , khánh quạt, dải chữ , lì xì decor nhà cửa trang trí tết  mang lại may mắn" data-gmv="29250000" data-sold="975" data-price="30000">
+          <td><a href="https://shopee.vn/product/1402454391/56866181468" target="_blank" rel="noopener">Dải Treo Ông Thần Tài Lắc Lư , Khánh Quạt, Dải Chữ , Lì Xì Decor Nhà Cửa Trang Trí Tết  Mang Lại May Mắn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KHO TIỆN ÍCH HIP</td>
+          <td>30.000 đ</td>
+          <td>975</td>
+          <td><strong>29.250.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng quay 360, đèn lồng điện đỏ trang trí tết kích thước cầu 50, 60, 80, 100" data-gmv="28860000" data-sold="111" data-price="260000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2502663808.html" target="_blank" rel="noopener">Đèn Lồng Quay 360, Đèn Lồng Điện Đỏ Trang Trí Tết Kích Thước Cầu 50, 60, 80, 100</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Kho Gia Dụng Chiếu Sáng An Tâm </td>
+          <td>260.000 đ</td>
+          <td>111</td>
+          <td><strong>28.860.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.85★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn năng lượng mặt trời ngoài trời 42m đèn led chống thấm nước đèn sân vườn trang trí tết" data-gmv="25482000" data-sold="411" data-price="62000">
+          <td><a href="https://shopee.vn/product/1269962363/50454101071" target="_blank" rel="noopener">Đèn năng lượng mặt trời ngoài trời 42M Đèn LED chống thấm nước Đèn sân vườn trang trí tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Mặt trời ngoài trời</td>
+          <td>62.000 đ</td>
+          <td>411</td>
+          <td><strong>25.482.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng điện xoay 360 độ led lấp lánh trang trí tết, cầu điện tự xoay 360 độ, 1 cặp đèn lồng xoay phản quang" data-gmv="24931200" data-sold="53" data-price="470400">
+          <td><a href="https://shopee.vn/product/1828130925/40534368661" target="_blank" rel="noopener">Đèn lồng điện xoay 360 độ led lấp lánh trang trí Tết, cầu điện tự xoay 360 độ, 1 cặp đèn lồng xoay phản quang</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Thế Giới Du Lịch_Store</td>
+          <td>470.400 đ</td>
+          <td>53</td>
+          <td><strong>24.931.200 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="dây led thả rủ 50m cao cấp trang trí giáng sinh, quán cafe sân vườn, trang trí tết decor ban công, nhà hàng, khách sạn" data-gmv="23322000" data-sold="169" data-price="138000">
+          <td><a href="https://shopee.vn/product/579062387/13547500850" target="_blank" rel="noopener">Dây Led thả rủ 50m Cao Cấp trang trí giáng sinh, quán cafe sân vườn, trang trí tết decor ban công, nhà hàng, khách sạn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Small Home 68 - Tiện Ích <span class="mall-pill">Mall</span></td>
+          <td>138.000 đ</td>
+          <td>169</td>
+          <td><strong>23.322.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bông hoa mộc lan trang trí tết, nhà cửa, tháp oản, bánh siêu đẹp - hàng vip như ảnh" data-gmv="23033200" data-sold="2588" data-price="8900">
+          <td><a href="https://shopee.vn/product/163054978/42673792556" target="_blank" rel="noopener">Bông hoa Mộc lan trang trí tết, nhà cửa, tháp oản, bánh siêu đẹp - Hàng VIP như ảnh</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>D.decor - Tiệm Decor Daisy</td>
+          <td>8.900 đ</td>
+          <td>2,588</td>
+          <td><strong>23.033.200 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sung nhũ kim tuyến trang trí tết, cây thông noel, làm tháp oản phụ kiện decor sẵn 3 màu đỏ bạc vàng" data-gmv="21451050" data-sold="9795" data-price="2190">
+          <td><a href="https://shopee.vn/product/163054978/27718097618" target="_blank" rel="noopener">Sung nhũ kim tuyến trang trí Tết, cây thông Noel, làm tháp oản phụ kiện decor sẵn 3 màu đỏ bạc vàng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>D.decor - Tiệm Decor Daisy</td>
+          <td>2.190 đ</td>
+          <td>9,795</td>
+          <td><strong>21.451.050 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[mời sỉ] mẹt tre viền đỏ decor trang trí trung thu, trang trí tết, giá tận xưởng đủ sze từ 15-50cm" data-gmv="21255000" data-sold="1635" data-price="13000">
+          <td><a href="https://shopee.vn/product/985906985/26426436673" target="_blank" rel="noopener">[MỜI SỈ] Mẹt Tre Viền Đỏ Decor Trang Trí Trung thu, trang trí Tết, Giá Tận Xưởng Đủ Sze Từ 15-50cm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>HANOICOR-Mây Tre Đan HN</td>
+          <td>13.000 đ</td>
+          <td>1,635</td>
+          <td><strong>21.255.000 đ</strong></td>
+          <td>9.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="cành đào lụa, hoa đào cổ trang trí tháp bánh kẹo, oản tài lộc, góc decor tết 2025 phụ kiện trang trí tết" data-gmv="20649000" data-sold="6883" data-price="3000">
+          <td><a href="https://shopee.vn/product/163054978/24288054311" target="_blank" rel="noopener">Cành Đào Lụa, Hoa Đào Cổ Trang Trí Tháp bánh Kẹo, Oản Tài Lộc, Góc Decor Tết 2025 Phụ Kiện Trang Trí Tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>D.decor - Tiệm Decor Daisy</td>
+          <td>3.000 đ</td>
+          <td>6,883</td>
+          <td><strong>20.649.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="giỏ tre đựng quà tết, làn tre quà tặng, trứng, decor, trang trí tết, đựng đồ biếu hoa quả trái cây" data-gmv="19026900" data-sold="2349" data-price="8100">
+          <td><a href="https://shopee.vn/product/150544615/24544247680" target="_blank" rel="noopener">Giỏ tre đựng quà Tết, làn tre quà tặng, trứng, decor, trang trí tết, đựng đồ biếu hoa quả trái cây</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Mây Tre Chương Mỹ</td>
+          <td>8.100 đ</td>
+          <td>2,349</td>
+          <td><strong>19.026.900 đ</strong></td>
+          <td>14.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">2.190 – 80.224 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (62.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:62.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (27.3%)</span><div class="mini-track"><div class="mini-fill green" style="width:27.3%"></div></div></div>
+          </div>
+          <div class="bin-val">2.450.338.603 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">80.225 – 158.259 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (14.9%)</span><div class="mini-track"><div class="mini-fill blue" style="width:14.9%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (6.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:6.1%"></div></div></div>
+          </div>
+          <div class="bin-val">546.638.277 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">158.260 – 236.294 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (11.9%)</span><div class="mini-track"><div class="mini-fill blue" style="width:11.9%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (2.4%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">217.231.243 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">236.295 – 314.329 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (6.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:6.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (22.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:22.6%"></div></div></div>
+          </div>
+          <div class="bin-val">2.022.602.500 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">314.330 – 392.364 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (1.5%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (6.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:6.6%"></div></div></div>
+          </div>
+          <div class="bin-val">588.907.456 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">392.365 – 470.400 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (35.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:35.0%"></div></div></div>
+          </div>
+          <div class="bin-val">3.134.578.200 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (55 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Gia Dụng Nhà Cam 02</strong></td><td>Shop Thường</td><td>1</td><td>6,780</td><td>3.109.647.000 đ</td><td><span class='share-pill'>34.6%</span></td></tr><tr><td><strong>Kho Đồ Hay HN</strong></td><td>Shop Thường</td><td>5</td><td>18,756</td><td>2.329.780.000 đ</td><td><span class='share-pill'>25.9%</span></td></tr><tr><td><strong>DUSIHA - Led Trang Trí</strong></td><td>Shop Thường</td><td>1</td><td>12,694</td><td>690.807.480 đ</td><td><span class='share-pill'>7.7%</span></td></tr><tr><td><strong>DungTrum</strong></td><td>Shop Thường</td><td>1</td><td>32,780</td><td>639.865.600 đ</td><td><span class='share-pill'>7.1%</span></td></tr><tr><td><strong>Gia Dụng Hoàng Thành Phát</strong></td><td>Shop Thường</td><td>1</td><td>1,712</td><td>588.907.456 đ</td><td><span class='share-pill'>6.6%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">34.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:34.6%"></div></div>
+          <div class="dist-sub">Gia Dụng Nhà Cam 02</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">68.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:68.2%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">81.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:81.9%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0.4%"></div></div>
+          <div class="dist-sub">2/70 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">99.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:99.6%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">35.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:35.0%"></div></div>
+          <div class="dist-sub">392.365 – 470.400 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">78.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:78.6%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">8,0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:32.0%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🌐 Tổng Hợp 3 Sàn"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;trang trí tết&#x27; đạt 70 SKU từ 55 shop, tổng 129,464 lượt bán tương ứng 8.979.323.179 đ. Tỷ lệ có bán đạt 84.3% (59 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 95.599 đ (khoảng giá 1.000 đ – 470.400 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 392.365 – 470.400 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2068 (Mall chiếm 0.4% doanh thu). Top 3 shop dẫn đầu giữ 68.2% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_shopee" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🟠 Sàn Cam (Shopee)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: AddLiveTag Market API (LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">43.33% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 30 SP từ 22 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 1 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">83</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:83%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.445), tỷ lệ có đơn (100.0%) và dư địa shop ngoài Mall (93.3%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">22</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">55,040</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">3.593.588.989 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">121.727 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">2.190 đ – 470.400 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">100.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,445</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">8,0%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (30 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('shopee', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('shopee', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('shopee')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_shopee">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set trang trí tết chữ tết đỏ may mắn có đèn led – decor treo tường, trang trí nhà cửa, cửa hàng" data-gmv="1480500000" data-sold="5922" data-price="250000">
+          <td><a href="https://shopee.vn/product/1402475072/55867653974" target="_blank" rel="noopener">Set Trang Trí Tết Chữ Tết Đỏ May Mắn Có Đèn LED – Decor Treo Tường, Trang Trí Nhà Cửa, Cửa Hàng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>250.000 đ</td>
+          <td>5,922</td>
+          <td><strong>1.480.500.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sét trang trí tết , decor tag treo tường tết  chữ tết đỏ may mắn tặng kèm đèn led - settet" data-gmv="494750000" data-sold="1979" data-price="250000">
+          <td><a href="https://shopee.vn/product/1402454391/56266179264" target="_blank" rel="noopener">Sét trang trí tết , decor tag treo tường TẾT  CHỮ TẾT đỏ may mắn tặng kèm đèn LED - SETTET</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KHO TIỆN ÍCH HIP</td>
+          <td>250.000 đ</td>
+          <td>1,979</td>
+          <td><strong>494.750.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set quạt trang trí tết màu đỏ may mắn – decor treo tường nhà cửa, cửa hàng, quán cafe thu hút tài lộc setcd" data-gmv="444750000" data-sold="2965" data-price="150000">
+          <td><a href="https://shopee.vn/product/1402475072/46717695710" target="_blank" rel="noopener">Set Quạt Trang Trí Tết Màu Đỏ May Mắn – Decor Treo Tường Nhà Cửa, Cửa Hàng, Quán Cafe Thu Hút Tài Lộc SETCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>150.000 đ</td>
+          <td>2,965</td>
+          <td><strong>444.750.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set mẹt tre trang trí tết diy – phụ kiện lì xì, quạt đỏ, hoa mai đào decor treo tường, treo cửa + tặng keo nến" data-gmv="295950000" data-sold="5919" data-price="50000">
+          <td><a href="https://shopee.vn/product/1402475072/53117657981" target="_blank" rel="noopener">Set Mẹt Tre Trang Trí Tết DIY – Phụ Kiện Lì Xì, Quạt Đỏ, Hoa Mai Đào Decor Treo Tường, Treo Cửa + Tặng Keo Nến</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>50.000 đ</td>
+          <td>5,919</td>
+          <td><strong>295.950.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led xương cá lõi đồng xanh 50m 30m đèn trang trí cây thông giáng sinh dây led trang trí tết noel" data-gmv="116963600" data-sold="542" data-price="215800">
+          <td><a href="https://shopee.vn/product/463699876/23949723855" target="_blank" rel="noopener">Đèn LED Xương Cá Lõi Đồng Xanh 50M 30M Đèn Trang Trí Cây Thông Giáng Sinh Dây Led Trang Trí Tết Noel</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Led Song Ngân</td>
+          <td>215.800 đ</td>
+          <td>542</td>
+          <td><strong>116.963.600 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ đôi dây treo trang trí tết 2027 dán cửa hình dê may mắn, phúc lộc tài, câu đối chúc mừng năm mới 30x80 cm" data-gmv="108705772" data-sold="2098" data-price="51814">
+          <td><a href="https://shopee.vn/product/1016824956/24438391041" target="_blank" rel="noopener">Bộ Đôi Dây Treo Trang Trí Tết 2027 Dán Cửa Hình Dê May Mắn, Phúc Lộc Tài, Câu Đối Chúc Mừng Năm Mới 30x80 cm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Đông xưởng Tân Thanh</td>
+          <td>51.814 đ</td>
+          <td>2,098</td>
+          <td><strong>108.705.772 đ</strong></td>
+          <td>12.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bó 50/100 sợi kẽm nhung loại 1 dày mịn màu pastel làm hoa kẽm nhung hoa trang trí handmade trang trí tết vyshop" data-gmv="59712870" data-sold="4145" data-price="14406">
+          <td><a href="https://shopee.vn/product/39369140/9335435111" target="_blank" rel="noopener">Bó 50/100 Sợi Kẽm Nhung Loại 1 Dày Mịn Màu Pastel Làm Hoa Kẽm Nhung Hoa Trang Trí Handmade Trang Trí Tết VYSHOP</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VYSHOP DIY &amp; MORE</td>
+          <td>14.406 đ</td>
+          <td>4,145</td>
+          <td><strong>59.712.870 đ</strong></td>
+          <td>11.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 3 khánh quạt phúc lộc thọ 45cm dây treo nhung đỏ – quạt trang trí tết treo tường, treo cửa may mắn tài lộc" data-gmv="59280000" data-sold="2964" data-price="20000">
+          <td><a href="https://shopee.vn/product/1402475072/47167683111" target="_blank" rel="noopener">Set 3 Khánh Quạt Phúc Lộc Thọ 45cm Dây Treo Nhung Đỏ – Quạt Trang Trí Tết Treo Tường, Treo Cửa May Mắn Tài Lộc</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>20.000 đ</td>
+          <td>2,964</td>
+          <td><strong>59.280.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="vải nhung đỏ, vải công phượng trang trí tết làm background decor quán cafe, phông nền chụp ảnh studio, trang trí nhà cửa" data-gmv="49300000" data-sold="986" data-price="50000">
+          <td><a href="https://shopee.vn/product/1402475072/50667667772" target="_blank" rel="noopener">Vải Nhung Đỏ, Vải Công Phượng Trang Trí Tết Làm Background Decor Quán Cafe, Phông Nền Chụp Ảnh Studio, Trang Trí Nhà Cửa</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho Đồ Hay HN</td>
+          <td>50.000 đ</td>
+          <td>986</td>
+          <td><strong>49.300.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[tặng dây led 40m khi mua combo] đèn lồng điện led kim cương trang trí tết 2027 - bản chữ việt, xoay 360 -kimcuong" data-gmv="49280000" data-sold="224" data-price="220000">
+          <td><a href="https://shopee.vn/product/329244146/27143065644" target="_blank" rel="noopener">[TẶNG DÂY LED 40M KHI MUA COMBO] Đèn lồng điện Led Kim Cương trang trí Tết 2027 - bản chữ Việt, xoay 360 -KIMCUONG</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Hoshi Japan</td>
+          <td>220.000 đ</td>
+          <td>224</td>
+          <td><strong>49.280.000 đ</strong></td>
+          <td>14.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo 5/10 cái đèn ngôi sao trung thu diydecorsg, lồng đèn ngôi sao truyền thống trang trí tết trung thu 23cm/35cm/45cm" data-gmv="35620000" data-sold="548" data-price="65000">
+          <td><a href="https://shopee.vn/product/73262516/28856624355" target="_blank" rel="noopener">Combo 5/10 cái đèn ngôi sao Trung thu DIYDECORSG, lồng đèn ngôi sao truyền thống trang trí Tết Trung thu 23cm/35cm/45cm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>DIY Decor SG</td>
+          <td>65.000 đ</td>
+          <td>548</td>
+          <td><strong>35.620.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="( sỉ 1.9k )[ hỏa tốc ] combo 100 dây đèn led vàng, đèn màu 1m có 3 chế độ nháy kèm pin, dùng trang trí tết, noel, lồng đ" data-gmv="29798769" data-sold="231" data-price="128999">
+          <td><a href="https://shopee.vn/product/29041909/42470963717" target="_blank" rel="noopener">( sỉ 1.9k )[ HỎA TỐC ] COMBO 100 Dây Đèn Led Vàng, Đèn Màu 1M Có 3 Chế Độ Nháy Kèm Pin, Dùng Trang Trí Tết, Noel, Lồng Đ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Tiemcuabin</td>
+          <td>128.999 đ</td>
+          <td>231</td>
+          <td><strong>29.798.769 đ</strong></td>
+          <td>10.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dây led rgb 2025, dải led usb đèn 16 triệu màu  trang trí decor phòng, điều khiển bằng remote đèn trang trí tết" data-gmv="29325000" data-sold="425" data-price="69000">
+          <td><a href="https://shopee.vn/product/1297127080/40559417524" target="_blank" rel="noopener">Dây Led RGB 2025, Dải LED USB Đèn 16 Triệu Màu  Trang Trí Decor Phòng, Điều Khiển Bằng Remote Đèn trang trí Tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>NovaBuy</td>
+          <td>69.000 đ</td>
+          <td>425</td>
+          <td><strong>29.325.000 đ</strong></td>
+          <td>17.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dải treo ông thần tài lắc lư , khánh quạt, dải chữ , lì xì decor nhà cửa trang trí tết  mang lại may mắn" data-gmv="29250000" data-sold="975" data-price="30000">
+          <td><a href="https://shopee.vn/product/1402454391/56866181468" target="_blank" rel="noopener">Dải Treo Ông Thần Tài Lắc Lư , Khánh Quạt, Dải Chữ , Lì Xì Decor Nhà Cửa Trang Trí Tết  Mang Lại May Mắn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>KHO TIỆN ÍCH HIP</td>
+          <td>30.000 đ</td>
+          <td>975</td>
+          <td><strong>29.250.000 đ</strong></td>
+          <td>4.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn năng lượng mặt trời ngoài trời 42m đèn led chống thấm nước đèn sân vườn trang trí tết" data-gmv="25482000" data-sold="411" data-price="62000">
+          <td><a href="https://shopee.vn/product/1269962363/50454101071" target="_blank" rel="noopener">Đèn năng lượng mặt trời ngoài trời 42M Đèn LED chống thấm nước Đèn sân vườn trang trí tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Mặt trời ngoài trời</td>
+          <td>62.000 đ</td>
+          <td>411</td>
+          <td><strong>25.482.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng điện xoay 360 độ led lấp lánh trang trí tết, cầu điện tự xoay 360 độ, 1 cặp đèn lồng xoay phản quang" data-gmv="24931200" data-sold="53" data-price="470400">
+          <td><a href="https://shopee.vn/product/1828130925/40534368661" target="_blank" rel="noopener">Đèn lồng điện xoay 360 độ led lấp lánh trang trí Tết, cầu điện tự xoay 360 độ, 1 cặp đèn lồng xoay phản quang</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Thế Giới Du Lịch_Store</td>
+          <td>470.400 đ</td>
+          <td>53</td>
+          <td><strong>24.931.200 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="dây led thả rủ 50m cao cấp trang trí giáng sinh, quán cafe sân vườn, trang trí tết decor ban công, nhà hàng, khách sạn" data-gmv="23322000" data-sold="169" data-price="138000">
+          <td><a href="https://shopee.vn/product/579062387/13547500850" target="_blank" rel="noopener">Dây Led thả rủ 50m Cao Cấp trang trí giáng sinh, quán cafe sân vườn, trang trí tết decor ban công, nhà hàng, khách sạn</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Small Home 68 - Tiện Ích <span class="mall-pill">Mall</span></td>
+          <td>138.000 đ</td>
+          <td>169</td>
+          <td><strong>23.322.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bông hoa mộc lan trang trí tết, nhà cửa, tháp oản, bánh siêu đẹp - hàng vip như ảnh" data-gmv="23033200" data-sold="2588" data-price="8900">
+          <td><a href="https://shopee.vn/product/163054978/42673792556" target="_blank" rel="noopener">Bông hoa Mộc lan trang trí tết, nhà cửa, tháp oản, bánh siêu đẹp - Hàng VIP như ảnh</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>D.decor - Tiệm Decor Daisy</td>
+          <td>8.900 đ</td>
+          <td>2,588</td>
+          <td><strong>23.033.200 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sung nhũ kim tuyến trang trí tết, cây thông noel, làm tháp oản phụ kiện decor sẵn 3 màu đỏ bạc vàng" data-gmv="21451050" data-sold="9795" data-price="2190">
+          <td><a href="https://shopee.vn/product/163054978/27718097618" target="_blank" rel="noopener">Sung nhũ kim tuyến trang trí Tết, cây thông Noel, làm tháp oản phụ kiện decor sẵn 3 màu đỏ bạc vàng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>D.decor - Tiệm Decor Daisy</td>
+          <td>2.190 đ</td>
+          <td>9,795</td>
+          <td><strong>21.451.050 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[mời sỉ] mẹt tre viền đỏ decor trang trí trung thu, trang trí tết, giá tận xưởng đủ sze từ 15-50cm" data-gmv="21255000" data-sold="1635" data-price="13000">
+          <td><a href="https://shopee.vn/product/985906985/26426436673" target="_blank" rel="noopener">[MỜI SỈ] Mẹt Tre Viền Đỏ Decor Trang Trí Trung thu, trang trí Tết, Giá Tận Xưởng Đủ Sze Từ 15-50cm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>HANOICOR-Mây Tre Đan HN</td>
+          <td>13.000 đ</td>
+          <td>1,635</td>
+          <td><strong>21.255.000 đ</strong></td>
+          <td>9.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="cành đào lụa, hoa đào cổ trang trí tháp bánh kẹo, oản tài lộc, góc decor tết 2025 phụ kiện trang trí tết" data-gmv="20649000" data-sold="6883" data-price="3000">
+          <td><a href="https://shopee.vn/product/163054978/24288054311" target="_blank" rel="noopener">Cành Đào Lụa, Hoa Đào Cổ Trang Trí Tháp bánh Kẹo, Oản Tài Lộc, Góc Decor Tết 2025 Phụ Kiện Trang Trí Tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>D.decor - Tiệm Decor Daisy</td>
+          <td>3.000 đ</td>
+          <td>6,883</td>
+          <td><strong>20.649.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="giỏ tre đựng quà tết, làn tre quà tặng, trứng, decor, trang trí tết, đựng đồ biếu hoa quả trái cây" data-gmv="19026900" data-sold="2349" data-price="8100">
+          <td><a href="https://shopee.vn/product/150544615/24544247680" target="_blank" rel="noopener">Giỏ tre đựng quà Tết, làn tre quà tặng, trứng, decor, trang trí tết, đựng đồ biếu hoa quả trái cây</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Mây Tre Chương Mỹ</td>
+          <td>8.100 đ</td>
+          <td>2,349</td>
+          <td><strong>19.026.900 đ</strong></td>
+          <td>14.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led pháo hoa năng lượng mặt trời hình bồ công anh cho sân vườn,cảm biến ánh sáng tạo nhiều kiểu dáng trang trí tết" data-gmv="18592000" data-sold="160" data-price="116200">
+          <td><a href="https://shopee.vn/product/442344463/24904108829" target="_blank" rel="noopener">Đèn LED PHÁO HOA Năng Lượng Mặt Trời Hình Bồ Công Anh Cho Sân Vườn,cảm biến ánh sáng tạo nhiều kiểu dáng trang trí tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Shop nhật phong-Đèn Năng Lượng</td>
+          <td>116.200 đ</td>
+          <td>160</td>
+          <td><strong>18.592.000 đ</strong></td>
+          <td>15.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ hàng bao đẹp ] đèn hoa sen đá pha lê nguyên khối thờ cúng phật đổi nhiều màu để bàn thờ trang trí tết  – đức hiếu shop" data-gmv="18492500" data-sold="65" data-price="284500">
+          <td><a href="https://shopee.vn/product/27661858/13168232640" target="_blank" rel="noopener">[ Hàng bao đẹp ] Đèn hoa sen đá pha lê nguyên khối thờ cúng phật đổi nhiều màu để bàn thờ trang trí tết  – Đức Hiếu Shop</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Đức Hiếu Shop</td>
+          <td>284.500 đ</td>
+          <td>65</td>
+          <td><strong>18.492.500 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng điện xoay 360 chữ nổi lấp lánh tiếng việt mẫu mới 2026 trang trí tết trung thu" data-gmv="17301000" data-sold="79" data-price="219000">
+          <td><a href="https://shopee.vn/product/445642876/44562376784" target="_blank" rel="noopener">Đèn Lồng Điện Xoay 360 Chữ Nổi Lấp Lánh Tiếng Việt Mẫu Mới 2026 Trang Trí Tết trung thu</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>ĐỒ CHƠI TRẺ EM - HQ</td>
+          <td>219.000 đ</td>
+          <td>79</td>
+          <td><strong>17.301.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[ kèm thân+ chậu ] set nguyên liệu làm hoa mai, hoa đào bonsai kẽm nhung trang trí tết handmade diy" data-gmv="15980000" data-sold="68" data-price="235000">
+          <td><a href="https://shopee.vn/product/166687177/43672639311" target="_blank" rel="noopener">[ KÈM THÂN+ CHẬU ] Set nguyên liệu làm hoa mai, hoa đào bonsai kẽm nhung trang trí Tết handmade diy</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Han Shopping Mall <span class="mall-pill">Mall</span></td>
+          <td>235.000 đ</td>
+          <td>68</td>
+          <td><strong>15.980.000 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="sỉ nón lá trang trí -size nhỏ ,trang trí tết ,lễ hội ,decor" data-gmv="15428000" data-sold="406" data-price="38000">
+          <td><a href="https://shopee.vn/product/144965530/16491481696" target="_blank" rel="noopener">Sỉ nón lá trang trí -size nhỏ ,Trang trí tết ,lễ hội ,decor</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>ChangVali&amp;Decor</td>
+          <td>38.000 đ</td>
+          <td>406</td>
+          <td><strong>15.428.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set nguyên liệu trang trí tết bách lộc-xuân phát tài decor tết 2027-set trang trí nhà cửa,cửa hàng may mắn,tài lộc 03103" data-gmv="15400000" data-sold="154" data-price="100000">
+          <td><a href="https://shopee.vn/product/391756/48102389253" target="_blank" rel="noopener">Set nguyên liệu trang trí Tết Bách Lộc-Xuân Phát Tài decor Tết 2027-Set trang trí nhà cửa,cửa hàng may mắn,tài lộc 03103</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Buôn Rẻ</td>
+          <td>100.000 đ</td>
+          <td>154</td>
+          <td><strong>15.400.000 đ</strong></td>
+          <td>6.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dây đèn led cob 220v– ánh sáng liền mạch, dẻo, chống nước ip65 | khuyên dùng 10m – trang trí phòng &amp; ban công trang trí tết" data-gmv="15220128" data-sold="231" data-price="65888">
+          <td><a href="https://shopee.vn/product/1297127080/53854177129" target="_blank" rel="noopener">Dây Đèn LED COB 220V– Ánh Sáng Liền Mạch, Dẻo, Chống Nước IP65 | Khuyên Dùng 10M – Trang Trí Phòng &amp; Ban Công Trang trí Tết</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>NovaBuy</td>
+          <td>65.888 đ</td>
+          <td>231</td>
+          <td><strong>15.220.128 đ</strong></td>
+          <td>17.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led đuôi công, đuôi phượng 3 đuôi dài 4m cao 0.5m 8 chế độ trang trí tết, noel, lễ hội, sự kiện" data-gmv="14839000" data-sold="71" data-price="209000">
+          <td><a href="https://shopee.vn/product/1813861874/48771052046" target="_blank" rel="noopener">Đèn LED Đuôi Công, Đuôi Phượng 3 Đuôi Dài 4M Cao 0.5m 8 Chế Độ Trang Trí Tết, Noel, Lễ Hội, Sự Kiện</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>H2 Home</td>
+          <td>209.000 đ</td>
+          <td>71</td>
+          <td><strong>14.839.000 đ</strong></td>
+          <td>11.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">2.190 – 80.224 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (51.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:51.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (22.7%)</span><div class="mini-track"><div class="mini-fill green" style="width:22.7%"></div></div></div>
+          </div>
+          <div class="bin-val">809.662.020 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">80.225 – 158.259 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (17.2%)</span><div class="mini-track"><div class="mini-fill blue" style="width:17.2%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (14.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:14.9%"></div></div></div>
+          </div>
+          <div class="bin-val">531.862.769 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">158.260 – 236.294 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (17.2%)</span><div class="mini-track"><div class="mini-fill blue" style="width:17.2%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (6.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:6.0%"></div></div></div>
+          </div>
+          <div class="bin-val">214.363.600 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">236.295 – 314.329 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (10.3%)</span><div class="mini-track"><div class="mini-fill blue" style="width:10.3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (55.8%)</span><div class="mini-track"><div class="mini-fill green" style="width:55.8%"></div></div></div>
+          </div>
+          <div class="bin-val">1.993.742.500 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">314.330 – 392.364 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">392.365 – 470.400 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.4%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3.4%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.7%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">24.931.200 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (22 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Kho Đồ Hay HN</strong></td><td>Shop Thường</td><td>5</td><td>18,756</td><td>2.329.780.000 đ</td><td><span class='share-pill'>64.8%</span></td></tr><tr><td><strong>KHO TIỆN ÍCH HIP</strong></td><td>Shop Thường</td><td>2</td><td>2,954</td><td>524.000.000 đ</td><td><span class='share-pill'>14.6%</span></td></tr><tr><td><strong>Led Song Ngân</strong></td><td>Shop Thường</td><td>1</td><td>542</td><td>116.963.600 đ</td><td><span class='share-pill'>3.3%</span></td></tr><tr><td><strong>Đông xưởng Tân Thanh</strong></td><td>Shop Thường</td><td>1</td><td>2,098</td><td>108.705.772 đ</td><td><span class='share-pill'>3.0%</span></td></tr><tr><td><strong>D.decor - Tiệm Decor Daisy</strong></td><td>Shop Thường</td><td>3</td><td>19,266</td><td>65.133.250 đ</td><td><span class='share-pill'>1.8%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">64.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:64.8%"></div></div>
+          <div class="dist-sub">Kho Đồ Hay HN</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">82.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:82.7%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">87.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:87.5%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">1.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:1.1%"></div></div>
+          <div class="dist-sub">2/30 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">98.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:98.9%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">55.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:55.8%"></div></div>
+          <div class="dist-sub">236.295 – 314.329 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">90.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:90.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">8,0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:32.0%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🟠 Sàn Cam (Shopee)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;trang trí tết&#x27; đạt 70 SKU từ 55 shop, tổng 129,464 lượt bán tương ứng 8.979.323.179 đ. Tỷ lệ có bán đạt 84.3% (59 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 95.599 đ (khoảng giá 1.000 đ – 470.400 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 392.365 – 470.400 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2068 (Mall chiếm 0.4% doanh thu). Top 3 shop dẫn đầu giữ 68.2% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_lazada" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🔵 Sàn Xanh (Lazada)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify Lazada Scraper (memo23~lazada-scraper · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 15 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 2 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">85</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:85%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.2168), tỷ lệ có đơn (70.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">15</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">15,820</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">144.133.500 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">44.850 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">1.000 đ – 260.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">70.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">14</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,2168</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('lazada', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('lazada', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('lazada')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_lazada">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giấy đỏ trang trí tết làm quạt, trang trí chậu cây, phông nền truyền thống - brendo store" data-gmv="43650000" data-sold="9700" data-price="4500">
+          <td><a href="https://www.lazada.vn/products/pdp-i1999602004.html" target="_blank" rel="noopener">Giấy đỏ trang trí tết làm quạt, trang trí chậu cây, phông nền truyền thống - Brendo Store</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Giấy gói quà &amp; phụ kiện Brendo</td>
+          <td>4.500 đ</td>
+          <td>9,700</td>
+          <td><strong>43.650.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.94★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng quay 360, đèn lồng điện đỏ trang trí tết kích thước cầu 50, 60, 80, 100" data-gmv="28860000" data-sold="111" data-price="260000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2502663808.html" target="_blank" rel="noopener">Đèn Lồng Quay 360, Đèn Lồng Điện Đỏ Trang Trí Tết Kích Thước Cầu 50, 60, 80, 100</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Kho Gia Dụng Chiếu Sáng An Tâm </td>
+          <td>260.000 đ</td>
+          <td>111</td>
+          <td><strong>28.860.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.85★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="red lantern set for tet decoration - 2027 tet decoration home decoration wall hanging for good luck with new year couplets" data-gmv="18960000" data-sold="240" data-price="79000">
+          <td><a href="https://www.lazada.vn/products/pdp-i3243381492.html" target="_blank" rel="noopener">Red Lantern Set for Tet Decoration - 2027 Tet Decoration Home Decoration Wall Hanging for Good Luck with New Year Couplets</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Gia Dụng Pk</td>
+          <td>79.000 đ</td>
+          <td>240</td>
+          <td><strong>18.960.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set of 6 2026 new year red envelopes with 3d embossed printing a0403" data-gmv="9990000" data-sold="555" data-price="18000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2491764096.html" target="_blank" rel="noopener">Set of 6 2026 New Year Red Envelopes with 3D Embossed Printing A0403</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>MayHouse7979</td>
+          <td>18.000 đ</td>
+          <td>555</td>
+          <td><strong>9.990.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.98★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set of 3d yellow apricot flower stickers to celebrate spring and decorate tet 2023 - free glue included" data-gmv="8059500" data-sold="405" data-price="19900">
+          <td><a href="https://www.lazada.vn/products/pdp-i2137951744.html" target="_blank" rel="noopener">Set of 3D Yellow Apricot Flower Stickers to Celebrate Spring and Decorate Tet 2023 - Free Glue Included</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Rẻ Độc Lạ</td>
+          <td>19.900 đ</td>
+          <td>405</td>
+          <td><strong>8.059.500 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.98★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo sét đỏ trang trí tết 2025 kết hợp chữ tết và phụ kiện hottrend" data-gmv="7973000" data-sold="67" data-price="119000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2942756873.html" target="_blank" rel="noopener">combo sét Đỏ Trang Trí Tết 2025 Kết Hợp Chữ Tết Và Phụ Kiện Hottrend</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>PT Flower</td>
+          <td>119.000 đ</td>
+          <td>67</td>
+          <td><strong>7.973.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.93★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bánh chưng bánh tét dưa hấu mô hình trưng ngày tết" data-gmv="7314000" data-sold="636" data-price="11500">
+          <td><a href="https://www.lazada.vn/products/pdp-i2138668091.html" target="_blank" rel="noopener">Bánh Chưng Bánh Tét Dưa Hấu Mô Hình Trưng Ngày Tết</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Rẻ Bền Đẹp</td>
+          <td>11.500 đ</td>
+          <td>636</td>
+          <td><strong>7.314.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.84★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nơ trang trí tết, giỏ quà, gói quà, sinh nhật phiên bản sang, lạ - brendo store" data-gmv="7200000" data-sold="2400" data-price="3000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1999503216.html" target="_blank" rel="noopener">Nơ trang trí Tết, giỏ quà, gói quà, sinh nhật phiên bản sang, lạ - Brendo Store</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Giấy gói quà &amp; phụ kiện Brendo</td>
+          <td>3.000 đ</td>
+          <td>2,400</td>
+          <td><strong>7.200.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="giấy trang trí tết, gói quà, dán tường hoa văn xưa truyền thóng - vpp brendo" data-gmv="4063500" data-sold="903" data-price="4500">
+          <td><a href="https://www.lazada.vn/products/pdp-i1999421841.html" target="_blank" rel="noopener">Giấy trang trí tết, gói quà, dán tường hoa văn xưa truyền thóng - VPP Brendo</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Giấy gói quà &amp; phụ kiện Brendo</td>
+          <td>4.500 đ</td>
+          <td>903</td>
+          <td><strong>4.063.500 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.93★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng cẩm tú cầu nhiều màu( không thấm nước) trang trí tết, lễ hội" data-gmv="2803500" data-sold="623" data-price="4500">
+          <td><a href="https://www.lazada.vn/products/pdp-i2530703762.html" target="_blank" rel="noopener">Đèn lồng cẩm tú cầu nhiều màu( không thấm nước) trang trí tết, lễ hội</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Bun shopp</td>
+          <td>4.500 đ</td>
+          <td>623</td>
+          <td><strong>2.803.500 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="decal set 5 miếng dán cửa chữ phúc trang trí tết may mắn" data-gmv="1416000" data-sold="24" data-price="59000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2900965085.html" target="_blank" rel="noopener">Decal set 5 miếng dán cửa chữ Phúc trang trí Tết may mắn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Phụ Kiện Vòng Handmade</td>
+          <td>59.000 đ</td>
+          <td>24</td>
+          <td><strong>1.416.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="red lanterns for tet decoration made of velvet fabric with many beautiful patterns" data-gmv="1368000" data-sold="19" data-price="72000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2956399278.html" target="_blank" rel="noopener">Red Lanterns for Tet Decoration Made of Velvet Fabric with Many Beautiful Patterns</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>HOT TRENDING</td>
+          <td>72.000 đ</td>
+          <td>19</td>
+          <td><strong>1.368.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led trang trí tết treo tường nhấp nháy tp100" data-gmv="1246000" data-sold="14" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1666144464.html" target="_blank" rel="noopener">Đèn Led Trang Trí Tết Treo Tường Nhấp Nháy TP100</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>trangtrinoithat</td>
+          <td>89.000 đ</td>
+          <td>14</td>
+          <td><strong>1.246.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 6/24/45/54/72 chữ phúc/tài/lộc dán trái cây trang trí tết" data-gmv="1230000" data-sold="123" data-price="10000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2956960822.html" target="_blank" rel="noopener">Set 6/24/45/54/72 Chữ PHÚC/TÀI/LỘC Dán Trái Cây Trang Trí Tết</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Cartoon Shop</td>
+          <td>10.000 đ</td>
+          <td>123</td>
+          <td><strong>1.230.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hoa trạng nguyên, đầu bông size 14cm dùng làm oản, trang trí tết noen" data-gmv="0" data-sold="0" data-price="4900">
+          <td><a href="https://www.lazada.vn/products/pdp-i3146737923.html" target="_blank" rel="noopener">Hoa trạng nguyên, đầu bông size 14cm dùng làm oản, trang trí Tết noen</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>PT Flower</td>
+          <td>4.900 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="sỉ bông hoa trạng nguyên làm oản,trang trí tết, trang trí giỏ quà size to" data-gmv="0" data-sold="0" data-price="2000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2480158136.html" target="_blank" rel="noopener">Sỉ Bông hoa trạng nguyên làm oản,trang trí tết, trang trí giỏ quà size to</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>THẾ GIỚI ĐỒ CHƠI NGỌC THỊNH </td>
+          <td>2.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="phụ kiện cành hoa đào trang trí tháp nước, tháp bia, decor oản trưng bày ngày lễ tết ngày xuân" data-gmv="0" data-sold="0" data-price="7500">
+          <td><a href="https://www.lazada.vn/products/pdp-i13503729859.html" target="_blank" rel="noopener">Phụ Kiện Cành Hoa Đào Trang Trí Tháp Nước, Tháp Bia, Decor Oản Trưng Bày Ngày Lễ Tết Ngày Xuân</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>VPP SÁNG TẠO TTC</td>
+          <td>7.500 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo 3 giỏ đựng quà, khay thuyền trang trí tết – đựng bánh kẹo, mứt, trái cây biếu tặng hoạ tiết tài lộc sang trọng" data-gmv="0" data-sold="0" data-price="19000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13503837805.html" target="_blank" rel="noopener">Combo 3 Giỏ Đựng Quà, Khay Thuyền Trang Trí Tết – Đựng Bánh Kẹo, Mứt, Trái Cây Biếu Tặng Hoạ Tiết Tài Lộc Sang Trọng</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>VPP SÁNG TẠO TTC</td>
+          <td>19.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="trang trí tết 2025 hoa trạng nguyên phụ kiện trang trí làm oản lộc gắn cây thông decor tết và noel" data-gmv="0" data-sold="0" data-price="1000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2942740126.html" target="_blank" rel="noopener">trang trí tết 2025 Hoa trạng nguyên phụ kiện trang trí làm oản lộc gắn cây thông decor tết và noel</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>THẾ GIỚI ĐỒ CHƠI NGỌC THỊNH </td>
+          <td>1.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dải giấy xếp gợn sóng trang trí tết 2026 ,tiệc cưới, trung thu, lễ, decor diy sang trọng - dài 4m 02575" data-gmv="0" data-sold="0" data-price="22000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13406698355.html" target="_blank" rel="noopener">Dải Giấy Xếp Gợn Sóng Trang Trí Tết 2026 ,Tiệc Cưới, Trung Thu, Lễ, Decor DIY sang trọng - Dài 4m 02575</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Changvali Decor</td>
+          <td>22.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">3.000 – 45.832 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (66.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:66.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (58.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:58.5%"></div></div></div>
+          </div>
+          <div class="bin-val">84.310.500 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">45.833 – 88.665 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (16.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:16.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (15.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:15.1%"></div></div></div>
+          </div>
+          <div class="bin-val">21.744.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">88.666 – 131.498 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (11.1%)</span><div class="mini-track"><div class="mini-fill blue" style="width:11.1%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (6.4%)</span><div class="mini-track"><div class="mini-fill green" style="width:6.4%"></div></div></div>
+          </div>
+          <div class="bin-val">9.219.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">131.499 – 174.331 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">174.332 – 217.164 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">217.165 – 260.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.6%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.6%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (20.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:20.0%"></div></div></div>
+          </div>
+          <div class="bin-val">28.860.000 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (15 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Giấy gói quà &amp; phụ kiện Brendo</strong></td><td>Shop Thường</td><td>3</td><td>13,003</td><td>54.913.500 đ</td><td><span class='share-pill'>38.1%</span></td></tr><tr><td><strong>Kho Gia Dụng Chiếu Sáng An Tâm </strong></td><td>Shop Thường</td><td>1</td><td>111</td><td>28.860.000 đ</td><td><span class='share-pill'>20.0%</span></td></tr><tr><td><strong>Gia Dụng Pk</strong></td><td>Shop Thường</td><td>1</td><td>240</td><td>18.960.000 đ</td><td><span class='share-pill'>13.2%</span></td></tr><tr><td><strong>MayHouse7979</strong></td><td>Shop Thường</td><td>1</td><td>555</td><td>9.990.000 đ</td><td><span class='share-pill'>6.9%</span></td></tr><tr><td><strong>Rẻ Độc Lạ</strong></td><td>Shop Thường</td><td>1</td><td>405</td><td>8.059.500 đ</td><td><span class='share-pill'>5.6%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">38.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:38.1%"></div></div>
+          <div class="dist-sub">Giấy gói quà &amp; phụ kiện Brendo</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">71.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:71.3%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">83.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:83.8%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">58.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:58.5%"></div></div>
+          <div class="dist-sub">3.000 – 45.832 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">65.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:65.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🔵 Sàn Xanh (Lazada)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;trang trí tết&#x27; đạt 70 SKU từ 55 shop, tổng 129,464 lượt bán tương ứng 8.979.323.179 đ. Tỷ lệ có bán đạt 84.3% (59 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 95.599 đ (khoảng giá 1.000 đ – 470.400 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 392.365 – 470.400 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2068 (Mall chiếm 0.4% doanh thu). Top 3 shop dẫn đầu giữ 68.2% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_tiktok_shop" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>⚫ Sàn Đen (TikTok Shop)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify TikTok Shop (pro100chok~tiktok-shop-scraper-usage · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 18 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">78</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:78%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.3975), tỷ lệ có đơn (75.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">18</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">58,604</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">5.241.600.690 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">103.388 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">18.811 đ – 458.650 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">75.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">15</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,3975</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('tiktok_shop', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('tiktok_shop', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('tiktok_shop')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_tiktok_shop">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="(2 cái)(tặng đèn led 10m)combo 1 cặp (2 cái) lồng đèn điện quay 360 độ led 3d, phản quang,xu trang trí ngày tết 2026 cầu tài cầu, cầu lộc, may mắn lồng  đèn" data-gmv="3109647000" data-sold="6780" data-price="458650">
+          <td><a href="https://shop.tiktok.com/vn/pdp/combo-2-long-den-dien-quay-360deg-led-3d-phan-quang-may-man/1730964373163706520" target="_blank" rel="noopener">(2 cái)(Tặng Đèn Led 10M)COMBO 1 CẶP (2 cái) Lồng Đèn Điện Quay 360 Độ Led 3D, Phản Quang,XU Trang Trí Ngày Tết 2026 Cầu Tài Cầu, Cầu Lộc, May Mắn lồng  đèn</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia Dụng Nhà Cam 02</td>
+          <td>458.650 đ</td>
+          <td>6,780</td>
+          <td><strong>3.109.647.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn led hình đèn lồng 8 khía dài 10m 36 bóng nhiều chế độ nháy treo cây trang trí tết" data-gmv="690807480" data-sold="12694" data-price="54420">
+          <td><a href="https://shop.tiktok.com/vn/pdp/den-led-hinh-den-long-8-khia-10m-36-bong-chong-nuoc-trang-tri-tet/1731138542640334871" target="_blank" rel="noopener">Đèn Led hình Đèn Lồng 8 khía dài 10M 36 bóng nhiều chế độ nháy treo cây trang trí Tết</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>DUSIHA - Led Trang Trí</td>
+          <td>54.420 đ</td>
+          <td>12,694</td>
+          <td><strong>690.807.480 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 6 quạt giấy đỏ tròn trang trí tết sẵn keo - quạt giấy xếp đỏ decor nhà cửa" data-gmv="639865600" data-sold="32780" data-price="19520">
+          <td><a href="https://shop.tiktok.com/vn/pdp/set-6-quat-giay-do-tron-trang-tri-tet-kich-thuoc-da-dang/1729905906194811280" target="_blank" rel="noopener">Set 6 Quạt Giấy Đỏ tròn trang trí Tết sẵn keo - Quạt Giấy Xếp Đỏ decor nhà cửa</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>DungTrum</td>
+          <td>19.520 đ</td>
+          <td>32,780</td>
+          <td><strong>639.865.600 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đèn lồng siêu sáng thần tài vạn phúc cao cấp, đèn lồng trang trí tết 2027, dải lụa may mắn, đèn lồng trang trí nhà cửa, phụ kiện trang trí tết." data-gmv="588907456" data-sold="1712" data-price="343988">
+          <td><a href="https://shop.tiktok.com/vn/pdp/den-long-meca-dai-lua-cao-cap-trang-tri-tet-2026-may-man/1733192326469682234" target="_blank" rel="noopener">Đèn Lồng Siêu Sáng Thần Tài Vạn Phúc Cao Cấp, Đèn Lồng Trang Trí Tết 2027, Dải Lụa May Mắn, Đèn Lồng Trang Trí Nhà Cửa, Phụ Kiện Trang Trí Tết.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia Dụng Hoàng Thành Phát</td>
+          <td>343.988 đ</td>
+          <td>1,712</td>
+          <td><strong>588.907.456 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="dải treo chữ phúc-lộc-thọ-tết thần tài có đèn led trang trí tết" data-gmv="112975959" data-sold="1511" data-price="74769">
+          <td><a href="https://shop.tiktok.com/vn/pdp/combo-2-doi-lac-may-man-trang-tri-tet-dep-tham-cho-phong-khach/1731242349701728370" target="_blank" rel="noopener">Dải Treo Chữ Phúc-Lộc-Thọ-Tết Thần Tài Có Đèn Led Trang Trí Tết</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gia Dụng Huy Tưởng</td>
+          <td>74.769 đ</td>
+          <td>1,511</td>
+          <td><strong>112.975.959 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.2★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[deal mở bán tặng quạt 2027] sét 2 khánh treo trang trí tết 2027 hình dê may mắn d phúc tài tua rua đỏ al chúc mừng năm mới cung hỷ phát tài van sư nhự y" data-gmv="77800800" data-sold="2400" data-price="32417">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738251307238786813" target="_blank" rel="noopener">[Deal Mở Bán Tặng Quạt 2027] Sét 2 Khánh Treo Trang Trí Tết 2027 Hình Dê May Mắn D Phúc Tài Tua Rua Đỏ AL Chúc Mừng Năm Mới Cung Hỷ Phát Tài Van Sư Nhự Y</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>TT79.Store</td>
+          <td>32.417 đ</td>
+          <td>2,400</td>
+          <td><strong>77.800.800 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.4★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 50 tag treo 2 mặt kèm dây treo cây đào, cây mai decor trang trí dịp tết..." data-gmv="10421294" data-sold="554" data-price="18811">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738138562266236802" target="_blank" rel="noopener">Set 50 tag treo 2 mặt kèm dây treo cây đào, cây mai decor trang trí dịp Tết...</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Vy Xinh Decor 02</td>
+          <td>18.811 đ</td>
+          <td>554</td>
+          <td><strong>10.421.294 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set trang trí tết 2027, set decor trang trí tết, trang trí tết chất liệu nỉ nhung tặng kèm keo nến" data-gmv="4970898" data-sold="46" data-price="108063">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738343665709778841" target="_blank" rel="noopener">Set trang trí tết 2027, set decor trang trí tết, trang trí tết chất liệu nỉ nhung tặng kèm keo nến</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>1993smart store</td>
+          <td>108.063 đ</td>
+          <td>46</td>
+          <td><strong>4.970.898 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="edelkochen đồ trang trí phòng cưới bộ vòng hoa thích hợp cho nam và nữ bố trí hình vuông hoàn hảo cho trang trí nhà mới khinh khí cầu phản quang" data-gmv="2003148" data-sold="12" data-price="166929">
+          <td><a href="https://shop.tiktok.com/vn/pdp/do-trang-tri-phong-cuoi-trang-tri-tuong-nen-dam-cuoi-vong-hoa-nghe-thuat-thich-hop-cho-cuoi-hoi-nam-nu/1731332281611749775" target="_blank" rel="noopener">Edelkochen Đồ Trang Trí Phòng Cưới Bộ Vòng Hoa Thích Hợp Cho Nam Và Nữ Bố Trí Hình Vuông Hoàn Hảo Cho Trang Trí Nhà Mới Khinh Khí Cầu Phản Quang</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>EDELKOCHEN Vietnam</td>
+          <td>166.929 đ</td>
+          <td>12</td>
+          <td><strong>2.003.148 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="set 6 quạt giấy đỏ trang trí tết 2027, quạt xếp tròn decor tết treo tường, trang trí nhà cửa, phòng khách" data-gmv="1390072" data-sold="47" data-price="29576">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738246610428986933" target="_blank" rel="noopener">Set 6 Quạt Giấy Đỏ Trang Trí Tết 2027, Quạt Xếp Tròn Decor Tết Treo Tường, Trang Trí Nhà Cửa, Phòng Khách</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>2004store12</td>
+          <td>29.576 đ</td>
+          <td>47</td>
+          <td><strong>1.390.072 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="trang trí hình dê tết 2027 miếng dán treo cửa trang trí năm mới hình dê, trang trí tết, mang lại may mắn cho gia chủ" data-gmv="1161270" data-sold="54" data-price="21505">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738528497710106576" target="_blank" rel="noopener">Trang Trí Hình Dê Tết 2027 Miếng Dán Treo Cửa Trang Trí Năm Mới Hình Dê, Trang Trí Tết, Mang Lại May Mắn Cho Gia Chủ</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>MiGaShop86</td>
+          <td>21.505 đ</td>
+          <td>54</td>
+          <td><strong>1.161.270 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mở bán [tặng 1 sét quạt 2027] combo mành tre nỉ nhung + dải cheo nỉ nhung năm mới tết đinh mùi 2027. trang trí decor tết" data-gmv="864495" data-sold="5" data-price="172899">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738280187953972525" target="_blank" rel="noopener">Mở Bán [Tặng 1 Sét Quạt 2027] COMBO Mành Tre Nỉ Nhung + Dải Cheo Nỉ Nhung Năm Mới TẾT ĐINH MÙI 2027. trang trí decor tết</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>GIA DỤNG THọ LiNH.</td>
+          <td>172.899 đ</td>
+          <td>5</td>
+          <td><strong>864.495 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="combo 12 món trang trí tết 2027 set decor treo tường ngày tết mang lại may mắn thịnh vượng cho gia chủ" data-gmv="585610" data-sold="5" data-price="117122">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1737988326299632727" target="_blank" rel="noopener">Combo 12 Món Trang Trí Tết 2027 Set Decor Treo Tường Ngày Tết Mang Lại May Mắn Thịnh Vượng Cho Gia Chủ</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Vinh Quang Gia dụng 12</td>
+          <td>117.122 đ</td>
+          <td>5</td>
+          <td><strong>585.610 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ trang trí tết 2027 - trang trí tết với hình con dê - đỏ" data-gmv="178305" data-sold="3" data-price="59435">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738662221009618883" target="_blank" rel="noopener">Bộ trang trí tết 2027 - Trang trí Tết với hình con dê - Đỏ</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Bí Đỏ 01</td>
+          <td>59.435 đ</td>
+          <td>3</td>
+          <td><strong>178.305 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="đồ trang trí năm mới âm lịch, đồ treo trang trí thắt nút trung quốc, đồ trang trí lễ hội mùa xuân, đồ trang trí tua rua màu đỏ lễ hội, cho gia đình, 2024" data-gmv="21303" data-sold="1" data-price="21303">
+          <td><a href="https://shop.tiktok.com/vn/pdp/do-trang-tri-nam-moi-am-lich-qua-tang-ngay-le-2024/1731175430183553822" target="_blank" rel="noopener">Đồ Trang Trí Năm Mới Âm Lịch, Đồ Treo Trang Trí Thắt Nút Trung Quốc, Đồ Trang Trí Lễ Hội Mùa Xuân, Đồ Trang Trí Tua Rua Màu Đỏ Lễ Hội, Cho Gia Đình, 2024</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>warmstation</td>
+          <td>21.303 đ</td>
+          <td>1</td>
+          <td><strong>21.303 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ đôi dây treo trang trí tết 2027 dán cửa hình dê may mắn, phúc lộc tài, câu đối chúc mừng năm mới" data-gmv="0" data-sold="0" data-price="32418">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738446236386166591" target="_blank" rel="noopener">Bộ Đôi Dây Treo Trang Trí Tết 2027 Dán Cửa Hình Dê May Mắn, Phúc Lộc Tài, Câu Đối Chúc Mừng Năm Mới</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Nga Tunn</td>
+          <td>32.418 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[tặng 6 quạt giấy ] sét liễn khánh treo trang trí tết 2027 nhiều hình may mắn phúc lộc tua rùa đỏ al chúc mừng năm mới cung hỷ phát tài vạn sự như ý" data-gmv="0" data-sold="0" data-price="34579">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738581984915064634" target="_blank" rel="noopener">[Tặng 6 Quạt Giấy ] Sét Liễn Khánh Treo Trang Trí Tết 2027 Nhiều Hình May Mắn Phúc Lộc tua Rùa Đỏ AL Chúc Mừng Năm Mới Cung Hỷ Phát Tài Vạn Sự Như Ý</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Khosi1998</td>
+          <td>34.579 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[b1] combo khánh quạt tết &amp; câu đối đỏ tặng quạt 2027, trang trí tết 2027, tặng móc cheo" data-gmv="0" data-sold="0" data-price="107955">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738693303287055661" target="_blank" rel="noopener">[B1] COMBO Khánh Quạt Tết &amp; Câu Đối Đỏ Tặng Quạt 2027, Trang Trí Tết 2027, tặng móc cheo</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>GIA DỤNG THọ LiNH.</td>
+          <td>107.955 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bộ trang trí tết treo tường chữ thư pháp phối quạt xếp, hoa đỏ, vải rủ và dây hạt – điểm nhấn đón xuân sum vầy" data-gmv="0" data-sold="0" data-price="172901">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738425823835555381" target="_blank" rel="noopener">Bộ Trang Trí Tết Treo Tường Chữ Thư Pháp Phối Quạt Xếp, Hoa Đỏ, Vải Rủ Và Dây Hạt – Điểm Nhấn Đón Xuân Sum Vầy</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>2004store12</td>
+          <td>172.901 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="( tặng 30 quả ) combo 10-50-100 đèn lồng treo tết chất liệu giấy nhựa đỏ chống thấm nước kích thước đầy đủ trang trí nhà cửa sân vườn lễ hội cưới hỏi" data-gmv="0" data-sold="0" data-price="20497">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738613109916534524" target="_blank" rel="noopener">( TẶNG 30 QUẢ ) Combo 10-50-100 Đèn Lồng Treo Tết Chất Liệu Giấy Nhựa Đỏ Chống Thấm Nước Kích Thước Đầy Đủ Trang Trí Nhà Cửa Sân Vườn Lễ Hội Cưới Hỏi</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Nhà Xanh 6 8</td>
+          <td>20.497 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">18.811 – 92.116 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (60.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:60.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (29.3%)</span><div class="mini-track"><div class="mini-fill green" style="width:29.3%"></div></div></div>
+          </div>
+          <div class="bin-val">1.534.622.083 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">92.117 – 165.422 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (15.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:15.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">5.556.508 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">165.423 – 238.728 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (15.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:15.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">2.867.643 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">238.729 – 312.034 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">312.035 – 385.340 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (11.2%)</span><div class="mini-track"><div class="mini-fill green" style="width:11.2%"></div></div></div>
+          </div>
+          <div class="bin-val">588.907.456 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">385.341 – 458.650 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (59.3%)</span><div class="mini-track"><div class="mini-fill green" style="width:59.3%"></div></div></div>
+          </div>
+          <div class="bin-val">3.109.647.000 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (18 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Gia Dụng Nhà Cam 02</strong></td><td>Shop Thường</td><td>1</td><td>6,780</td><td>3.109.647.000 đ</td><td><span class='share-pill'>59.3%</span></td></tr><tr><td><strong>DUSIHA - Led Trang Trí</strong></td><td>Shop Thường</td><td>1</td><td>12,694</td><td>690.807.480 đ</td><td><span class='share-pill'>13.2%</span></td></tr><tr><td><strong>DungTrum</strong></td><td>Shop Thường</td><td>1</td><td>32,780</td><td>639.865.600 đ</td><td><span class='share-pill'>12.2%</span></td></tr><tr><td><strong>Gia Dụng Hoàng Thành Phát</strong></td><td>Shop Thường</td><td>1</td><td>1,712</td><td>588.907.456 đ</td><td><span class='share-pill'>11.2%</span></td></tr><tr><td><strong>Đồ Gia Dụng Huy Tưởng</strong></td><td>Shop Thường</td><td>1</td><td>1,511</td><td>112.975.959 đ</td><td><span class='share-pill'>2.2%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">59.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:59.3%"></div></div>
+          <div class="dist-sub">Gia Dụng Nhà Cam 02</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">84.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:84.7%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">98.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:98.1%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">59.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:59.3%"></div></div>
+          <div class="dist-sub">385.341 – 458.650 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">75.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:75.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "⚫ Sàn Đen (TikTok Shop)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;trang trí tết&#x27; đạt 70 SKU từ 55 shop, tổng 129,464 lượt bán tương ứng 8.979.323.179 đ. Tỷ lệ có bán đạt 84.3% (59 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 95.599 đ (khoảng giá 1.000 đ – 470.400 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 392.365 – 470.400 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2068 (Mall chiếm 0.4% doanh thu). Top 3 shop dẫn đầu giữ 68.2% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_logs" style="display:none">
+      <div class="sa-panel">
+        <h2 class="sa-title">🪵 Logs Toàn Bộ Request / Response &amp; Cách Xử Lý Dữ Liệu</h2>
+        <div class="sa-hint">Mỗi API key hoặc token trong URL/Headers được che tự động dạng <code>ab***1234</code> để an toàn khi xuất báo cáo hoặc đẩy Git.</div>
+
+        <div class="sub-card" style="margin-top:12px">
+          <div class="sub-card-head">🧮 Bảng Truy Vết Công Thức Ra Số Liệu Thực Tế Của Lần Chạy Này</div>
+          <table>
+            <thead><tr><th>Phạm vi</th><th>Công thức Giá TB (Tách quà tặng)</th><th>Công thức HHI</th><th>Công thức Điểm Đại Dương Xanh (/100)</th></tr></thead>
+            <tbody>
+        <tr>
+          <td><strong>TỔNG HỢP 3 SÀN</strong></td>
+          <td><code>sum(67 non-gift prices) / 67 = 95.599 đ</code></td>
+          <td><code>sum((shop_gmv / 8.979.323.179 đ)^2 across 55 shops) = 0.2068</code></td>
+          <td><code>HHI_pts(35.7) + Demand_pts(29.5) + NonMall_pts(24.3) = 90/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>SHOPEE</strong></td>
+          <td><code>sum(29 non-gift prices) / 29 = 121.727 đ</code></td>
+          <td><code>sum((shop_gmv / 3.593.588.989 đ)^2 across 22 shops) = 0.445</code></td>
+          <td><code>HHI_pts(25.0) + Demand_pts(35.0) + NonMall_pts(23.3) = 83/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>TIKTOK_SHOP</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 103.388 đ</code></td>
+          <td><code>sum((shop_gmv / 5.241.600.690 đ)^2 across 18 shops) = 0.3975</code></td>
+          <td><code>HHI_pts(27.1) + Demand_pts(26.2) + NonMall_pts(25.0) = 78/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>LAZADA</strong></td>
+          <td><code>sum(18 non-gift prices) / 18 = 44.850 đ</code></td>
+          <td><code>sum((shop_gmv / 144.133.500 đ)^2 across 15 shops) = 0.2168</code></td>
+          <td><code>HHI_pts(35.2) + Demand_pts(24.5) + NonMall_pts(25.0) = 85/100</code></td>
+        </tr></tbody>
+          </table>
+        </div>
+
+        
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#1</span>
+              <strong style="color:#f8fafc">telegram_receive_request</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_telegram_liaison &bull; 920 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#2</span>
+              <strong style="color:#f8fafc">interpret_chairman_brief</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_brief_officer &bull; 1 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#3</span>
+              <strong style="color:#f8fafc">serper_ecommerce_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_market_strategist &bull; 2375 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://google.serper.dev/search&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-KEY&quot;: &quot;b7***8a2f&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;site:shopee.vn OR site:lazada.vn trang trí tết&quot;,
+    &quot;gl&quot;: &quot;vn&quot;,
+    &quot;hl&quot;: &quot;vi&quot;,
+    &quot;num&quot;: 8
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (8 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 8,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;organic_sample&quot;: [
+      {
+        &quot;title&quot;: &quot;Trang Trí Tết - Sản Phẩm Đa Dạng Giá Tốt, Chất Lượng&quot;,
+        &quot;link&quot;: &quot;https://shopee.vn/list/trang%20tr%C3%AD%20t%E1%BA%BFt&quot;,
+        &quot;snippet&quot;: &quot;1. Trang trí tết bằng mành tre và mẹt tre thủ công. Sử dụng các loại mẹt tre vẽ tay tỉ mỉ hoặc mành tre kết hợp hoa đào, hoa mai mang đến cảm giác hoài niệm ...&quot;
+      },
+      {
+        &quot;title&quot;: &quot;Trang trí tường tết - Sản Phẩm Chất Lượng, Giá Tốt, Đảm ...&quot;,
+        &quot;link&quot;: &quot;https://www.google.com/goto?url=CAEShgEBxCJF123sb6oSAXt4vGw-INAckDfd3RnFluiwg-2SZMTm_69wrMymcZoiYOuh05fJusGMr0sSG_XH8EadCAEJKUK3XJIcPVAmw8LgMpw9Lb24SKagaQjk6RSOTTsZCx-4_V26PlP-kaCmvbN6OFeFwJveB6pD3ZlTdEzEm295oXW0jhVU5w&amp;gsessionid=c1ChxNRy_JaIjlPA9jcxpwxg2Wh3G3hXP8L1JBDfA8HyTbYvrLdhpg&quot;,
+        &quot;snippet&quot;: &quot;Câu đố Tết thường có nội dung xoay quanh các câu hỏi về văn hóa, truyền thống và lịch sử của dân tộc. Bạn có thể sử dụng các câu đố để tạo điểm nhấn và gây sự ...&quot;
+      }
+    ],
+    &quot;relatedSearches&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi truy vấn đa sàn Google VN (`gl=vn`, `hl=vi`) tới Serper.dev.</li><li>2. Trích xuất 0 cụm từ khóa tìm kiếm liên quan (`relatedSearches`) làm ma trận mở rộng.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#4</span>
+              <strong style="color:#f8fafc">addlivetag_market_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 601 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/search/market.php?q=trang+tr%C3%AD+t%E1%BA%BFt&amp;sort=revenue&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;trang trí tết&quot;,
+    &quot;sort&quot;: &quot;revenue&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (100 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 100,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;keys&quot;: [
+      &quot;query&quot;,
+      &quot;giftsExcluded&quot;,
+      &quot;market&quot;,
+      &quot;last30Days&quot;,
+      &quot;topShops&quot;,
+      &quot;products&quot;,
+      &quot;paging&quot;,
+      &quot;status&quot;,
+      &quot;cached&quot;,
+      &quot;tookMs&quot;,
+      &quot;scopeNote&quot;
+    ],
+    &quot;market&quot;: {
+      &quot;totalProducts&quot;: 11005,
+      &quot;totalShops&quot;: 2103,
+      &quot;totalSold&quot;: 110918,
+      &quot;totalRevenue&quot;: 5052198961,
+      &quot;avgPrice&quot;: 103085,
+      &quot;minPrice&quot;: 1000,
+      &quot;maxPrice&quot;: 9000000,
+      &quot;avgCommissionRate&quot;: 0.0782,
+      &quot;maxCommissionRate&quot;: 0.36,
+      &quot;productsWithSales&quot;: 1888,
+      &quot;sellThroughRate&quot;: 0.1716,
+      &quot;hhi&quot;: 0.2269,
+      &quot;blueOceanScore&quot;: 26.9
+    },
+    &quot;last30Days&quot;: {
+      &quot;totalSold&quot;: 10954,
+      &quot;totalRevenue&quot;: 482545401,
+      &quot;trackedProducts&quot;: 1782,
+      &quot;coverage&quot;: 0.1619,
+      &quot;note&quot;: &quot;Only counts products with 8+ days of history. The `market` block above is all-time and covers 100% of products.&quot;
+    },
+    &quot;total_raw_items&quot;: 100,
+    &quot;sample_items&quot;: [
+      {
+        &quot;itemId&quot;: 55867653974,
+        &quot;productName&quot;: &quot;Set Trang Trí Tết Chữ Tết Đỏ May Mắn Có Đèn LED – Decor Treo Tường, Trang Trí Nhà Cửa, Cửa Hàng&quot;,
+        &quot;shopName&quot;: &quot;Kho Đồ Hay HN&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-81ztc-msxwyw6qfx8mc6&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1402475072/55867653974&quot;,
+        &quot;price&quot;: 250000,
+        &quot;sales&quot;: 5922,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 1480500000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 250000,
+        &quot;priceMax&quot;: 250000,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 10,
+        &quot;commissionRate&quot;: 0.06,
+        &quot;shopId&quot;: 1402475072,
+        &quot;catId&quot;: 100636,
+        &quot;rating&quot;: 5
+      },
+      {
+        &quot;itemId&quot;: 56266179264,
+        &quot;productName&quot;: &quot;Sét trang trí tết , decor tag treo tường TẾT  CHỮ TẾT đỏ may mắn tặng kèm đèn LED - SETTET&quot;,
+        &quot;shopName&quot;: &quot;KHO TIỆN ÍCH HIP&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-81ztc-msnx7kicuu4q65&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1402454391/56266179264&quot;,
+        &quot;price&quot;: 250000,
+        &quot;sales&quot;: 1979,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 494750000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 250000,
+        &quot;priceMax&quot;: 250000,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 2,
+        &quot;commissionRate&quot;: 0.04,
+        &quot;shopId&quot;: 1402454391,
+        &quot;catId&quot;: 100636,
+        &quot;rating&quot;: 0
+      }
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Bóc danh sách sản phẩm thật từ payload[&#x27;products&#x27;] (100 bản ghi, lấy 30 SKU) + block market/last30Days.</li><li>2. Chuẩn hóa camelCase Shopee: itemId, productName, shopId, shopName, price, sales -&gt; sold_30d, revenueAll -&gt; gmv_30d_vnd, commissionRate*100 -&gt; commission_pct (%).</li><li>3. Độ phủ lịch sử 30d đánh giá theo quy tắc AddLiveTag (`daysTracked &gt;= 8`); quà tặng &lt;= 2.000đ tách khỏi Giá trung bình.</li><li>4. KOC/Creator &amp; phân tách Video/Live nội sàn chưa có trên endpoint search -&gt; gắn cờ (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#5</span>
+              <strong style="color:#f8fafc">addlivetag_product_batch</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 191 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/product-data/product-data-batch.php&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;itemIds&quot;: [
+      55867653974,
+      56266179264,
+      46717695710,
+      53117657981,
+      23949723855
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (5 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 5,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;item_id&quot;: &quot;55867653974&quot;,
+      &quot;product_name&quot;: &quot;Set Trang Trí Tết Chữ Tết Đỏ May Mắn Có Đèn LED – Decor Treo Tường, Trang Trí Nhà Cửa, Cửa Hàng&quot;,
+      &quot;cat_name&quot;: &quot;Khác&quot;,
+      &quot;price_vnd&quot;: 250000,
+      &quot;sales&quot;: 4,
+      &quot;shopee_commission_pct&quot;: 4.0,
+      &quot;seller_commission_pct&quot;: 2.0,
+      &quot;total_commission_pct&quot;: 6.0,
+      &quot;is_xtra&quot;: true,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;db_stale&quot;
+    },
+    {
+      &quot;item_id&quot;: &quot;56266179264&quot;,
+      &quot;product_name&quot;: &quot;Sét trang trí tết , decor tag treo tường TẾT  CHỮ TẾT đỏ may mắn tặng kèm đèn LED - SETTET&quot;,
+      &quot;cat_name&quot;: null,
+      &quot;price_vnd&quot;: 250000,
+      &quot;sales&quot;: 2000,
+      &quot;shopee_commission_pct&quot;: 0.0,
+      &quot;seller_commission_pct&quot;: 2.0,
+      &quot;total_commission_pct&quot;: 2.0,
+      &quot;is_xtra&quot;: true,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;db_stale&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi mảng itemIds (5 SKU) lên product-data-batch.php trong 1 HTTP POST.</li><li>2. Bóc `productInfo` từ `payload[&#x27;products&#x27;]`: shopeeRatePercent, sellerRatePercent, totalRatePercent, isXtra, catName, cap.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#6</span>
+              <strong style="color:#f8fafc">apify_tiktok_shop_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_tiktok_hunter &bull; 19176 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/pro100chok~tiktok-shop-scraper-usage/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;region&quot;: &quot;vn&quot;,
+    &quot;scrapeType&quot;: &quot;search&quot;,
+    &quot;searchKeywords&quot;: [
+      &quot;trang trí tết&quot;
+    ],
+    &quot;maxItems&quot;: 20,
+    &quot;sortBy&quot;: &quot;best_sellers&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1738446236386166591&quot;,
+      &quot;title&quot;: &quot;Bộ Đôi Dây Treo Trang Trí Tết 2027 Dán Cửa Hình Dê May Mắn, Phúc Lộc Tài, Câu Đối Chúc Mừng Năm Mới&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/1738446236386166591&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/eaf10e860fd34514aa3621f7dfa5174e~tplv-aphluv4xwc-crop-webp:1290:1294.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/eaf10e860fd34514aa3621f7dfa5174e~tplv-aphluv4xwc-crop-webp:1290:1294.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;32418&quot;,
+      &quot;originalPrice&quot;: &quot;59435&quot;,
+      &quot;discountPercent&quot;: &quot;45%&quot;,
+      &quot;salesVolume&quot;: 0,
+      &quot;rating&quot;: 0,
+      &quot;reviewCount&quot;: &quot;0&quot;,
+      &quot;sellerName&quot;: &quot;Nga Tunn&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 1,
+      &quot;query&quot;: &quot;trang trí tết&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    },
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1731175430183553822&quot;,
+      &quot;title&quot;: &quot;Đồ Trang Trí Năm Mới Âm Lịch, Đồ Treo Trang Trí Thắt Nút Trung Quốc, Đồ Trang Trí Lễ Hội Mùa Xuân, Đồ Trang Trí Tua Rua Màu Đỏ Lễ Hội, Cho Gia Đình, 2024&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/do-trang-tri-nam-moi-am-lich-qua-tang-ngay-le-2024/1731175430183553822&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/697d7fd451344427808bb198eec0de96~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/697d7fd451344427808bb198eec0de96~tplv-aphluv4xwc-crop-webp:1000:1000.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;21303&quot;,
+      &quot;originalPrice&quot;: &quot;32278&quot;,
+      &quot;discountPercent&quot;: &quot;34%&quot;,
+      &quot;salesVolume&quot;: 1,
+      &quot;rating&quot;: 0,
+      &quot;reviewCount&quot;: &quot;0&quot;,
+      &quot;sellerName&quot;: &quot;warmstation&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 2,
+      &quot;query&quot;: &quot;trang trí tết&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Thu thập dataset TikTok Shop (VN) từ Actor `pro100chok~tiktok-shop-scraper-usage` (20 mục).</li><li>2. Ánh xạ `currentPrice`, `salesVolume`, `sellerName`, `rating`, `reviewCount` -&gt; tính GMV = price_vnd * salesVolume.</li><li>3. Kiểm tra thực tế payload: chỉ số KOC / Hoa hồng Affiliate / Video-Live / Lịch sử 30d nếu chưa có trong kết quả tìm kiếm sẽ đánh dấu minh bạch (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#7</span>
+              <strong style="color:#f8fafc">apify_lazada_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_lazada_hunter &bull; 48700 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/memo23~lazada-scraper/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;searchQueries&quot;: [
+      &quot;trang trí tết&quot;
+    ],
+    &quot;country&quot;: &quot;vn&quot;,
+    &quot;maxItems&quot;: 20,
+    &quot;scrapeDetails&quot;: false
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;name&quot;: &quot;Hoa trạng nguyên, đầu bông size 14cm dùng làm oản, trang trí Tết noen&quot;,
+      &quot;image&quot;: &quot;https://sg-test-11.slatic.net/p/604f64a53ab09efecb8c1856b8b140d9.jpg&quot;,
+      &quot;categories&quot;: &quot;10100083 &gt; 12654 &gt; 62551002 &gt; 12744&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;PT Flower&quot;,
+      &quot;sellerId&quot;: &quot;200163915331&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: null,
+      &quot;reviewCount&quot;: null,
+      &quot;ratingScore&quot;: null,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫4,900&quot;,
+      &quot;priceValue&quot;: 4900,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPct&quot;: null,
+      &quot;itemId&quot;: &quot;3146737923&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i3146737923.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;trang trí tết&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T08:35:55.150Z&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Red Lantern Set for Tet Decoration - 2027 Tet Decoration Home Decoration Wall Hanging for Good Luck with New Year Couplets&quot;,
+      &quot;image&quot;: &quot;https://vn-live-01.slatic.net/p/dd5e7fcad52a3015459d81bd57881fc9.jpg&quot;,
+      &quot;categories&quot;: &quot;10100083 &gt; 12654 &gt; 10100095 &gt; 10100103 &gt; 10100107&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;Gia Dụng Pk&quot;,
+      &quot;sellerId&quot;: &quot;1000165359&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: &quot;240 sold&quot;,
+      &quot;reviewCount&quot;: 59,
+      &quot;ratingScore&quot;: 4.796610169491525,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫79,000&quot;,
+      &quot;priceValue&quot;: 79000,
+      &quot;originalPrice&quot;: &quot;150000&quot;,
+      &quot;discountPct&quot;: 47,
+      &quot;itemId&quot;: &quot;3243381492&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i3243381492.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;trang trí tết&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T08:35:55.150Z&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gọi đồng bộ Apify Actor `memo23~lazada-scraper` (country=&#x27;vn&#x27;, scrapeDetails=False) nhận 20 bản ghi.</li><li>2. Đọc `priceValue` (fallback chuỗi `price`/`priceShow`) và parse `soldCount` (VD &#x27;494 sold&#x27;, &#x27;1.2K sold&#x27;) -&gt; tính `gmv = price_vnd * sold`.</li><li>3. Nhận diện LazMall qua cờ `isLazMall` hoặc nhãn gian hàng Mall/Official.</li><li>4. Do Lazada Scraper chưa trả Hoa hồng Affiliate &amp; Lịch sử 30 ngày -&gt; gắn nhãn (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#8</span>
+              <strong style="color:#f8fafc">market_metrics_aggregation_pipeline</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_pricing_analyst &bull; 12 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;PIPELINE_REDUCE&quot;,
+  &quot;url&quot;: &quot;internal://analytics/shopee-grade-aggregator&quot;,
+  &quot;headers&quot;: {},
+  &quot;payload&quot;: {
+    &quot;platforms&quot;: [
+      &quot;shopee&quot;,
+      &quot;tiktok_shop&quot;,
+      &quot;lazada&quot;
+    ],
+    &quot;total_raw_skus&quot;: 70,
+    &quot;exclude_keywords&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (70 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 70,
+  &quot;raw_sample&quot;: {
+    &quot;sp_count&quot;: 70,
+    &quot;gift_excluded_from_avg_price&quot;: 3,
+    &quot;avg_price_formula&quot;: &quot;sum(67 non-gift prices) / 67 = 95.599 đ&quot;,
+    &quot;hhi_formula&quot;: &quot;sum((shop_gmv / 8.979.323.179 đ)^2 across 55 shops) = 0.2068&quot;,
+    &quot;blue_ocean_formula&quot;: &quot;HHI_pts(35.7) + Demand_pts(29.5) + NonMall_pts(24.3) = 90/100&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gom nhóm 70 SKU từ 3 sàn; tách 3 SKU quà tặng (&lt;= 2.000đ) ra khỏi Giá trung bình.</li><li>2. Tính Giá trung bình: sum(67 non-gift prices) / 67 = 95.599 đ.</li><li>3. Tính chỉ số tập trung thị phần HHI: sum((shop_gmv / 8.979.323.179 đ)^2 across 55 shops) = 0.2068.</li><li>4. Tính Điểm Đại dương xanh: HHI_pts(35.7) + Demand_pts(29.5) + NonMall_pts(24.3) = 90/100.</li><li>5. Chia dải giá thành 6 bậc đều nhau để tìm Sweet Spot (dải có GMV cao nhất) &amp; xếp Top 5 Shop (CR5).</li><li>6. Các chỉ số API không có (Hoa hồng Lazada, KOC/Live Shopee, Lịch sử 30d Lazada/TikTok) gán nguyên văn &#x27;(API đang phát triển)&#x27;.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#9</span>
+              <strong style="color:#f8fafc">codex_cli_market_synthesis</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_report_architect &bull; 1800 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;CODEX_CLI_EXEC&quot;,
+  &quot;url&quot;: &quot;local://codex.exe exec --skip-git-repo-check --ephemeral -s read-only&quot;,
+  &quot;headers&quot;: {
+    &quot;model&quot;: &quot;gpt-6-luna (codex-cli)&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;prompt&quot;: &quot;Bạn là Chuyên gia Nghiên cứu Thị trường TMĐT Việt Nam. Viết ĐÚNG 1 đoạn tóm tắt điều hành súc tích (85-115 từ, tiếng Việt chuẩn, chỉ phân tích thị trường khách quan, KHÔNG tư vấn giá vốn):\n- Từ khóa: trang trí tết\n- Tổng quan 3 sàn: 70 SP, 55 shop, 129,464 lượt bán, GMV 8.979.323.179 đ, Giá TB 95.599 đ, HHI 0.2068, ĐĐX 90/100.\n- Chi tiết sàn: SHOPEE: GMV 3.593.588.989 đ, HHI 0.445, ĐĐX 83/100, TIKTOK_SHOP: GMV 5.241.600.690 đ, HHI 0.3975, ĐĐX 78/100, LAZADA: GMV 144.133.500 đ, HHI 0.2168, ĐĐX 85/100\n- Nỗi đau khách hàng: Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio; Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm; Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (1 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 1,
+  &quot;raw_sample&quot;: {
+    &quot;narrative&quot;: &quot;Thị trường “trang trí tết” ghi nhận 70 sản phẩm từ 55 shop, với 129.464 lượt bán và GMV 8,98 tỷ đồng; giá trung bình đạt 95.599 đồng. TikTok Shop dẫn đầu GMV với 5,24 tỷ đồng, tiếp đến là Shopee (3,59 tỷ) và Lazada (144,1 triệu). HHI toàn thị trường ở mức 0,2068; theo sàn, Shopee có HHI cao nhất (0,445), còn Lazada thấp nhất (0,2168). Điểm đề xuất chung đạt 90/100, các sàn dao động 78–85. Phản hồi khách hàng tập trung vào khác biệt màu sắc, chất liệu so với ảnh, nhầm lẫn phân loại size/combo và thông tin kiểm định, nguồn gốc chưa rõ.&quot;,
+    &quot;tokens_used&quot;: 4197
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Nạp toàn bộ KPI đã kiểm toán (SP, Shop, GMV, HHI, ĐĐX, Tỷ lệ có bán, VOC) vào prompt phân tích điều hành.</li><li>2. Trích xuất đoạn tóm tắt điều hành khách quan hiển thị ở phần đầu Báo cáo và sinh 6 khối Phân tích AI chuyên sâu.</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section></div>
+  </div>
+
+  <script>
+    var tabFilterState = {};
+    function showKeyword(id) {
+      document.querySelectorAll('.keyword-block').forEach(function(el) {
+        el.style.display = el.id === id ? 'block' : 'none';
+      });
+      document.querySelectorAll('.kw-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-kw') === id);
+      });
+    }
+    function switchMarketTab(tabId, btn) {
+      var root = (btn && btn.closest) ? (btn.closest('.keyword-block') || document) : document;
+      root.querySelectorAll('.tab-btn').forEach(function(b) {
+        if (b.classList.contains('kw-btn')) return;
+        b.classList.toggle('active', b.getAttribute('data-tab') === tabId);
+      });
+      root.querySelectorAll('.sa-tab-panel').forEach(function(panel) {
+        panel.style.display = (panel.id === 'panel_' + tabId) ? 'block' : 'none';
+      });
+    }
+    function filterTabTable(tabId, queryVal, shopFilterVal) {
+      var st = tabFilterState[tabId] || { q: '', shop: 'all' };
+      if (queryVal !== null) st.q = queryVal.toLowerCase().trim();
+      if (shopFilterVal !== null) st.shop = shopFilterVal;
+      tabFilterState[tabId] = st;
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+        var t = tr.getAttribute('data-title') || '';
+        var m = tr.getAttribute('data-mall') === '1';
+        var g = tr.getAttribute('data-gift') === '1';
+        var ok = (!st.q || t.indexOf(st.q) !== -1);
+        if (st.shop === 'mall' && !m) ok = false;
+        if (st.shop === 'nogift' && g) ok = false;
+        tr.style.display = ok ? '' : 'none';
+      });
+    }
+    function exportTabCsv(tabId) {
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      var rows = Array.from(tbl.querySelectorAll('tr')).filter(function(r) { return r.style.display !== 'none'; });
+      var csv = rows.map(function(r) {
+        return Array.from(r.children).map(function(c) {
+          return '"' + (c.innerText || '').replace(/"/g, '""').trim() + '"';
+        }).join(',');
+      }).join('\n');
+      var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'product_hunter_' + tabId + '.csv';
+      a.click();
+    }
+  </script>
+</body>
+</html>
