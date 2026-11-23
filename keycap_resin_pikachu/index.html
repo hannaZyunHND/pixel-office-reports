@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo Cáo Thị Trường Đa Sàn — keycap resin pikachu</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, system-ui, sans-serif; background:#020617; color:#e2e8f0; line-height:1.5; }
+    .wrap { max-width:1320px; margin:0 auto; padding:20px; }
+    .hero { background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid #334155; border-radius:14px; padding:18px 22px; margin-bottom:14px; }
+    .pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:600; background:rgba(56,189,248,.15); color:#38bdf8; border:1px solid rgba(56,189,248,.4); }
+    .hero h1 { margin:6px 0 8px; font-size:22px; color:#f8fafc; }
+    .hero-narrative { margin:0; font-size:13.5px; color:#cbd5e1; }
+    .tabs-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; position:sticky; top:0; z-index:10; background:rgba(2,6,23,.92); backdrop-filter:blur(6px); padding:8px 0; }
+    .tab-btn { padding:8px 14px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s; }
+    .tab-btn:hover { color:#f8fafc; border-color:#475569; }
+    .tab-btn.active { background:#1e293b; color:#38bdf8; border-color:#38bdf8; box-shadow:0 0 0 1px rgba(56,189,248,.35); }
+    .tab-btn.log-tab.active { color:#fbbf24; border-color:#fbbf24; }
+    .sa-panel { background:#0f172a; border:1px solid #334155; border-radius:14px; padding:18px; margin-bottom:14px; }
+    .sa-sub { font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:8px; }
+    .sa-title { margin:2px 0; font-size:18px; color:#f8fafc; }
+    .sa-hint { font-size:12px; color:#64748b; margin-bottom:12px; }
+    .alert-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:14px; }
+    .alert-card { padding:10px 12px; border-radius:10px; background:#020617; border:1px solid #334155; }
+    .alert-card.warn { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.06); }
+    .alert-card.ok { border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.06); }
+    .alert-card.info { border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06); }
+    .alert-title { font-size:12px; font-weight:700; color:#f8fafc; }
+    .alert-desc { font-size:11px; color:#94a3b8; margin-top:2px; }
+    .overview-split { display:grid; grid-template-columns:270px 1fr; gap:14px; }
+    @media (max-width:860px) { .overview-split { grid-template-columns:1fr; } }
+    .blue-ocean-card { background:#020617; border:1px solid rgba(245,158,11,.45); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+    .bo-caption { font-size:12.5px; font-weight:600; color:#cbd5e1; }
+    .bo-score-line { display:flex; align-items:baseline; gap:6px; }
+    .bo-num { font-size:38px; font-weight:800; line-height:1; }
+    .bo-den { font-size:15px; color:#94a3b8; font-weight:600; }
+    .bo-badge { align-self:flex-start; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; }
+    .bo-track { height:8px; background:#1e293b; border-radius:999px; overflow:hidden; margin:4px 0; }
+    .bo-fill { height:100%; border-radius:999px; }
+    .bo-note { margin:0; font-size:11.5px; color:#94a3b8; }
+    .kpi-panel { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; }
+    .kpi-panel-head { font-size:12.5px; font-weight:700; color:#cbd5e1; margin-bottom:10px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+    .kpi-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px 12px; }
+    .kpi-lbl { font-size:11px; color:#94a3b8; }
+    .kpi-val { font-size:17px; font-weight:800; margin-top:4px; color:#f8fafc; }
+    .kpi-val.blue { color:#38bdf8; } .kpi-val.purple { color:#c084fc; } .kpi-val.amber { color:#fbbf24; } .kpi-val.green { color:#4ade80; }
+    .api-dev { display:inline-block; margin-top:4px; font-size:11px; font-style:italic; color:#94a3b8; background:rgba(148,163,184,.12); border:1px dashed #475569; padding:2px 7px; border-radius:6px; }
+    .table-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+    .filter-controls { display:flex; flex-wrap:wrap; gap:8px; }
+    .ctrl-input, .ctrl-select, .ctrl-btn { background:#020617; border:1px solid #334155; color:#f8fafc; border-radius:8px; padding:6px 10px; font-size:12px; outline:none; }
+    .ctrl-btn { cursor:pointer; background:#1e293b; font-weight:600; } .ctrl-btn:hover { border-color:#38bdf8; color:#38bdf8; }
+    .tbl-wrap { max-height:420px; overflow:auto; border:1px solid #1e293b; border-radius:10px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; }
+    th { background:#020617; color:#94a3b8; font-size:10.5px; text-transform:uppercase; position:sticky; top:0; }
+    a { color:#38bdf8; text-decoration:none; } a:hover { text-decoration:underline; }
+    .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+    .bin-row { display:grid; grid-template-columns:190px 1fr 110px; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; margin-bottom:6px; background:#020617; border:1px solid #1e293b; }
+    .bin-row.sweet { border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.08); }
+    .sweet-tag { font-size:9.5px; background:#10b981; color:#020617; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:4px; }
+    .bin-lbl { font-size:11.5px; font-weight:600; }
+    .bin-line { display:flex; align-items:center; gap:6px; margin:2px 0; }
+    .mini-tag { width:78px; font-size:10px; color:#94a3b8; }
+    .mini-track { flex:1; height:6px; background:#1e293b; border-radius:999px; overflow:hidden; }
+    .mini-fill { height:100%; border-radius:999px; }
+    .mini-fill.blue { background:#38bdf8; } .mini-fill.green { background:#10b981; }
+    .bin-val { text-align:right; font-size:11.5px; font-weight:700; color:#e2e8f0; }
+    .dist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    .dist-card { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:10px 12px; }
+    .dist-top { display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:6px; gap:8px; }
+    .dist-val { font-weight:800; color:#38bdf8; }
+    .dist-sub { font-size:10.5px; color:#64748b; margin-top:5px; }
+    .caps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:8px; }
+    .cap-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:8px; background:#020617; border:1px solid #1e293b; font-size:12px; }
+    .ai-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px; }
+    .ai-sec { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:12px; }
+    .ai-sec h4 { margin:0 0 6px; font-size:13px; color:#38bdf8; } .ai-sec p { margin:0; font-size:12.5px; color:#cbd5e1; }
+    .mode-badge { font-size:10px; font-family:monospace; padding:2px 6px; border-radius:4px; font-weight:700; }
+    .mode-badge.live { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+    .mode-badge.sandbox { background:rgba(245,158,11,.2); color:#fbbf24; border:1px solid rgba(245,158,11,.5); }
+    .mode-badge.partial { background:rgba(56,189,248,.2); color:#38bdf8; border:1px solid rgba(56,189,248,.5); }
+    .plat-pill { font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; }
+    .plat-pill.shopee { background:rgba(249,115,22,.18); color:#fb923c; }
+    .plat-pill.lazada { background:rgba(59,130,246,.18); color:#60a5fa; }
+    .plat-pill.tiktok_shop { background:rgba(236,72,153,.18); color:#f472b6; }
+    .mall-pill { font-size:9.5px; background:#ef4444; color:#fff; padding:1px 4px; border-radius:3px; margin-left:4px; font-weight:700; }
+    .share-pill { padding:2px 7px; border-radius:999px; background:#1e293b; color:#38bdf8; font-weight:700; font-size:11px; }
+    .sub-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; overflow-x:auto; }
+    .sub-card-head { font-size:14px; font-weight:700; color:#f8fafc; margin-bottom:10px; }
+    .log-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; margin-top:14px; }
+    .log-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; padding-bottom:10px; border-bottom:1px solid #1e293b; margin-bottom:10px; }
+    .log-idx { display:inline-block; background:#1e293b; color:#38bdf8; font-family:monospace; font-size:11px; padding:2px 7px; border-radius:6px; margin-right:6px; }
+    .mono-pill { font-family:monospace; font-size:11px; padding:2px 7px; border-radius:4px; background:#0f172a; border:1px solid #334155; color:#cbd5e1; }
+    .log-3col { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+    .log-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px; display:flex; flex-direction:column; min-width:0; }
+    .log-box-title { font-size:11.5px; font-weight:700; color:#cbd5e1; margin-bottom:6px; }
+    .code-pre { margin:0; font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:8px; border-radius:6px; max-height:240px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+    .proc-list { margin:0; padding-left:16px; font-size:12px; color:#cbd5e1; } .proc-list li { margin-bottom:5px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <span class="pill">🎯 PRODUCT HUNTER · BÁO CÁO PHÂN TÍCH THỊ TRƯỜNG ĐA SÀN &bull; gpt-6-luna (codex-cli)</span>
+      <h1>Từ khóa: "keycap resin pikachu"</h1>
+      <p class="hero-narrative">Thị trường “keycap resin pikachu” ghi nhận 70 sản phẩm từ 41 shop, với 9.911 lượt bán, GMV 2,14 tỷ đồng và giá trung bình 1,08 triệu đồng; HHI toàn thị trường ở mức 0,0794, cho thấy doanh số phân tán. Shopee áp đảo với GMV 1,92 tỷ đồng, HHI 0,0942 và ĐĐX 96/100; TikTok Shop đạt 128,4 triệu đồng, HHI 0,4997, ĐĐX 70/100; Lazada đạt 91 triệu đồng, HHI 0,9685, ĐĐX 46/100. Phản hồi khách hàng tập trung vào khác biệt màu sắc, chất liệu so với ảnh render, nhầm lẫn phân loại size hoặc combo và thiếu thông tin kiểm định, nguồn gốc.</p>
+    </div>
+
+    <div class="tabs-bar"><button type="button" class="tab-btn active" data-tab="all" onclick="switchMarketTab('all')">🌐 Tổng Hợp 3 Sàn</button><button type="button" class="tab-btn" data-tab="shopee" onclick="switchMarketTab('shopee')">🟠 Sàn Cam (Shopee)</button><button type="button" class="tab-btn" data-tab="lazada" onclick="switchMarketTab('lazada')">🔵 Sàn Xanh (Lazada)</button><button type="button" class="tab-btn" data-tab="tiktok_shop" onclick="switchMarketTab('tiktok_shop')">⚫ Sàn Đen (TikTok Shop)</button><button type="button" class="tab-btn log-tab" data-tab="logs" onclick="switchMarketTab('logs')">🪵 Logs Request / Response (8)</button></div>
+    
+    <section class="sa-tab-panel" id="panel_all">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🌐 Tổng Hợp 3 Sàn</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Tổng hợp 3 Sàn (Shopee / Lazada / TikTok Shop). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">33.33% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 70 SP từ 41 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 5 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">90</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:90%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.0794), tỷ lệ có đơn (72.9%) và dư địa shop ngoài Mall (97.1%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">70</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">41</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">9,911</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">2.141.153.243 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">1.084.343 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">35.083 đ – 16.875.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">72.9%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">51</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,0794</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">6,5%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (70 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('all', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('all', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('all')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_all">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ yunzii c98 không dây layout 98 phím led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot" data-gmv="146339000" data-sold="61" data-price="2399000">
+          <td><a href="https://shopee.vn/product/14511021/43179099475" target="_blank" rel="noopener">Bàn phím cơ Yunzii C98 không dây layout 98 phím led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Vua Bàn Phím </td>
+          <td>2.399.000 đ</td>
+          <td>61</td>
+          <td><strong>146.339.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d resin jamghe standard pro can 5l" data-gmv="141825000" data-sold="62" data-price="2287500">
+          <td><a href="https://shopee.vn/product/151928218/19482863235" target="_blank" rel="noopener">Nhựa in 3D resin Jamghe Standard Pro can 5L</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>2.287.500 đ</td>
+          <td>62</td>
+          <td><strong>141.825.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="cát/bột làm hoa khô tái sử dụng - silica gel - nguyên liệu thủ công để lưu giữ hoa, làm epoxy resin, tranh hoa khô 1kg" data-gmv="122682000" data-sold="1778" data-price="69000">
+          <td><a href="https://shopee.vn/product/40618952/26181526929" target="_blank" rel="noopener">Cát/bột làm hoa khô tái sử dụng - Silica Gel - Nguyên liệu thủ công để lưu giữ hoa, làm epoxy Resin, tranh hoa khô 1kg</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Cửa hàng Trúc Sang</td>
+          <td>69.000 đ</td>
+          <td>1,778</td>
+          <td><strong>122.682.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy in 3d resin elegoo saturn 4 ultra 16k lcd" data-gmv="118125000" data-sold="7" data-price="16875000">
+          <td><a href="https://shopee.vn/product/151928218/28728391919" target="_blank" rel="noopener">Máy In 3D Resin Elegoo Saturn 4 Ultra 16K LCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>16.875.000 đ</td>
+          <td>7</td>
+          <td><strong>118.125.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d resin abs like jamghe 1kg – resin tốc độ cao, chịu va đập tốt, độ chi tiết cao" data-gmv="106650000" data-sold="237" data-price="450000">
+          <td><a href="https://shopee.vn/product/151928218/29852312393" target="_blank" rel="noopener">Nhựa In 3D Resin ABS Like Jamghe 1KG – Resin Tốc Độ Cao, Chịu Va Đập Tốt, Độ Chi Tiết Cao</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>450.000 đ</td>
+          <td>237</td>
+          <td><strong>106.650.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="body khủng long lông ,hổ lông,pikachu lông,rồng vàng lông nhung xịn xò cho bé" data-gmv="105779000" data-sold="761" data-price="139000">
+          <td><a href="https://shopee.vn/product/42912095/28006450792" target="_blank" rel="noopener">body khủng long lông ,hổ lông,pikachu lông,rồng vàng lông nhung xịn xò cho bé</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>khieuhue92</td>
+          <td>139.000 đ</td>
+          <td>761</td>
+          <td><strong>105.779.000 đ</strong></td>
+          <td>16.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím văn phòng p7 paynan navy flow chống ồn kết nối cáp rời 98 phím đèn led rainbow keycap navy xám trắng" data-gmv="81900000" data-sold="210" data-price="390000">
+          <td><a href="https://shopee.vn/product/205254842/28486235857" target="_blank" rel="noopener">Bàn phím văn phòng P7 Paynan Navy Flow chống ồn kết nối cáp rời 98 phím đèn led rainbow keycap navy xám trắng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>PAYNAN TECH</td>
+          <td>390.000 đ</td>
+          <td>210</td>
+          <td><strong>81.900.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím giả cơ kèm chuột máy tính có dây tích hợp đèn led bật tắt | phiên bản keycap bo góc mới" data-gmv="73970500" data-sold="619" data-price="119500">
+          <td><a href="https://shopee.vn/product/9761092/16438357502" target="_blank" rel="noopener">Bàn Phím Giả Cơ Kèm Chuột Máy Tính Có Dây Tích Hợp Đèn Led Bật Tắt | Phiên Bản Keycap Bo Góc Mới</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Electronic AC</td>
+          <td>119.500 đ</td>
+          <td>619</td>
+          <td><strong>73.970.500 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keo uv trong suốt, keo uv resin nhanh khô, chống ố vàng, đổ khuôn, phủ bóng - long vũ resin" data-gmv="67000000" data-sold="536" data-price="125000">
+          <td><a href="https://shopee.vn/product/128533453/9668371034" target="_blank" rel="noopener">Keo UV Trong Suốt, Keo UV Resin Nhanh Khô, Chống Ố Vàng, Đổ Khuôn, Phủ Bóng - Long Vũ Resin</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Long Vu Resin</td>
+          <td>125.000 đ</td>
+          <td>536</td>
+          <td><strong>67.000.000 đ</strong></td>
+          <td>9.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d resin jamghe eco standard resin – dễ in, ít mùi, bề mặt" data-gmv="65835000" data-sold="209" data-price="315000">
+          <td><a href="https://shopee.vn/product/1073339885/50914053518" target="_blank" rel="noopener">Nhựa in 3D RESIN JAMGHE ECO STANDARD RESIN – Dễ in, ít mùi, bề mặt</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3D Hub VN</td>
+          <td>315.000 đ</td>
+          <td>209</td>
+          <td><strong>65.835.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d anycubic standard resin – 1kg – mực in 3d cao cấp cho máy sla/dlp/lcd" data-gmv="65340000" data-sold="198" data-price="330000">
+          <td><a href="https://shopee.vn/product/41925700/40771585782" target="_blank" rel="noopener">Nhựa In 3D Anycubic Standard Resin – 1kg – Mực in 3D cao cấp cho máy SLA/DLP/LCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho sỉ Resin 3D</td>
+          <td>330.000 đ</td>
+          <td>198</td>
+          <td><strong>65.340.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[tổng hợp] keycap moa profile cực dễ thương - chất liệu pbt dyesub cao cấp dùng nhiều layout dùng cho bàn phím cơ" data-gmv="59774000" data-sold="286" data-price="209000">
+          <td><a href="https://shopee.vn/product/1308512278/26812020286" target="_blank" rel="noopener">[Tổng hợp] keycap MOA profile cực dễ thương - Chất liệu PBT dyesub cao cấp dùng nhiều layout dùng cho bàn phím cơ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Click&amp;Clack</td>
+          <td>209.000 đ</td>
+          <td>286</td>
+          <td><strong>59.774.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d anycubic standard resin – 1kg – mực in 3d cao cấp cho máy sla/dlp/lcd" data-gmv="58460000" data-sold="158" data-price="370000">
+          <td><a href="https://shopee.vn/product/1073339885/42321054135" target="_blank" rel="noopener">Nhựa In 3D Anycubic Standard Resin – 1kg – Mực in 3D cao cấp cho máy SLA/DLP/LCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3D Hub VN</td>
+          <td>370.000 đ</td>
+          <td>158</td>
+          <td><strong>58.460.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="switch puller 2 in 1 switch keycap puller dodogear hỗ trợ tháo nhổ switch keycap bàn phím cơ dodo gear" data-gmv="54840000" data-sold="1371" data-price="40000">
+          <td><a href="https://shopee.vn/product/665488736/27457724696" target="_blank" rel="noopener">Switch Puller 2 in 1 switch keycap puller DoDoGear hỗ trợ tháo nhổ switch keycap bàn phím cơ DoDo Gear</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>DoDo Gear</td>
+          <td>40.000 đ</td>
+          <td>1,371</td>
+          <td><strong>54.840.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[siêu cứng-siêu bền-siêu va đập] nhựa in 3d resin jamghe art engineering 1000ml" data-gmv="54375000" data-sold="75" data-price="725000">
+          <td><a href="https://shopee.vn/product/151928218/20646398403" target="_blank" rel="noopener">[SIÊU CỨNG-SIÊU BỀN-SIÊU VA ĐẬP] Nhựa in 3D resin Jamghe Art Engineering 1000Ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>725.000 đ</td>
+          <td>75</td>
+          <td><strong>54.375.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ yunzii c75 | yunzii c75 không dây led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot" data-gmv="52417000" data-sold="23" data-price="2279000">
+          <td><a href="https://shopee.vn/product/14511021/24703016647" target="_blank" rel="noopener">Bàn phím cơ Yunzii C75 | yunzii c75 không dây led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Vua Bàn Phím </td>
+          <td>2.279.000 đ</td>
+          <td>23</td>
+          <td><strong>52.417.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pokemon pikachu gengar resin translucent 3d mechanical keyboard keycaps" data-gmv="49140000" data-sold="126" data-price="390000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13495440325.html" target="_blank" rel="noopener">Pokemon Pikachu Gengar Resin Translucent 3D Mechanical Keyboard Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>390.000 đ</td>
+          <td>126</td>
+          <td><strong>49.140.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pikachu - nút bàn phím cơ thủ công kecap artisan chủ đề xuyên led" data-gmv="47903250" data-sold="345" data-price="138850">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-ban-phim-co-thu-cong-pikachu-artisan-thiet-ke-doc-dao/1729669127664208157" target="_blank" rel="noopener">Pikachu - Nút bàn phím cơ thủ công Kecap artisan chủ đề xuyên led</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quang tự làm Keycap</td>
+          <td>138.850 đ</td>
+          <td>345</td>
+          <td><strong>47.903.250 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy in 3d resin halot-x1 16k" data-gmv="46275000" data-sold="3" data-price="15425000">
+          <td><a href="https://shopee.vn/product/280204984/41609265992" target="_blank" rel="noopener">Máy In 3D Resin HALOT-X1 16K</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3DThinking</td>
+          <td>15.425.000 đ</td>
+          <td>3</td>
+          <td><strong>46.275.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ yunzii b98 pro | yunzii b98 không dây led núm xoay hình mèo dễ thương mạch xuôi, keycap pbt doubleshot" data-gmv="45129000" data-sold="21" data-price="2149000">
+          <td><a href="https://shopee.vn/product/14511021/23062458770" target="_blank" rel="noopener">Bàn phím cơ Yunzii B98 pro | yunzii b98 không dây led núm xoay hình mèo dễ thương mạch xuôi, keycap pbt doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Vua Bàn Phím </td>
+          <td>2.149.000 đ</td>
+          <td>21</td>
+          <td><strong>45.129.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="bàn phím cơ gaming logitech g413 tkl se | g413 se full size keycap pbt antighosting" data-gmv="42094000" data-sold="26" data-price="1619000">
+          <td><a href="https://shopee.vn/product/52679373/12879298341" target="_blank" rel="noopener">Bàn phím cơ gaming Logitech G413 TKL SE | G413 SE Full size Keycap PBT AntiGhosting</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>LOGITECH OFFICIAL STORE <span class="mall-pill">Mall</span></td>
+          <td>1.619.000 đ</td>
+          <td>26</td>
+          <td><strong>42.094.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím gaming razer huntsman v3 pro tkl 8khz | rapid trigger | quang analog | foam tiêu âm | keycap pbt doubleshot" data-gmv="41230000" data-sold="7" data-price="5890000">
+          <td><a href="https://shopee.vn/product/891464052/48351781414" target="_blank" rel="noopener">Bàn Phím Gaming Razer Huntsman V3 Pro TKL 8KHz | Rapid Trigger | Quang Analog | Foam Tiêu Âm | Keycap PBT Doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Razer Store</td>
+          <td>5.890.000 đ</td>
+          <td>7</td>
+          <td><strong>41.230.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap bàn phím vân carbon trong suốt đa sắc 136 phím profile cherry - qmtech store" data-gmv="40635000" data-sold="215" data-price="189000">
+          <td><a href="https://shopee.vn/product/94479370/43833195366" target="_blank" rel="noopener">Keycap bàn phím vân Carbon trong suốt đa sắc 136 phím profile Cherry - QMTECH STORE</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>QM TECH STORE</td>
+          <td>189.000 đ</td>
+          <td>215</td>
+          <td><strong>40.635.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ akko 5075b plus tm red world tour viet nam v3 pro switch 3 mode kết nối - keycap as - bh 12 tháng" data-gmv="40560000" data-sold="24" data-price="1690000">
+          <td><a href="https://shopee.vn/product/1036648426/28726561692" target="_blank" rel="noopener">Bàn phím cơ AKKO 5075B Plus TM Red World Tour VIET NAM V3 Pro Switch 3 mode kết nối - Keycap AS - BH 12 tháng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>GearvnStore</td>
+          <td>1.690.000 đ</td>
+          <td>24</td>
+          <td><strong>40.560.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="art engineering resin – nhựa in 3d kỹ thuật độ bền cao, dẻo dai, chịu va đập tốt" data-gmv="39520000" data-sold="64" data-price="617500">
+          <td><a href="https://shopee.vn/product/1073339885/28839240877" target="_blank" rel="noopener">Art Engineering Resin – Nhựa in 3D kỹ thuật độ bền cao, dẻo dai, chịu va đập tốt</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3D Hub VN</td>
+          <td>617.500 đ</td>
+          <td>64</td>
+          <td><strong>39.520.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ không dây nhôm - leobog hi75c pro keycap rgb - app marco - núm vặn thkeyboard ( new)" data-gmv="39442000" data-sold="37" data-price="1066000">
+          <td><a href="https://shopee.vn/product/1905396658/49165374868" target="_blank" rel="noopener">Bàn phím cơ Không dây NHÔM - LEOBOG HI75C PRO Keycap RGB - APP Marco - Núm vặn THkeyboard ( New)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>TH Keyboard</td>
+          <td>1.066.000 đ</td>
+          <td>37</td>
+          <td><strong>39.442.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[mới] bst pokémon on the day áo thun nam cotton compact graphic in pikachu mềm mại co giãn thoải mái - coolmate" data-gmv="39393900" data-sold="169" data-price="233100">
+          <td><a href="https://shopee.vn/product/24710134/47571279022" target="_blank" rel="noopener">[MỚI] BST POKÉMON On The Day Áo thun nam Cotton Compact Graphic IN Pikachu mềm mại co giãn thoải mái - Coolmate</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Coolmate - Official Store <span class="mall-pill">Mall</span></td>
+          <td>233.100 đ</td>
+          <td>169</td>
+          <td><strong>39.393.900 đ</strong></td>
+          <td>17.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap pbt xuyên led vân topographic 4.0, keycap countour dùng cho bàn phím cơ led rgb" data-gmv="38769200" data-sold="412" data-price="94100">
+          <td><a href="https://shopee.vn/product/708212726/29577466321" target="_blank" rel="noopener">Keycap PBT Xuyên LED Vân Topographic 4.0, Keycap Countour Dùng Cho Bàn Phím Cơ Led RGB</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Phụ kiện Holly</td>
+          <td>94.100 đ</td>
+          <td>412</td>
+          <td><strong>38.769.200 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keo epoxy resin ab lệ 3:1，1 kg keo epoxy resin trong suốt khô nhanh tỷ ，làm đồ thủ công, trang sức, đổ khuôn diy" data-gmv="34224587" data-sold="157" data-price="217991">
+          <td><a href="https://shopee.vn/product/1669824916/54351711696" target="_blank" rel="noopener">Keo Epoxy Resin Ab Lệ 3:1，1 Kg Keo Epoxy Resin Trong Suốt Khô Nhanh Tỷ ，Làm Đồ Thủ Công, Trang Sức, Đổ Khuôn Diy</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VistaLink.vn</td>
+          <td>217.991 đ</td>
+          <td>157</td>
+          <td><strong>34.224.587 đ</strong></td>
+          <td>19.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím gaming razer huntsman v3 pro 8khz | rapid trigger | quang analog | foam tiêu âm | keycap pbt doubleshot" data-gmv="33695000" data-sold="5" data-price="6739000">
+          <td><a href="https://shopee.vn/product/891464052/47601779341" target="_blank" rel="noopener">Bàn Phím Gaming Razer Huntsman V3 Pro 8KHz | Rapid Trigger | Quang Analog | Foam Tiêu Âm | Keycap PBT Doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Razer Store</td>
+          <td>6.739.000 đ</td>
+          <td>5</td>
+          <td><strong>33.695.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">35.083 – 2.841.734 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (93.8%)</span><div class="mini-track"><div class="mini-fill blue" style="width:93.8%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (88.8%)</span><div class="mini-track"><div class="mini-fill green" style="width:88.8%"></div></div></div>
+          </div>
+          <div class="bin-val">1.890.952.017 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">2.841.735 – 5.648.386 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">5.648.387 – 8.455.038 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.1%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3.1%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (3.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:3.5%"></div></div></div>
+          </div>
+          <div class="bin-val">74.925.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">8.455.039 – 11.261.690 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">11.261.691 – 14.068.342 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">14.068.343 – 16.875.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.1%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3.1%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (7.7%)</span><div class="mini-track"><div class="mini-fill green" style="width:7.7%"></div></div></div>
+          </div>
+          <div class="bin-val">164.400.000 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (41 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Meme 3D</strong></td><td>Shop Thường</td><td>4</td><td>381</td><td>420.975.000 đ</td><td><span class='share-pill'>19.7%</span></td></tr><tr><td><strong>Vua Bàn Phím </strong></td><td>Shop Thường</td><td>3</td><td>105</td><td>243.885.000 đ</td><td><span class='share-pill'>11.4%</span></td></tr><tr><td><strong>3D Hub VN</strong></td><td>Shop Thường</td><td>3</td><td>431</td><td>163.815.000 đ</td><td><span class='share-pill'>7.7%</span></td></tr><tr><td><strong>Cửa hàng Trúc Sang</strong></td><td>Shop Thường</td><td>1</td><td>1,778</td><td>122.682.000 đ</td><td><span class='share-pill'>5.7%</span></td></tr><tr><td><strong>PAYNAN TECH</strong></td><td>Shop Thường</td><td>2</td><td>293</td><td>115.017.000 đ</td><td><span class='share-pill'>5.4%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">19.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:19.7%"></div></div>
+          <div class="dist-sub">Meme 3D</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">38.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:38.8%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">49.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:49.9%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">3.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:3.8%"></div></div>
+          <div class="dist-sub">2/70 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">96.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:96.2%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">88.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:88.8%"></div></div>
+          <div class="dist-sub">35.083 – 2.841.734 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">70.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:70.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">6,5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:26.0%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🌐 Tổng Hợp 3 Sàn"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;keycap resin pikachu&#x27; đạt 70 SKU từ 41 shop, tổng 9,911 lượt bán tương ứng 2.141.153.243 đ. Tỷ lệ có bán đạt 72.9% (51 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 1.084.343 đ (khoảng giá 35.083 đ – 16.875.000 đ, đã tách 5 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 35.083 – 2.841.734 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0794 (Mall chiếm 3.8% doanh thu). Top 3 shop dẫn đầu giữ 38.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,5%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_shopee" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🟠 Sàn Cam (Shopee)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: AddLiveTag Market API (LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">33.33% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 30 SP từ 20 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">96</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:96%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.0942), tỷ lệ có đơn (100.0%) và dư địa shop ngoài Mall (93.3%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">8,195</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">1.921.781.187 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">2.117.856 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">40.000 đ – 16.875.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">100.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,0942</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">6,5%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (30 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('shopee', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('shopee', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('shopee')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_shopee">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ yunzii c98 không dây layout 98 phím led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot" data-gmv="146339000" data-sold="61" data-price="2399000">
+          <td><a href="https://shopee.vn/product/14511021/43179099475" target="_blank" rel="noopener">Bàn phím cơ Yunzii C98 không dây layout 98 phím led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Vua Bàn Phím </td>
+          <td>2.399.000 đ</td>
+          <td>61</td>
+          <td><strong>146.339.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d resin jamghe standard pro can 5l" data-gmv="141825000" data-sold="62" data-price="2287500">
+          <td><a href="https://shopee.vn/product/151928218/19482863235" target="_blank" rel="noopener">Nhựa in 3D resin Jamghe Standard Pro can 5L</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>2.287.500 đ</td>
+          <td>62</td>
+          <td><strong>141.825.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="cát/bột làm hoa khô tái sử dụng - silica gel - nguyên liệu thủ công để lưu giữ hoa, làm epoxy resin, tranh hoa khô 1kg" data-gmv="122682000" data-sold="1778" data-price="69000">
+          <td><a href="https://shopee.vn/product/40618952/26181526929" target="_blank" rel="noopener">Cát/bột làm hoa khô tái sử dụng - Silica Gel - Nguyên liệu thủ công để lưu giữ hoa, làm epoxy Resin, tranh hoa khô 1kg</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Cửa hàng Trúc Sang</td>
+          <td>69.000 đ</td>
+          <td>1,778</td>
+          <td><strong>122.682.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy in 3d resin elegoo saturn 4 ultra 16k lcd" data-gmv="118125000" data-sold="7" data-price="16875000">
+          <td><a href="https://shopee.vn/product/151928218/28728391919" target="_blank" rel="noopener">Máy In 3D Resin Elegoo Saturn 4 Ultra 16K LCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>16.875.000 đ</td>
+          <td>7</td>
+          <td><strong>118.125.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d resin abs like jamghe 1kg – resin tốc độ cao, chịu va đập tốt, độ chi tiết cao" data-gmv="106650000" data-sold="237" data-price="450000">
+          <td><a href="https://shopee.vn/product/151928218/29852312393" target="_blank" rel="noopener">Nhựa In 3D Resin ABS Like Jamghe 1KG – Resin Tốc Độ Cao, Chịu Va Đập Tốt, Độ Chi Tiết Cao</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>450.000 đ</td>
+          <td>237</td>
+          <td><strong>106.650.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="body khủng long lông ,hổ lông,pikachu lông,rồng vàng lông nhung xịn xò cho bé" data-gmv="105779000" data-sold="761" data-price="139000">
+          <td><a href="https://shopee.vn/product/42912095/28006450792" target="_blank" rel="noopener">body khủng long lông ,hổ lông,pikachu lông,rồng vàng lông nhung xịn xò cho bé</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>khieuhue92</td>
+          <td>139.000 đ</td>
+          <td>761</td>
+          <td><strong>105.779.000 đ</strong></td>
+          <td>16.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím văn phòng p7 paynan navy flow chống ồn kết nối cáp rời 98 phím đèn led rainbow keycap navy xám trắng" data-gmv="81900000" data-sold="210" data-price="390000">
+          <td><a href="https://shopee.vn/product/205254842/28486235857" target="_blank" rel="noopener">Bàn phím văn phòng P7 Paynan Navy Flow chống ồn kết nối cáp rời 98 phím đèn led rainbow keycap navy xám trắng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>PAYNAN TECH</td>
+          <td>390.000 đ</td>
+          <td>210</td>
+          <td><strong>81.900.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím giả cơ kèm chuột máy tính có dây tích hợp đèn led bật tắt | phiên bản keycap bo góc mới" data-gmv="73970500" data-sold="619" data-price="119500">
+          <td><a href="https://shopee.vn/product/9761092/16438357502" target="_blank" rel="noopener">Bàn Phím Giả Cơ Kèm Chuột Máy Tính Có Dây Tích Hợp Đèn Led Bật Tắt | Phiên Bản Keycap Bo Góc Mới</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Electronic AC</td>
+          <td>119.500 đ</td>
+          <td>619</td>
+          <td><strong>73.970.500 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keo uv trong suốt, keo uv resin nhanh khô, chống ố vàng, đổ khuôn, phủ bóng - long vũ resin" data-gmv="67000000" data-sold="536" data-price="125000">
+          <td><a href="https://shopee.vn/product/128533453/9668371034" target="_blank" rel="noopener">Keo UV Trong Suốt, Keo UV Resin Nhanh Khô, Chống Ố Vàng, Đổ Khuôn, Phủ Bóng - Long Vũ Resin</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Long Vu Resin</td>
+          <td>125.000 đ</td>
+          <td>536</td>
+          <td><strong>67.000.000 đ</strong></td>
+          <td>9.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d resin jamghe eco standard resin – dễ in, ít mùi, bề mặt" data-gmv="65835000" data-sold="209" data-price="315000">
+          <td><a href="https://shopee.vn/product/1073339885/50914053518" target="_blank" rel="noopener">Nhựa in 3D RESIN JAMGHE ECO STANDARD RESIN – Dễ in, ít mùi, bề mặt</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3D Hub VN</td>
+          <td>315.000 đ</td>
+          <td>209</td>
+          <td><strong>65.835.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d anycubic standard resin – 1kg – mực in 3d cao cấp cho máy sla/dlp/lcd" data-gmv="65340000" data-sold="198" data-price="330000">
+          <td><a href="https://shopee.vn/product/41925700/40771585782" target="_blank" rel="noopener">Nhựa In 3D Anycubic Standard Resin – 1kg – Mực in 3D cao cấp cho máy SLA/DLP/LCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Kho sỉ Resin 3D</td>
+          <td>330.000 đ</td>
+          <td>198</td>
+          <td><strong>65.340.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[tổng hợp] keycap moa profile cực dễ thương - chất liệu pbt dyesub cao cấp dùng nhiều layout dùng cho bàn phím cơ" data-gmv="59774000" data-sold="286" data-price="209000">
+          <td><a href="https://shopee.vn/product/1308512278/26812020286" target="_blank" rel="noopener">[Tổng hợp] keycap MOA profile cực dễ thương - Chất liệu PBT dyesub cao cấp dùng nhiều layout dùng cho bàn phím cơ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Click&amp;Clack</td>
+          <td>209.000 đ</td>
+          <td>286</td>
+          <td><strong>59.774.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nhựa in 3d anycubic standard resin – 1kg – mực in 3d cao cấp cho máy sla/dlp/lcd" data-gmv="58460000" data-sold="158" data-price="370000">
+          <td><a href="https://shopee.vn/product/1073339885/42321054135" target="_blank" rel="noopener">Nhựa In 3D Anycubic Standard Resin – 1kg – Mực in 3D cao cấp cho máy SLA/DLP/LCD</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3D Hub VN</td>
+          <td>370.000 đ</td>
+          <td>158</td>
+          <td><strong>58.460.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="switch puller 2 in 1 switch keycap puller dodogear hỗ trợ tháo nhổ switch keycap bàn phím cơ dodo gear" data-gmv="54840000" data-sold="1371" data-price="40000">
+          <td><a href="https://shopee.vn/product/665488736/27457724696" target="_blank" rel="noopener">Switch Puller 2 in 1 switch keycap puller DoDoGear hỗ trợ tháo nhổ switch keycap bàn phím cơ DoDo Gear</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>DoDo Gear</td>
+          <td>40.000 đ</td>
+          <td>1,371</td>
+          <td><strong>54.840.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[siêu cứng-siêu bền-siêu va đập] nhựa in 3d resin jamghe art engineering 1000ml" data-gmv="54375000" data-sold="75" data-price="725000">
+          <td><a href="https://shopee.vn/product/151928218/20646398403" target="_blank" rel="noopener">[SIÊU CỨNG-SIÊU BỀN-SIÊU VA ĐẬP] Nhựa in 3D resin Jamghe Art Engineering 1000Ml</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Meme 3D</td>
+          <td>725.000 đ</td>
+          <td>75</td>
+          <td><strong>54.375.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ yunzii c75 | yunzii c75 không dây led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot" data-gmv="52417000" data-sold="23" data-price="2279000">
+          <td><a href="https://shopee.vn/product/14511021/24703016647" target="_blank" rel="noopener">Bàn phím cơ Yunzii C75 | yunzii c75 không dây led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Vua Bàn Phím </td>
+          <td>2.279.000 đ</td>
+          <td>23</td>
+          <td><strong>52.417.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="máy in 3d resin halot-x1 16k" data-gmv="46275000" data-sold="3" data-price="15425000">
+          <td><a href="https://shopee.vn/product/280204984/41609265992" target="_blank" rel="noopener">Máy In 3D Resin HALOT-X1 16K</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3DThinking</td>
+          <td>15.425.000 đ</td>
+          <td>3</td>
+          <td><strong>46.275.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ yunzii b98 pro | yunzii b98 không dây led núm xoay hình mèo dễ thương mạch xuôi, keycap pbt doubleshot" data-gmv="45129000" data-sold="21" data-price="2149000">
+          <td><a href="https://shopee.vn/product/14511021/23062458770" target="_blank" rel="noopener">Bàn phím cơ Yunzii B98 pro | yunzii b98 không dây led núm xoay hình mèo dễ thương mạch xuôi, keycap pbt doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Vua Bàn Phím </td>
+          <td>2.149.000 đ</td>
+          <td>21</td>
+          <td><strong>45.129.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="bàn phím cơ gaming logitech g413 tkl se | g413 se full size keycap pbt antighosting" data-gmv="42094000" data-sold="26" data-price="1619000">
+          <td><a href="https://shopee.vn/product/52679373/12879298341" target="_blank" rel="noopener">Bàn phím cơ gaming Logitech G413 TKL SE | G413 SE Full size Keycap PBT AntiGhosting</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>LOGITECH OFFICIAL STORE <span class="mall-pill">Mall</span></td>
+          <td>1.619.000 đ</td>
+          <td>26</td>
+          <td><strong>42.094.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím gaming razer huntsman v3 pro tkl 8khz | rapid trigger | quang analog | foam tiêu âm | keycap pbt doubleshot" data-gmv="41230000" data-sold="7" data-price="5890000">
+          <td><a href="https://shopee.vn/product/891464052/48351781414" target="_blank" rel="noopener">Bàn Phím Gaming Razer Huntsman V3 Pro TKL 8KHz | Rapid Trigger | Quang Analog | Foam Tiêu Âm | Keycap PBT Doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Razer Store</td>
+          <td>5.890.000 đ</td>
+          <td>7</td>
+          <td><strong>41.230.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap bàn phím vân carbon trong suốt đa sắc 136 phím profile cherry - qmtech store" data-gmv="40635000" data-sold="215" data-price="189000">
+          <td><a href="https://shopee.vn/product/94479370/43833195366" target="_blank" rel="noopener">Keycap bàn phím vân Carbon trong suốt đa sắc 136 phím profile Cherry - QMTECH STORE</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>QM TECH STORE</td>
+          <td>189.000 đ</td>
+          <td>215</td>
+          <td><strong>40.635.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ akko 5075b plus tm red world tour viet nam v3 pro switch 3 mode kết nối - keycap as - bh 12 tháng" data-gmv="40560000" data-sold="24" data-price="1690000">
+          <td><a href="https://shopee.vn/product/1036648426/28726561692" target="_blank" rel="noopener">Bàn phím cơ AKKO 5075B Plus TM Red World Tour VIET NAM V3 Pro Switch 3 mode kết nối - Keycap AS - BH 12 tháng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>GearvnStore</td>
+          <td>1.690.000 đ</td>
+          <td>24</td>
+          <td><strong>40.560.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="art engineering resin – nhựa in 3d kỹ thuật độ bền cao, dẻo dai, chịu va đập tốt" data-gmv="39520000" data-sold="64" data-price="617500">
+          <td><a href="https://shopee.vn/product/1073339885/28839240877" target="_blank" rel="noopener">Art Engineering Resin – Nhựa in 3D kỹ thuật độ bền cao, dẻo dai, chịu va đập tốt</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>3D Hub VN</td>
+          <td>617.500 đ</td>
+          <td>64</td>
+          <td><strong>39.520.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím cơ không dây nhôm - leobog hi75c pro keycap rgb - app marco - núm vặn thkeyboard ( new)" data-gmv="39442000" data-sold="37" data-price="1066000">
+          <td><a href="https://shopee.vn/product/1905396658/49165374868" target="_blank" rel="noopener">Bàn phím cơ Không dây NHÔM - LEOBOG HI75C PRO Keycap RGB - APP Marco - Núm vặn THkeyboard ( New)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>TH Keyboard</td>
+          <td>1.066.000 đ</td>
+          <td>37</td>
+          <td><strong>39.442.000 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="1" data-gift="0" data-title="[mới] bst pokémon on the day áo thun nam cotton compact graphic in pikachu mềm mại co giãn thoải mái - coolmate" data-gmv="39393900" data-sold="169" data-price="233100">
+          <td><a href="https://shopee.vn/product/24710134/47571279022" target="_blank" rel="noopener">[MỚI] BST POKÉMON On The Day Áo thun nam Cotton Compact Graphic IN Pikachu mềm mại co giãn thoải mái - Coolmate</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Coolmate - Official Store <span class="mall-pill">Mall</span></td>
+          <td>233.100 đ</td>
+          <td>169</td>
+          <td><strong>39.393.900 đ</strong></td>
+          <td>17.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap pbt xuyên led vân topographic 4.0, keycap countour dùng cho bàn phím cơ led rgb" data-gmv="38769200" data-sold="412" data-price="94100">
+          <td><a href="https://shopee.vn/product/708212726/29577466321" target="_blank" rel="noopener">Keycap PBT Xuyên LED Vân Topographic 4.0, Keycap Countour Dùng Cho Bàn Phím Cơ Led RGB</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Phụ kiện Holly</td>
+          <td>94.100 đ</td>
+          <td>412</td>
+          <td><strong>38.769.200 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keo epoxy resin ab lệ 3:1，1 kg keo epoxy resin trong suốt khô nhanh tỷ ，làm đồ thủ công, trang sức, đổ khuôn diy" data-gmv="34224587" data-sold="157" data-price="217991">
+          <td><a href="https://shopee.vn/product/1669824916/54351711696" target="_blank" rel="noopener">Keo Epoxy Resin Ab Lệ 3:1，1 Kg Keo Epoxy Resin Trong Suốt Khô Nhanh Tỷ ，Làm Đồ Thủ Công, Trang Sức, Đổ Khuôn Diy</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VistaLink.vn</td>
+          <td>217.991 đ</td>
+          <td>157</td>
+          <td><strong>34.224.587 đ</strong></td>
+          <td>19.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím gaming razer huntsman v3 pro 8khz | rapid trigger | quang analog | foam tiêu âm | keycap pbt doubleshot" data-gmv="33695000" data-sold="5" data-price="6739000">
+          <td><a href="https://shopee.vn/product/891464052/47601779341" target="_blank" rel="noopener">Bàn Phím Gaming Razer Huntsman V3 Pro 8KHz | Rapid Trigger | Quang Analog | Foam Tiêu Âm | Keycap PBT Doubleshot</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Razer Store</td>
+          <td>6.739.000 đ</td>
+          <td>5</td>
+          <td><strong>33.695.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bàn phím văn phòng paynan chống ồn kết nối cáp 98 phím led rainbow keycap nhiều màu sắc năng động" data-gmv="33117000" data-sold="83" data-price="399000">
+          <td><a href="https://shopee.vn/product/205254842/24088496181" target="_blank" rel="noopener">Bàn phím văn phòng Paynan chống ồn kết nối cáp 98 phím led Rainbow keycap nhiều màu sắc năng động</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>PAYNAN TECH</td>
+          <td>399.000 đ</td>
+          <td>83</td>
+          <td><strong>33.117.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keo epoxy đổ mặt bàn nhanh khô tỉ lệ 2a:1b,  keo resin trong suốt phủ sàn 3d, độ cứng cao" data-gmv="32385000" data-sold="381" data-price="85000">
+          <td><a href="https://shopee.vn/product/128533453/9757008163" target="_blank" rel="noopener">Keo Epoxy Đổ Mặt Bàn Nhanh Khô Tỉ Lệ 2A:1B,  Keo Resin Trong Suốt Phủ Sàn 3D, Độ Cứng Cao</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Long Vu Resin</td>
+          <td>85.000 đ</td>
+          <td>381</td>
+          <td><strong>32.385.000 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">40.000 – 2.845.832 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (86.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:86.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (87.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:87.5%"></div></div></div>
+          </div>
+          <div class="bin-val">1.682.456.187 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">2.845.833 – 5.651.665 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">5.651.666 – 8.457.498 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (6.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:6.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (3.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:3.9%"></div></div></div>
+          </div>
+          <div class="bin-val">74.925.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">8.457.499 – 11.263.331 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">11.263.332 – 14.069.164 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">14.069.165 – 16.875.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (6.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:6.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (8.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:8.6%"></div></div></div>
+          </div>
+          <div class="bin-val">164.400.000 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (20 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Meme 3D</strong></td><td>Shop Thường</td><td>4</td><td>381</td><td>420.975.000 đ</td><td><span class='share-pill'>21.9%</span></td></tr><tr><td><strong>Vua Bàn Phím </strong></td><td>Shop Thường</td><td>3</td><td>105</td><td>243.885.000 đ</td><td><span class='share-pill'>12.7%</span></td></tr><tr><td><strong>3D Hub VN</strong></td><td>Shop Thường</td><td>3</td><td>431</td><td>163.815.000 đ</td><td><span class='share-pill'>8.5%</span></td></tr><tr><td><strong>Cửa hàng Trúc Sang</strong></td><td>Shop Thường</td><td>1</td><td>1,778</td><td>122.682.000 đ</td><td><span class='share-pill'>6.4%</span></td></tr><tr><td><strong>PAYNAN TECH</strong></td><td>Shop Thường</td><td>2</td><td>293</td><td>115.017.000 đ</td><td><span class='share-pill'>6.0%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">21.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:21.9%"></div></div>
+          <div class="dist-sub">Meme 3D</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">43.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:43.1%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">55.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:55.5%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">4.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:4.2%"></div></div>
+          <div class="dist-sub">2/30 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">95.8%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:95.8%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">87.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:87.5%"></div></div>
+          <div class="dist-sub">40.000 – 2.845.832 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">6,5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:26.0%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🟠 Sàn Cam (Shopee)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;keycap resin pikachu&#x27; đạt 70 SKU từ 41 shop, tổng 9,911 lượt bán tương ứng 2.141.153.243 đ. Tỷ lệ có bán đạt 72.9% (51 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 1.084.343 đ (khoảng giá 35.083 đ – 16.875.000 đ, đã tách 5 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 35.083 – 2.841.734 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0794 (Mall chiếm 3.8% doanh thu). Top 3 shop dẫn đầu giữ 38.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,5%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_lazada" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🔵 Sàn Xanh (Lazada)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify Lazada Scraper (memo23~lazada-scraper · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 7 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#d97706">46</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#d97706;background:rgba(217,119,6,.18)">Khá tiềm năng</div>
+            <div class="bo-track"><div class="bo-fill" style="width:46%;background:#d97706"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.9685), tỷ lệ có đơn (40.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">7</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">411</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">91.017.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">208.471 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">65.000 đ – 932.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">40.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">8</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,9685</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('lazada', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('lazada', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('lazada')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_lazada">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pokemon pikachu gengar resin translucent 3d mechanical keyboard keycaps" data-gmv="49140000" data-sold="126" data-price="390000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13495440325.html" target="_blank" rel="noopener">Pokemon Pikachu Gengar Resin Translucent 3D Mechanical Keyboard Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>390.000 đ</td>
+          <td>126</td>
+          <td><strong>49.140.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="custom creative pokemon bulbasaur charizard pikachu replaceable mechanical keyboard keycaps" data-gmv="19602000" data-sold="198" data-price="99000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13497904342.html" target="_blank" rel="noopener">Custom Creative Pokemon Bulbasaur Charizard Pikachu Replaceable Mechanical Keyboard Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>99.000 đ</td>
+          <td>198</td>
+          <td><strong>19.602.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pikachu theme transparent mechanical keycaps" data-gmv="12516000" data-sold="42" data-price="298000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13510549655.html" target="_blank" rel="noopener">Pikachu Theme Transparent Mechanical Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>298.000 đ</td>
+          <td>42</td>
+          <td><strong>12.516.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="anime evangelion mario pikachu low profile keycaps" data-gmv="5592000" data-sold="6" data-price="932000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13505193680.html" target="_blank" rel="noopener">Anime Evangelion Mario Pikachu Low Profile Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>932.000 đ</td>
+          <td>6</td>
+          <td><strong>5.592.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mario line dog pikachu wasd low profile mx stem diy custom keycaps" data-gmv="1764000" data-sold="18" data-price="98000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13518446016.html" target="_blank" rel="noopener">Mario Line Dog Pikachu WASD Low Profile MX Stem DIY Custom Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>98.000 đ</td>
+          <td>18</td>
+          <td><strong>1.764.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="kawaii anime resin cross-stem mechanical keyboard keycap 2u" data-gmv="948000" data-sold="6" data-price="158000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13506119575.html" target="_blank" rel="noopener">Kawaii Anime Resin Cross-Stem Mechanical Keyboard Keycap 2U</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>158.000 đ</td>
+          <td>6</td>
+          <td><strong>948.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycaps resin susano - nút bàn phím dành cho bàn phím cơ" data-gmv="873000" data-sold="9" data-price="97000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2523081629.html" target="_blank" rel="noopener">Keycaps Resin Susano - nút bàn phím dành cho bàn phím cơ</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Trương Cường GameStore</td>
+          <td>97.000 đ</td>
+          <td>9</td>
+          <td><strong>873.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycaps genshin impact - resin" data-gmv="582000" data-sold="6" data-price="97000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2595523399.html" target="_blank" rel="noopener">Keycaps Genshin Impact - resin</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Trương Cường GameStore</td>
+          <td>97.000 đ</td>
+          <td>6</td>
+          <td><strong>582.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="3d resin pikachu customizable mechanical keyboard keycap for esc single" data-gmv="0" data-sold="0" data-price="159000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13473765150.html" target="_blank" rel="noopener">3D Resin Pikachu Customizable Mechanical Keyboard Keycap for ESC Single</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>159.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap artisan mặt pikachu oem profile chất liệu resin siêu dễ thương" data-gmv="0" data-sold="0" data-price="99000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2106541099.html" target="_blank" rel="noopener">Keycap Artisan Mặt Pikachu Oem Profile Chất Liệu Resin Siêu Dễ Thương</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>BOSSGEAR</td>
+          <td>99.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pikachu pokemon anime keycap pbt sublimation opaque ma profile mechanical keyboard 129 keys small complete set cute collect soft" data-gmv="0" data-sold="0" data-price="391926">
+          <td><a href="https://www.lazada.vn/products/pdp-i3193198755.html" target="_blank" rel="noopener">Pikachu Pokemon Anime Keycap PBT Sublimation Opaque MA Profile Mechanical Keyboard 129 Keys Small Complete Set Cute Collect Soft</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Alpha Digital Store</td>
+          <td>391.926 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pikachu keycap" data-gmv="0" data-sold="0" data-price="90000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13327819918.html" target="_blank" rel="noopener">Pikachu Keycap</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>zP9p3R01</td>
+          <td>90.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap pokemon - keycap pikachuu - nút bàn phím pikachuu - keycap pikachu" data-gmv="0" data-sold="0" data-price="90000">
+          <td><a href="https://www.lazada.vn/products/pdp-i3121173921.html" target="_blank" rel="noopener">KEYCAP POKEMON - KEYCAP PIKACHUU - NÚT BÀN PHÍM PIKACHUU - KEYCAP PIKACHU</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>zP9p3R01</td>
+          <td>90.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap lẻ nút bàn phím cơ hình pikachu, eve, bulbasaur in nổi chibi cực đẹp ( keycap artisan )" data-gmv="0" data-sold="0" data-price="65000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2122832325.html" target="_blank" rel="noopener">Keycap Lẻ Nút Bàn Phím Cơ Hình Pikachu, Eve, Bulbasaur In nổi Chibi Cực Đẹp ( Keycap Artisan )</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>BOSSGEAR</td>
+          <td>65.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pokemon keycaps - pikachu - mewtwo" data-gmv="0" data-sold="0" data-price="90000">
+          <td><a href="https://www.lazada.vn/products/pdp-i3078261734.html" target="_blank" rel="noopener">Pokemon keycaps - Pikachu - mewtwo</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>zP9p3R01</td>
+          <td>90.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap nút phím cơ chủ đề pikachu, charmander, bulbasaur, squirtle, eve, koduck… siêu dễ thương ( keycap artisan )" data-gmv="0" data-sold="0" data-price="75000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2228642894.html" target="_blank" rel="noopener">Keycap Nút Phím Cơ Chủ Đề PikaChu, Charmander, Bulbasaur, Squirtle, Eve, Koduck… Siêu dễ thương ( keycap Artisan )</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>BOSSGEAR</td>
+          <td>75.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="【keycap only】pikachu keycap 132 keys pbt dye-sub xda profile for mechanical keyboard mad catz/ wooting/ rk 64/68/75/87/98/104" data-gmv="0" data-sold="0" data-price="425000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13509758344.html" target="_blank" rel="noopener">【Keycap Only】Pikachu Keycap 132 Keys PBT Dye-sub XDA Profile For Mechanical Keyboard Mad Catz/ Wooting/ RK 64/68/75/87/98/104</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>LightYours</td>
+          <td>425.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="funism | lobo keycap pikachu &amp; ditto 3d nhựa thủ công esc keycap dành cho chơi game bàn phím cơ anime hoạt hình tùy chỉnh unisex" data-gmv="0" data-sold="0" data-price="295000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13406816788.html" target="_blank" rel="noopener">Funism | Lobo Keycap Pikachu &amp; Ditto 3D Nhựa Thủ Công Esc Keycap Dành Cho Chơi Game Bàn Phím Cơ Anime Hoạt Hình Tùy Chỉnh Unisex</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td> Prime Supply_Play Life</td>
+          <td>295.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap bleach resin" data-gmv="0" data-sold="0" data-price="97000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2595557038.html" target="_blank" rel="noopener">Keycap Bleach Resin</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Trương Cường GameStore</td>
+          <td>97.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>1.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mario dye-sublimation pbt original profile keycaps" data-gmv="0" data-sold="0" data-price="123500">
+          <td><a href="https://www.lazada.vn/products/pdp-i13511216708.html" target="_blank" rel="noopener">Mario Dye-sublimation PBT Original Profile Keycaps</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Lazada Global</td>
+          <td>123.500 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">65.000 – 209.499 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (70.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:70.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (26.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:26.1%"></div></div></div>
+          </div>
+          <div class="bin-val">23.769.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">209.500 – 353.999 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (10.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:10.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (13.8%)</span><div class="mini-track"><div class="mini-fill green" style="width:13.8%"></div></div></div>
+          </div>
+          <div class="bin-val">12.516.000 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">354.000 – 498.499 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (15.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:15.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (54.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:54.0%"></div></div></div>
+          </div>
+          <div class="bin-val">49.140.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">498.500 – 642.999 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">643.000 – 787.499 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">787.500 – 932.000 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (6.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:6.1%"></div></div></div>
+          </div>
+          <div class="bin-val">5.592.000 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (7 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Lazada Global</strong></td><td>Shop Thường</td><td>8</td><td>396</td><td>89.562.000 đ</td><td><span class='share-pill'>98.4%</span></td></tr><tr><td><strong>Trương Cường GameStore</strong></td><td>Shop Thường</td><td>3</td><td>15</td><td>1.455.000 đ</td><td><span class='share-pill'>1.6%</span></td></tr><tr><td><strong>BOSSGEAR</strong></td><td>Shop Thường</td><td>3</td><td>0</td><td>0 đ</td><td><span class='share-pill'>0.0%</span></td></tr><tr><td><strong>Alpha Digital Store</strong></td><td>Shop Thường</td><td>1</td><td>0</td><td>0 đ</td><td><span class='share-pill'>0.0%</span></td></tr><tr><td><strong>zP9p3R01</strong></td><td>Shop Thường</td><td>3</td><td>0</td><td>0 đ</td><td><span class='share-pill'>0.0%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">98.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:98.4%"></div></div>
+          <div class="dist-sub">Lazada Global</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">54.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:54.0%"></div></div>
+          <div class="dist-sub">354.000 – 498.499 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">10.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:10.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🔵 Sàn Xanh (Lazada)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;keycap resin pikachu&#x27; đạt 70 SKU từ 41 shop, tổng 9,911 lượt bán tương ứng 2.141.153.243 đ. Tỷ lệ có bán đạt 72.9% (51 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 1.084.343 đ (khoảng giá 35.083 đ – 16.875.000 đ, đã tách 5 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 35.083 – 2.841.734 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0794 (Mall chiếm 3.8% doanh thu). Top 3 shop dẫn đầu giữ 38.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,5%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_tiktok_shop" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>⚫ Sàn Đen (TikTok Shop)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify TikTok Shop (pro100chok~tiktok-shop-scraper-usage · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 14 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 5 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">70</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:70%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.4997), tỷ lệ có đơn (65.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">14</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">1,305</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">128.355.056 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">185.147 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">35.083 đ – 639.778 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">65.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">13</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,4997</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('tiktok_shop', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('tiktok_shop', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('tiktok_shop')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_tiktok_shop">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pikachu - nút bàn phím cơ thủ công kecap artisan chủ đề xuyên led" data-gmv="47903250" data-sold="345" data-price="138850">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-ban-phim-co-thu-cong-pikachu-artisan-thiet-ke-doc-dao/1729669127664208157" target="_blank" rel="noopener">Pikachu - Nút bàn phím cơ thủ công Kecap artisan chủ đề xuyên led</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quang tự làm Keycap</td>
+          <td>138.850 đ</td>
+          <td>345</td>
+          <td><strong>47.903.250 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap kaiju no. 8 tạo hình 3d độc đáo, sơn thủ công. phù hợp trang trí bàn phím cơ và góc setup gaming." data-gmv="19085152" data-sold="544" data-price="35083">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738163876971644383" target="_blank" rel="noopener">Keycap Kaiju No. 8 tạo hình 3D độc đáo, sơn thủ công. Phù hợp trang trí bàn phím cơ và góc setup gaming.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thế giới keycaps</td>
+          <td>35.083 đ</td>
+          <td>544</td>
+          <td><strong>19.085.152 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mega charizard x nút phím cơ xuyên led tốt , artisan keycap , keycap resin" data-gmv="16245450" data-sold="117" data-price="138850">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-ban-phim-co-artisan-keycap-resin-pokemon-mega-charizard/1732175777416643869" target="_blank" rel="noopener">Mega Charizard X nút phím cơ xuyên led tốt , artisan keycap , keycap resin</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quang tự làm Keycap</td>
+          <td>138.850 đ</td>
+          <td>117</td>
+          <td><strong>16.245.450 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="keycap pokemon artisan cao cấp | nút bàn phím cơ | quà tặng độc đáo" data-gmv="10876226" data-sold="17" data-price="639778">
+          <td><a href="https://shop.tiktok.com/vn/pdp/keycap-pokemon-artisan-cao-cap-thiet-ke-doc-dao-ben-lau/1729622693905730551" target="_blank" rel="noopener">Keycap Pokemon Artisan cao cấp | Nút bàn phím cơ | Quà tặng độc đáo</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>9kcaps</td>
+          <td>639.778 đ</td>
+          <td>17</td>
+          <td><strong>10.876.226 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tab snorlax - 1,5u nút bàn phím thủ công chủ đề hoạt hình, kaycap artisan xuyên led tốt" data-gmv="8971840" data-sold="40" data-price="224296">
+          <td><a href="https://shop.tiktok.com/vn/pdp/tab-snorlax-15u-nut-ban-phim-thu-cong-chu-de-pokemon-kaycap-artisan-xuyen-led-tot/1733298203197736221" target="_blank" rel="noopener">Tab Snorlax - 1,5U Nút bàn phím thủ công chủ đề hoạt hình, Kaycap Artisan xuyên led tốt</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quang tự làm Keycap</td>
+          <td>224.296 đ</td>
+          <td>40</td>
+          <td><strong>8.971.840 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="pika yêu nước - nút bàn phím thủ công - chủ đề hoạt hình - keycap artisan - xuyên sáng bình thường" data-gmv="7497900" data-sold="54" data-price="138850">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-ban-phim-yeu-nuoc-keycap-thu-cong-pokemon-resin-1u/1732290546316379421" target="_blank" rel="noopener">Pika yêu nước - nút bàn phím thủ công - chủ đề hoạt hình - keycap artisan - Xuyên sáng bình thường</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quang tự làm Keycap</td>
+          <td>138.850 đ</td>
+          <td>54</td>
+          <td><strong>7.497.900 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="mewtwo mặc giáp - nút bàn phím thủ công chủ đề pokémon - keycap artisan - xuyên sáng/xuyên led tốt" data-gmv="6152128" data-sold="32" data-price="192254">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-ban-phim-thu-cong-chu-de-pokemon-mewtwo-mac-giap/1732134595112240413" target="_blank" rel="noopener">Mewtwo mặc giáp - Nút bàn phím thủ công Chủ đề Pokémon - Keycap Artisan - Xuyên sáng/xuyên led tốt</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Quang tự làm Keycap</td>
+          <td>192.254 đ</td>
+          <td>32</td>
+          <td><strong>6.152.128 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycaps nút bấm đáng yêu trang trí bàn phím máy tính - góc làm việc - góc setup" data-gmv="3989888" data-sold="112" data-price="35624">
+          <td><a href="https://shop.tiktok.com/vn/pdp/keycaps-trang-tri-ban-phim-dang-yeu-nhua-pla-cho-fan-anime-thegioikeycap/1738046206108665311" target="_blank" rel="noopener">Keycaps nút bấm đáng yêu Trang Trí Bàn Phím Máy Tính - Góc Làm Việc - Góc Setup</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thế giới keycaps</td>
+          <td>35.624 đ</td>
+          <td>112</td>
+          <td><strong>3.989.888 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>2.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nút ấn bàn phím pokemon resin keycap artisan profile sa 1u - keycap custom" data-gmv="3449895" data-sold="17" data-price="202935">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-ban-phim-pokemon-resin-epoxy-artisan-profile-sa-1u-custom-keycap/1731969167593670858" target="_blank" rel="noopener">Nút ấn bàn phím pokemon Resin keycap artisan profile SA 1u - keycap custom</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Si MÊ KEY</td>
+          <td>202.935 đ</td>
+          <td>17</td>
+          <td><strong>3.449.895 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap pokemon, chất kết dính nhỏ giọt, chất liệu pbt, có pikachu, gengar, psyduck, squirtle, bulbasaur, charizard, eevee, snorlax, làm bằng tay, keycap resin, thích hợp cho bàn phím cơ, tự làm, sáng tạo, cá nhân hóa, keycap dễ thương" data-gmv="2916410" data-sold="5" data-price="583282">
+          <td><a href="https://shop.tiktok.com/vn/pdp/keycap-pokemon-drip-glue-chat-luong-cao-thiet-ke-doc-dao/1730332660597689211" target="_blank" rel="noopener">Keycap Pokemon, Chất Kết Dính Nhỏ Giọt, Chất Liệu PBT, Có Pikachu, Gengar, Psyduck, Squirtle, Bulbasaur, Charizard, Eevee, Snorlax, Làm Bằng Tay, Keycap Resin, Thích Hợp Cho Bàn Phím Cơ, Tự Làm, Sáng Tạo, Cá Nhân Hóa, Keycap Dễ Thương</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>MAIMOOO</td>
+          <td>583.282 đ</td>
+          <td>5</td>
+          <td><strong>2.916.410 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap doflamingo onepiece trang trí bàn phím cơ, keycap nhựa pla in 3d sơn thủ công, decor góc máy tính, keycap handmade" data-gmv="681632" data-sold="14" data-price="48688">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738375707036124639" target="_blank" rel="noopener">Keycap Doflamingo Onepiece Trang Trí Bàn Phím Cơ, Keycap Nhựa PLA In 3D Sơn Thủ Công, Decor Góc Máy Tính, Keycap Handmade</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thế giới keycaps</td>
+          <td>48.688 đ</td>
+          <td>14</td>
+          <td><strong>681.632 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[ ship nhanh ] bộ 21 keycaps trái tim - nhựa pc cao cấp - cherry profile - coobe store" data-gmv="405734" data-sold="7" data-price="57962">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738622621209036068" target="_blank" rel="noopener">[ Ship Nhanh ] Bộ 21 Keycaps Trái Tim - Nhựa PC Cao Cấp - Cherry Profile - CooBe Store</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>CooBe Store - Đồ Chơi Game Thủ</td>
+          <td>57.962 đ</td>
+          <td>7</td>
+          <td><strong>405.734 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="nút bấm pikachu thú cưng pokémon phím bàn phím cơ khí làm tay" data-gmv="179551" data-sold="1" data-price="179551">
+          <td><a href="https://shop.tiktok.com/vn/pdp/nut-bam-pikachu-thu-cung-pokemon-cho-ban-phim-co-thiet-ke-tien-dung-va-ben-dep/1733309469183936057" target="_blank" rel="noopener">Nút bấm Pikachu thú cưng Pokémon phím bàn phím cơ khí làm tay</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Caishanshan-Shop10</td>
+          <td>179.551 đ</td>
+          <td>1</td>
+          <td><strong>179.551 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="keycap keycap anime nắp phím pikachu pokémon, nắp phím dành cho bàn phím cơ, thiết kế 3d cá nhân hóa bằng nhựa resin, quà tặng cho bạn gái" data-gmv="0" data-sold="0" data-price="304402">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735042479971927249" target="_blank" rel="noopener">keycap keycap anime Nắp phím Pikachu Pokémon, nắp phím dành cho bàn phím cơ, thiết kế 3D cá nhân hóa bằng nhựa resin, quà tặng cho bạn gái</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>VanessaFrederick</td>
+          <td>304.402 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="bộ phụ kiện bàn phím cơ pokémon (psyduck, pikachu), thiết kế dễ thương với keycaps tùy chỉnh bằng nhựa resin, quà tặng sáng tạo và độc đáo" data-gmv="0" data-sold="0" data-price="272509">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735491909271389419" target="_blank" rel="noopener">Bộ phụ kiện bàn phím cơ Pokémon (Psyduck, Pikachu), thiết kế dễ thương với keycaps tùy chỉnh bằng nhựa resin, quà tặng sáng tạo và độc đáo</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Dongguan Xu Rundu Trading Co Ltd</td>
+          <td>272.509 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="bộ phụ kiện bàn phím cơ pokémon (psyduck, pikachu), thiết kế dễ thương với keycaps tùy chỉnh bằng nhựa resin, quà tặng sáng tạo và độc đáo" data-gmv="0" data-sold="0" data-price="301802">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735493204439107437" target="_blank" rel="noopener">Bộ phụ kiện bàn phím cơ Pokémon (Psyduck, Pikachu), thiết kế dễ thương với keycaps tùy chỉnh bằng nhựa resin, quà tặng sáng tạo và độc đáo</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Zhijiang Qianqiqing Trading Co Ltd</td>
+          <td>301.802 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="bộ phụ kiện bàn phím cơ pokémon (psyduck, pikachu), thiết kế dễ thương với keycaps tùy chỉnh bằng nhựa resin, quà tặng sáng tạo và độc đáo" data-gmv="0" data-sold="0" data-price="269492">
+          <td><a href="https://shop.tiktok.com/vn/pdp/bo-phu-kien-ban-phim-pokemon-psyduck-pikachu-keycapsshuzhi-qua-tang-sang-tao-doc-dao/1735270951104447803" target="_blank" rel="noopener">Bộ phụ kiện bàn phím cơ Pokémon (Psyduck, Pikachu), thiết kế dễ thương với keycaps tùy chỉnh bằng nhựa resin, quà tặng sáng tạo và độc đáo</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>nanyyya</td>
+          <td>269.492 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="backspacec custom  6.25u chamander pikachu bulbasaur squirtle" data-gmv="0" data-sold="0" data-price="585538">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738393281512638158" target="_blank" rel="noopener">Backspacec custom  6.25u chamander pikachu Bulbasaur Squirtle</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Thanh Hùng’s</td>
+          <td>585.538 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap anime keycap pikachu space key hat pbt hot thăng hoa quy trình 7uxda chiều cao nhà máy gốc key hat đơn 6.25 phim hoạt hình cá nhân" data-gmv="0" data-sold="0" data-price="103069">
+          <td><a href="https://shop.tiktok.com/vn/pdp/keycap-pikachu-space-fl-esports-pbt-7uxda-ban-phim-co-khi-hang-moi/1734173537445971838" target="_blank" rel="noopener">keycap anime keycap Pikachu Space Key Hat PBT Hot Thăng hoa Quy trình 7UXDA Chiều cao Nhà máy gốc Key Hat Đơn 6.25 Phim hoạt hình cá nhân</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>AndreaKim</td>
+          <td>103.069 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="keycap lẻ bàn phím cơ ngọċ rồng 3d - artisan keycap resin cao cấp mô hình nhân vật anime dragon ball" data-gmv="0" data-sold="0" data-price="112376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738171375015986537" target="_blank" rel="noopener">Keycap Lẻ Bàn Phím Cơ ngọċ Rồng 3D - Artisan Keycap Resin Cao Cấp Mô Hình Nhân Vật Anime Dragon Ball</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>hahashop2</td>
+          <td>112.376 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">35.083 – 126.824 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (40.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:40.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (20.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:20.6%"></div></div></div>
+          </div>
+          <div class="bin-val">24.162.406 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">126.825 – 218.566 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (40.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:40.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (69.3%)</span><div class="mini-track"><div class="mini-fill green" style="width:69.3%"></div></div></div>
+          </div>
+          <div class="bin-val">81.428.174 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">218.567 – 310.308 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (6.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:6.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (7.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:7.6%"></div></div></div>
+          </div>
+          <div class="bin-val">8.971.840 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">310.309 – 402.050 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">402.051 – 493.792 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">493.793 – 585.538 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (13.3%)</span><div class="mini-track"><div class="mini-fill blue" style="width:13.3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (2.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">2.916.410 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (14 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Quang tự làm Keycap</strong></td><td>Shop Thường</td><td>5</td><td>588</td><td>86.770.568 đ</td><td><span class='share-pill'>67.6%</span></td></tr><tr><td><strong>Thế giới keycaps</strong></td><td>Shop Thường</td><td>3</td><td>670</td><td>23.756.672 đ</td><td><span class='share-pill'>18.5%</span></td></tr><tr><td><strong>9kcaps</strong></td><td>Shop Thường</td><td>1</td><td>17</td><td>10.876.226 đ</td><td><span class='share-pill'>8.5%</span></td></tr><tr><td><strong>Si MÊ KEY</strong></td><td>Shop Thường</td><td>1</td><td>17</td><td>3.449.895 đ</td><td><span class='share-pill'>2.7%</span></td></tr><tr><td><strong>MAIMOOO</strong></td><td>Shop Thường</td><td>1</td><td>5</td><td>2.916.410 đ</td><td><span class='share-pill'>2.3%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">67.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:67.6%"></div></div>
+          <div class="dist-sub">Quang tự làm Keycap</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">94.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:94.6%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">99.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:99.6%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">69.3%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:69.3%"></div></div>
+          <div class="dist-sub">126.825 – 218.566 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">85.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:85.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "⚫ Sàn Đen (TikTok Shop)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;keycap resin pikachu&#x27; đạt 70 SKU từ 41 shop, tổng 9,911 lượt bán tương ứng 2.141.153.243 đ. Tỷ lệ có bán đạt 72.9% (51 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 90/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 1.084.343 đ (khoảng giá 35.083 đ – 16.875.000 đ, đã tách 5 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 35.083 – 2.841.734 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.0794 (Mall chiếm 3.8% doanh thu). Top 3 shop dẫn đầu giữ 38.8% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là SHOPEE.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 6,5%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio • Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm • Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay video thật dưới ánh sáng tự nhiên không chỉnh màu • Đóng gói kèm thiệp cam kết chất lượng &amp; đổi trả trong 7 ngày</p></div></div>
+      </div>
+    </section>
+    
+    <section class="sa-tab-panel" id="panel_logs" style="display:none">
+      <div class="sa-panel">
+        <h2 class="sa-title">🪵 Logs Toàn Bộ Request / Response &amp; Cách Xử Lý Dữ Liệu</h2>
+        <div class="sa-hint">Mỗi API key hoặc token trong URL/Headers được che tự động dạng <code>ab***1234</code> để an toàn khi xuất báo cáo hoặc đẩy Git.</div>
+
+        <div class="sub-card" style="margin-top:12px">
+          <div class="sub-card-head">🧮 Bảng Truy Vết Công Thức Ra Số Liệu Thực Tế Của Lần Chạy Này</div>
+          <table>
+            <thead><tr><th>Phạm vi</th><th>Công thức Giá TB (Tách quà tặng)</th><th>Công thức HHI</th><th>Công thức Điểm Đại Dương Xanh (/100)</th></tr></thead>
+            <tbody>
+        <tr>
+          <td><strong>TỔNG HỢP 3 SÀN</strong></td>
+          <td><code>sum(65 non-gift prices) / 65 = 1.084.343 đ</code></td>
+          <td><code>sum((shop_gmv / 2.141.153.243 đ)^2 across 41 shops) = 0.0794</code></td>
+          <td><code>HHI_pts(40.0) + Demand_pts(25.5) + NonMall_pts(24.3) = 90/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>SHOPEE</strong></td>
+          <td><code>sum(30 non-gift prices) / 30 = 2.117.856 đ</code></td>
+          <td><code>sum((shop_gmv / 1.921.781.187 đ)^2 across 20 shops) = 0.0942</code></td>
+          <td><code>HHI_pts(40.0) + Demand_pts(35.0) + NonMall_pts(23.3) = 96/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>TIKTOK_SHOP</strong></td>
+          <td><code>sum(15 non-gift prices) / 15 = 185.147 đ</code></td>
+          <td><code>sum((shop_gmv / 128.355.056 đ)^2 across 14 shops) = 0.4997</code></td>
+          <td><code>HHI_pts(22.5) + Demand_pts(22.8) + NonMall_pts(25.0) = 70/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>LAZADA</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 208.471 đ</code></td>
+          <td><code>sum((shop_gmv / 91.017.000 đ)^2 across 7 shops) = 0.9685</code></td>
+          <td><code>HHI_pts(6.8) + Demand_pts(14.0) + NonMall_pts(25.0) = 46/100</code></td>
+        </tr></tbody>
+          </table>
+        </div>
+
+        
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#1</span>
+              <strong style="color:#f8fafc">telegram_receive_request</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_telegram_liaison &bull; 1 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge sandbox">ERROR</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#2</span>
+              <strong style="color:#f8fafc">serper_ecommerce_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_market_strategist &bull; 3362 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://google.serper.dev/search&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-KEY&quot;: &quot;b7***8a2f&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;site:shopee.vn OR site:lazada.vn keycap resin pikachu&quot;,
+    &quot;gl&quot;: &quot;vn&quot;,
+    &quot;hl&quot;: &quot;vi&quot;,
+    &quot;num&quot;: 8
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (8 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 8,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;organic_sample&quot;: [
+      {
+        &quot;title&quot;: &quot;Keycap Lẻ hoạt hình Pikachu cực kỳ dễ thương cute OEM ...&quot;,
+        &quot;link&quot;: &quot;https://shopee.vn/Keycap-L%E1%BA%BB-ho%E1%BA%A1t-h%C3%ACnh-Pikachu-c%E1%BB%B1c-k%E1%BB%B3-d%E1%BB%85-th%C6%B0%C6%A1ng-cute-OEM-ho%E1%BA%B7c-SA-(-keycap-resin-%C4%91%E1%BB%99c-l%E1%BA%A1-)(-Keycap-Artisan-)-i.164796890.4052059748&quot;,
+        &quot;snippet&quot;: &quot;Mua Keycap Lẻ hoạt hình Pikachu cực kỳ dễ thương cute OEM hoặc SA ( keycap resin độc lạ )( Keycap Artisan ) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.&quot;
+      },
+      {
+        &quot;title&quot;: &quot;Pikachu keycap, keycap pokemon, Pikachu new xanh ...&quot;,
+        &quot;link&quot;: &quot;https://shopee.vn/Pikachu-keycap-keycap-pokemon-Pikachu-new-xanh-v%C3%A0ng-n%C3%BAt-ph%C3%ADm-c%C6%A1-1u-pikachu-resin-i.69185343.24130676966&quot;,
+        &quot;snippet&quot;: &quot;Mua Pikachu keycap, keycap pokemon, Pikachu new xanh vàng, nút phím cơ 1u, pikachu resin giá tốt. Mua hàng qua mạng uy tín, tiện lợi.&quot;
+      }
+    ],
+    &quot;relatedSearches&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi truy vấn đa sàn Google VN (`gl=vn`, `hl=vi`) tới Serper.dev.</li><li>2. Trích xuất 0 cụm từ khóa tìm kiếm liên quan (`relatedSearches`) làm ma trận mở rộng.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#3</span>
+              <strong style="color:#f8fafc">addlivetag_market_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 269 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/search/market.php?q=keycap+resin+pikachu&amp;sort=revenue&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;keycap resin pikachu&quot;,
+    &quot;sort&quot;: &quot;revenue&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (100 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 100,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;keys&quot;: [
+      &quot;query&quot;,
+      &quot;giftsExcluded&quot;,
+      &quot;market&quot;,
+      &quot;last30Days&quot;,
+      &quot;topShops&quot;,
+      &quot;products&quot;,
+      &quot;paging&quot;,
+      &quot;status&quot;,
+      &quot;cached&quot;,
+      &quot;tookMs&quot;,
+      &quot;scopeNote&quot;
+    ],
+    &quot;market&quot;: {
+      &quot;totalProducts&quot;: 23103,
+      &quot;totalShops&quot;: 4223,
+      &quot;totalSold&quot;: 66340,
+      &quot;totalRevenue&quot;: 5793241788,
+      &quot;avgPrice&quot;: 234753,
+      &quot;minPrice&quot;: 1000,
+      &quot;maxPrice&quot;: 92600000,
+      &quot;avgCommissionRate&quot;: 0.0879,
+      &quot;maxCommissionRate&quot;: 0.425,
+      &quot;productsWithSales&quot;: 3155,
+      &quot;sellThroughRate&quot;: 0.1366,
+      &quot;hhi&quot;: 0.0163,
+      &quot;blueOceanScore&quot;: 32.4
+    },
+    &quot;last30Days&quot;: {
+      &quot;totalSold&quot;: 6187,
+      &quot;totalRevenue&quot;: 455021138,
+      &quot;trackedProducts&quot;: 4961,
+      &quot;coverage&quot;: 0.2147,
+      &quot;note&quot;: &quot;Only counts products with 8+ days of history. The `market` block above is all-time and covers 100% of products.&quot;
+    },
+    &quot;total_raw_items&quot;: 100,
+    &quot;sample_items&quot;: [
+      {
+        &quot;itemId&quot;: 43179099475,
+        &quot;productName&quot;: &quot;Bàn phím cơ Yunzii C98 không dây layout 98 phím led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot&quot;,
+        &quot;shopName&quot;: &quot;Vua Bàn Phím &quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-81ztc-mti4o73p9rer90&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/14511021/43179099475&quot;,
+        &quot;price&quot;: 2399000,
+        &quot;sales&quot;: 61,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 146339000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 0,
+        &quot;priceMax&quot;: 0,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 0,
+        &quot;commissionRate&quot;: 0.045,
+        &quot;shopId&quot;: 14511021,
+        &quot;catId&quot;: 100644,
+        &quot;rating&quot;: 5
+      },
+      {
+        &quot;itemId&quot;: 19482863235,
+        &quot;productName&quot;: &quot;Nhựa in 3D resin Jamghe Standard Pro can 5L&quot;,
+        &quot;shopName&quot;: &quot;Meme 3D&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-81ztc-mterm6dzw1s752&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/151928218/19482863235&quot;,
+        &quot;price&quot;: 2287500,
+        &quot;sales&quot;: 62,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 141825000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 2287500,
+        &quot;priceMax&quot;: 2287500,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 3,
+        &quot;commissionRate&quot;: 0.08,
+        &quot;shopId&quot;: 151928218,
+        &quot;catId&quot;: 100644,
+        &quot;rating&quot;: 5
+      }
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Bóc danh sách sản phẩm thật từ payload[&#x27;products&#x27;] (100 bản ghi, lấy 30 SKU) + block market/last30Days.</li><li>2. Chuẩn hóa camelCase Shopee: itemId, productName, shopId, shopName, price, sales -&gt; sold_30d, revenueAll -&gt; gmv_30d_vnd, commissionRate*100 -&gt; commission_pct (%).</li><li>3. Độ phủ lịch sử 30d đánh giá theo quy tắc AddLiveTag (`daysTracked &gt;= 8`); quà tặng &lt;= 2.000đ tách khỏi Giá trung bình.</li><li>4. KOC/Creator &amp; phân tách Video/Live nội sàn chưa có trên endpoint search -&gt; gắn cờ (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#4</span>
+              <strong style="color:#f8fafc">addlivetag_product_batch</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 207 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/product-data/product-data-batch.php&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;itemIds&quot;: [
+      43179099475,
+      19482863235,
+      26181526929,
+      28728391919,
+      29852312393
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (5 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 5,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;item_id&quot;: &quot;43179099475&quot;,
+      &quot;product_name&quot;: &quot;Bàn phím cơ Yunzii C98 không dây layout 98 phím led viền cực đẹp , hình mèo dễ thương mạch xuôi, keycap pbt doubleshot&quot;,
+      &quot;cat_name&quot;: &quot;Bàn Phím Máy Tính&quot;,
+      &quot;price_vnd&quot;: 2399000,
+      &quot;sales&quot;: 63,
+      &quot;shopee_commission_pct&quot;: 2.5,
+      &quot;seller_commission_pct&quot;: 2.0,
+      &quot;total_commission_pct&quot;: 4.5,
+      &quot;is_xtra&quot;: true,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;db&quot;
+    },
+    {
+      &quot;item_id&quot;: &quot;19482863235&quot;,
+      &quot;product_name&quot;: &quot;Nhựa in 3D resin Jamghe Standard Pro can 5L&quot;,
+      &quot;cat_name&quot;: &quot;Máy In 3D&quot;,
+      &quot;price_vnd&quot;: 2287500,
+      &quot;sales&quot;: 62,
+      &quot;shopee_commission_pct&quot;: 8.0,
+      &quot;seller_commission_pct&quot;: 0.0,
+      &quot;total_commission_pct&quot;: 8.0,
+      &quot;is_xtra&quot;: false,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;db_stale&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi mảng itemIds (5 SKU) lên product-data-batch.php trong 1 HTTP POST.</li><li>2. Bóc `productInfo` từ `payload[&#x27;products&#x27;]`: shopeeRatePercent, sellerRatePercent, totalRatePercent, isXtra, catName, cap.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#5</span>
+              <strong style="color:#f8fafc">apify_tiktok_shop_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_tiktok_hunter &bull; 12103 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/pro100chok~tiktok-shop-scraper-usage/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;region&quot;: &quot;vn&quot;,
+    &quot;scrapeType&quot;: &quot;search&quot;,
+    &quot;searchKeywords&quot;: [
+      &quot;keycap resin pikachu&quot;
+    ],
+    &quot;maxItems&quot;: 20,
+    &quot;sortBy&quot;: &quot;best_sellers&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1730332660597689211&quot;,
+      &quot;title&quot;: &quot;Keycap Pokemon, Chất Kết Dính Nhỏ Giọt, Chất Liệu PBT, Có Pikachu, Gengar, Psyduck, Squirtle, Bulbasaur, Charizard, Eevee, Snorlax, Làm Bằng Tay, Keycap Resin, Thích Hợp Cho Bàn Phím Cơ, Tự Làm, Sáng Tạo, Cá Nhân Hóa, Keycap Dễ Thương&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/keycap-pokemon-drip-glue-chat-luong-cao-thiet-ke-doc-dao/1730332660597689211&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c7469abd08424bec9772ec5732beb75d~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;,
+        &quot;https://p21-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/c7469abd08424bec9772ec5732beb75d~tplv-o3syd03w52-crop-webp:1024:1024.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;583282&quot;,
+      &quot;originalPrice&quot;: &quot;833260&quot;,
+      &quot;discountPercent&quot;: &quot;30%&quot;,
+      &quot;salesVolume&quot;: 5,
+      &quot;rating&quot;: 3,
+      &quot;reviewCount&quot;: &quot;1&quot;,
+      &quot;sellerName&quot;: &quot;MAIMOOO&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 1,
+      &quot;query&quot;: &quot;keycap resin pikachu&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    },
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1735042479971927249&quot;,
+      &quot;title&quot;: &quot;keycap keycap anime Nắp phím Pikachu Pokémon, nắp phím dành cho bàn phím cơ, thiết kế 3D cá nhân hóa bằng nhựa resin, quà tặng cho bạn gái&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/1735042479971927249&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/56c6dc37d9c54e2b8f46ffb1911b9dc3~tplv-o3syd03w52-crop-webp:3276:3276.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/56c6dc37d9c54e2b8f46ffb1911b9dc3~tplv-o3syd03w52-crop-webp:3276:3276.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my2&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;304402&quot;,
+      &quot;originalPrice&quot;: &quot;608804&quot;,
+      &quot;discountPercent&quot;: &quot;50%&quot;,
+      &quot;salesVolume&quot;: 0,
+      &quot;rating&quot;: 0,
+      &quot;reviewCount&quot;: &quot;0&quot;,
+      &quot;sellerName&quot;: &quot;VanessaFrederick&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 2,
+      &quot;query&quot;: &quot;keycap resin pikachu&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Thu thập dataset TikTok Shop (VN) từ Actor `pro100chok~tiktok-shop-scraper-usage` (20 mục).</li><li>2. Ánh xạ `currentPrice`, `salesVolume`, `sellerName`, `rating`, `reviewCount` -&gt; tính GMV = price_vnd * salesVolume.</li><li>3. Kiểm tra thực tế payload: chỉ số KOC / Hoa hồng Affiliate / Video-Live / Lịch sử 30d nếu chưa có trong kết quả tìm kiếm sẽ đánh dấu minh bạch (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#6</span>
+              <strong style="color:#f8fafc">apify_lazada_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_lazada_hunter &bull; 50841 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/memo23~lazada-scraper/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;searchQueries&quot;: [
+      &quot;keycap resin pikachu&quot;
+    ],
+    &quot;country&quot;: &quot;vn&quot;,
+    &quot;maxItems&quot;: 20,
+    &quot;scrapeDetails&quot;: false
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;name&quot;: &quot;3D Resin Pikachu Customizable Mechanical Keyboard Keycap for ESC Single&quot;,
+      &quot;image&quot;: &quot;https://filebroker-cdn.lazada.vn/kf/S574d29eb687048198a6dfdcf535840f0e.jpg&quot;,
+      &quot;categories&quot;: &quot;42062201 &gt; 4455 &gt; 2160 &gt; 15220&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;65074&quot;,
+      &quot;sellerName&quot;: &quot;Lazada Global&quot;,
+      &quot;sellerId&quot;: &quot;100174125&quot;,
+      &quot;location&quot;: &quot;China&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: null,
+      &quot;reviewCount&quot;: null,
+      &quot;ratingScore&quot;: null,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫159,000&quot;,
+      &quot;priceValue&quot;: 159000,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPct&quot;: null,
+      &quot;itemId&quot;: &quot;13473765150&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i13473765150.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;keycap resin pikachu&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T04:29:33.976Z&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Keycap Artisan Mặt Pikachu Oem Profile Chất Liệu Resin Siêu Dễ Thương&quot;,
+      &quot;image&quot;: &quot;https://vn-live-01.slatic.net/p/5bee315ff9824766c5a927ca903781c6.jpg&quot;,
+      &quot;categories&quot;: &quot;42062201 &gt; 4455 &gt; 2160 &gt; 15220&quot;,
+      &quot;brandName&quot;: &quot;No Brand&quot;,
+      &quot;brandId&quot;: &quot;123678078&quot;,
+      &quot;sellerName&quot;: &quot;BOSSGEAR&quot;,
+      &quot;sellerId&quot;: &quot;200158158537&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: null,
+      &quot;reviewCount&quot;: null,
+      &quot;ratingScore&quot;: null,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫99,000&quot;,
+      &quot;priceValue&quot;: 99000,
+      &quot;originalPrice&quot;: &quot;125000&quot;,
+      &quot;discountPct&quot;: 21,
+      &quot;itemId&quot;: &quot;2106541099&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i2106541099.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;keycap resin pikachu&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T04:29:33.976Z&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gọi đồng bộ Apify Actor `memo23~lazada-scraper` (country=&#x27;vn&#x27;, scrapeDetails=False) nhận 20 bản ghi.</li><li>2. Đọc `priceValue` (fallback chuỗi `price`/`priceShow`) và parse `soldCount` (VD &#x27;494 sold&#x27;, &#x27;1.2K sold&#x27;) -&gt; tính `gmv = price_vnd * sold`.</li><li>3. Nhận diện LazMall qua cờ `isLazMall` hoặc nhãn gian hàng Mall/Official.</li><li>4. Do Lazada Scraper chưa trả Hoa hồng Affiliate &amp; Lịch sử 30 ngày -&gt; gắn nhãn (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#7</span>
+              <strong style="color:#f8fafc">market_metrics_aggregation_pipeline</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_pricing_analyst &bull; 12 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;PIPELINE_REDUCE&quot;,
+  &quot;url&quot;: &quot;internal://analytics/shopee-grade-aggregator&quot;,
+  &quot;headers&quot;: {},
+  &quot;payload&quot;: {
+    &quot;platforms&quot;: [
+      &quot;shopee&quot;,
+      &quot;tiktok_shop&quot;,
+      &quot;lazada&quot;
+    ],
+    &quot;total_raw_skus&quot;: 70,
+    &quot;exclude_keywords&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (70 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 70,
+  &quot;raw_sample&quot;: {
+    &quot;sp_count&quot;: 70,
+    &quot;gift_excluded_from_avg_price&quot;: 5,
+    &quot;avg_price_formula&quot;: &quot;sum(65 non-gift prices) / 65 = 1.084.343 đ&quot;,
+    &quot;hhi_formula&quot;: &quot;sum((shop_gmv / 2.141.153.243 đ)^2 across 41 shops) = 0.0794&quot;,
+    &quot;blue_ocean_formula&quot;: &quot;HHI_pts(40.0) + Demand_pts(25.5) + NonMall_pts(24.3) = 90/100&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gom nhóm 70 SKU từ 3 sàn; tách 5 SKU quà tặng (&lt;= 2.000đ) ra khỏi Giá trung bình.</li><li>2. Tính Giá trung bình: sum(65 non-gift prices) / 65 = 1.084.343 đ.</li><li>3. Tính chỉ số tập trung thị phần HHI: sum((shop_gmv / 2.141.153.243 đ)^2 across 41 shops) = 0.0794.</li><li>4. Tính Điểm Đại dương xanh: HHI_pts(40.0) + Demand_pts(25.5) + NonMall_pts(24.3) = 90/100.</li><li>5. Chia dải giá thành 6 bậc đều nhau để tìm Sweet Spot (dải có GMV cao nhất) &amp; xếp Top 5 Shop (CR5).</li><li>6. Các chỉ số API không có (Hoa hồng Lazada, KOC/Live Shopee, Lịch sử 30d Lazada/TikTok) gán nguyên văn &#x27;(API đang phát triển)&#x27;.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#8</span>
+              <strong style="color:#f8fafc">codex_cli_market_synthesis</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_report_architect &bull; 1800 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;CODEX_CLI_EXEC&quot;,
+  &quot;url&quot;: &quot;local://codex.exe exec --skip-git-repo-check --ephemeral -s read-only&quot;,
+  &quot;headers&quot;: {
+    &quot;model&quot;: &quot;gpt-6-luna (codex-cli)&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;prompt&quot;: &quot;Bạn là Chuyên gia Nghiên cứu Thị trường TMĐT Việt Nam. Viết ĐÚNG 1 đoạn tóm tắt điều hành súc tích (85-115 từ, tiếng Việt chuẩn, chỉ phân tích thị trường khách quan, KHÔNG tư vấn giá vốn):\n- Từ khóa: keycap resin pikachu\n- Tổng quan 3 sàn: 70 SP, 41 shop, 9,911 lượt bán, GMV 2.141.153.243 đ, Giá TB 1.084.343 đ, HHI 0.0794, ĐĐX 90/100.\n- Chi tiết sàn: SHOPEE: GMV 1.921.781.187 đ, HHI 0.0942, ĐĐX 96/100, TIKTOK_SHOP: GMV 128.355.056 đ, HHI 0.4997, ĐĐX 70/100, LAZADA: GMV 91.017.000 đ, HHI 0.9685, ĐĐX 46/100\n- Nỗi đau khách hàng: Màu sắc &amp; chất liệu thực tế hơi khác ảnh render studio; Phân loại size / combo gây nhầm lẫn khiến khách đặt nhầm; Thiếu tem kiểm định / thông tin nguồn gốc rõ ràng ở mô tả&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (1 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 1,
+  &quot;raw_sample&quot;: {
+    &quot;narrative&quot;: &quot;Thị trường “keycap resin pikachu” ghi nhận 70 sản phẩm từ 41 shop, với 9.911 lượt bán, GMV 2,14 tỷ đồng và giá trung bình 1,08 triệu đồng; HHI toàn thị trường ở mức 0,0794, cho thấy doanh số phân tán. Shopee áp đảo với GMV 1,92 tỷ đồng, HHI 0,0942 và ĐĐX 96/100; TikTok Shop đạt 128,4 triệu đồng, HHI 0,4997, ĐĐX 70/100; Lazada đạt 91 triệu đồng, HHI 0,9685, ĐĐX 46/100. Phản hồi khách hàng tập trung vào khác biệt màu sắc, chất liệu so với ảnh render, nhầm lẫn phân loại size hoặc combo và thiếu thông tin kiểm định, nguồn gốc.&quot;,
+    &quot;tokens_used&quot;: 4205
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Nạp toàn bộ KPI đã kiểm toán (SP, Shop, GMV, HHI, ĐĐX, Tỷ lệ có bán, VOC) vào prompt phân tích điều hành.</li><li>2. Trích xuất đoạn tóm tắt điều hành khách quan hiển thị ở phần đầu Báo cáo và sinh 6 khối Phân tích AI chuyên sâu.</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    var tabFilterState = {};
+    function switchMarketTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.sa-tab-panel').forEach(function(panel) {
+        panel.style.display = (panel.id === 'panel_' + tabId) ? 'block' : 'none';
+      });
+    }
+    function filterTabTable(tabId, queryVal, shopFilterVal) {
+      var st = tabFilterState[tabId] || { q: '', shop: 'all' };
+      if (queryVal !== null) st.q = queryVal.toLowerCase().trim();
+      if (shopFilterVal !== null) st.shop = shopFilterVal;
+      tabFilterState[tabId] = st;
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+        var t = tr.getAttribute('data-title') || '';
+        var m = tr.getAttribute('data-mall') === '1';
+        var g = tr.getAttribute('data-gift') === '1';
+        var ok = (!st.q || t.indexOf(st.q) !== -1);
+        if (st.shop === 'mall' && !m) ok = false;
+        if (st.shop === 'nogift' && g) ok = false;
+        tr.style.display = ok ? '' : 'none';
+      });
+    }
+    function exportTabCsv(tabId) {
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      var rows = Array.from(tbl.querySelectorAll('tr')).filter(function(r) { return r.style.display !== 'none'; });
+      var csv = rows.map(function(r) {
+        return Array.from(r.children).map(function(c) {
+          return '"' + (c.innerText || '').replace(/"/g, '""').trim() + '"';
+        }).join(',');
+      }).join('\n');
+      var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'product_hunter_' + tabId + '.csv';
+      a.click();
+    }
+  </script>
+</body>
+</html>
