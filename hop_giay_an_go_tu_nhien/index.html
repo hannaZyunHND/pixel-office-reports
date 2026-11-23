@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Báo Cáo Thị Trường Đa Sàn — Hộp giấy ăn gỗ tự nhiên</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, system-ui, sans-serif; background:#020617; color:#e2e8f0; line-height:1.5; }
+    .wrap { max-width:1320px; margin:0 auto; padding:20px; }
+    .hero { background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid #334155; border-radius:14px; padding:18px 22px; margin-bottom:14px; }
+    .pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:600; background:rgba(56,189,248,.15); color:#38bdf8; border:1px solid rgba(56,189,248,.4); }
+    .hero h1 { margin:6px 0 8px; font-size:22px; color:#f8fafc; }
+    .hero-narrative { margin:0; font-size:13.5px; color:#cbd5e1; }
+    .tabs-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; position:sticky; top:0; z-index:10; background:rgba(2,6,23,.92); backdrop-filter:blur(6px); padding:8px 0; }
+    .tab-btn { padding:8px 14px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-weight:600; font-size:13px; cursor:pointer; transition:all .15s; }
+    .tab-btn:hover { color:#f8fafc; border-color:#475569; }
+    .tab-btn.active { background:#1e293b; color:#38bdf8; border-color:#38bdf8; box-shadow:0 0 0 1px rgba(56,189,248,.35); }
+    .tab-btn.log-tab.active { color:#fbbf24; border-color:#fbbf24; }
+    .sa-panel { background:#0f172a; border:1px solid #334155; border-radius:14px; padding:18px; margin-bottom:14px; }
+    .sa-sub { font-size:12px; color:#94a3b8; display:flex; align-items:center; gap:8px; }
+    .sa-title { margin:2px 0; font-size:18px; color:#f8fafc; }
+    .sa-hint { font-size:12px; color:#64748b; margin-bottom:12px; }
+    .alert-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:14px; }
+    .alert-card { padding:10px 12px; border-radius:10px; background:#020617; border:1px solid #334155; }
+    .alert-card.warn { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.06); }
+    .alert-card.ok { border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.06); }
+    .alert-card.info { border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06); }
+    .alert-title { font-size:12px; font-weight:700; color:#f8fafc; }
+    .alert-desc { font-size:11px; color:#94a3b8; margin-top:2px; }
+    .overview-split { display:grid; grid-template-columns:270px 1fr; gap:14px; }
+    @media (max-width:860px) { .overview-split { grid-template-columns:1fr; } }
+    .blue-ocean-card { background:#020617; border:1px solid rgba(245,158,11,.45); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+    .bo-caption { font-size:12.5px; font-weight:600; color:#cbd5e1; }
+    .bo-score-line { display:flex; align-items:baseline; gap:6px; }
+    .bo-num { font-size:38px; font-weight:800; line-height:1; }
+    .bo-den { font-size:15px; color:#94a3b8; font-weight:600; }
+    .bo-badge { align-self:flex-start; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; }
+    .bo-track { height:8px; background:#1e293b; border-radius:999px; overflow:hidden; margin:4px 0; }
+    .bo-fill { height:100%; border-radius:999px; }
+    .bo-note { margin:0; font-size:11.5px; color:#94a3b8; }
+    .kpi-panel { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; }
+    .kpi-panel-head { font-size:12.5px; font-weight:700; color:#cbd5e1; margin-bottom:10px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; }
+    .kpi-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px 12px; }
+    .kpi-lbl { font-size:11px; color:#94a3b8; }
+    .kpi-val { font-size:17px; font-weight:800; margin-top:4px; color:#f8fafc; }
+    .kpi-val.blue { color:#38bdf8; } .kpi-val.purple { color:#c084fc; } .kpi-val.amber { color:#fbbf24; } .kpi-val.green { color:#4ade80; }
+    .api-dev { display:inline-block; margin-top:4px; font-size:11px; font-style:italic; color:#94a3b8; background:rgba(148,163,184,.12); border:1px dashed #475569; padding:2px 7px; border-radius:6px; }
+    .table-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+    .filter-controls { display:flex; flex-wrap:wrap; gap:8px; }
+    .ctrl-input, .ctrl-select, .ctrl-btn { background:#020617; border:1px solid #334155; color:#f8fafc; border-radius:8px; padding:6px 10px; font-size:12px; outline:none; }
+    .ctrl-btn { cursor:pointer; background:#1e293b; font-weight:600; } .ctrl-btn:hover { border-color:#38bdf8; color:#38bdf8; }
+    .tbl-wrap { max-height:420px; overflow:auto; border:1px solid #1e293b; border-radius:10px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; }
+    th { background:#020617; color:#94a3b8; font-size:10.5px; text-transform:uppercase; position:sticky; top:0; }
+    a { color:#38bdf8; text-decoration:none; } a:hover { text-decoration:underline; }
+    .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+    .bin-row { display:grid; grid-template-columns:190px 1fr 110px; align-items:center; gap:10px; padding:7px 8px; border-radius:8px; margin-bottom:6px; background:#020617; border:1px solid #1e293b; }
+    .bin-row.sweet { border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.08); }
+    .sweet-tag { font-size:9.5px; background:#10b981; color:#020617; font-weight:700; padding:1px 5px; border-radius:4px; margin-left:4px; }
+    .bin-lbl { font-size:11.5px; font-weight:600; }
+    .bin-line { display:flex; align-items:center; gap:6px; margin:2px 0; }
+    .mini-tag { width:78px; font-size:10px; color:#94a3b8; }
+    .mini-track { flex:1; height:6px; background:#1e293b; border-radius:999px; overflow:hidden; }
+    .mini-fill { height:100%; border-radius:999px; }
+    .mini-fill.blue { background:#38bdf8; } .mini-fill.green { background:#10b981; }
+    .bin-val { text-align:right; font-size:11.5px; font-weight:700; color:#e2e8f0; }
+    .dist-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+    .dist-card { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:10px 12px; }
+    .dist-top { display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:6px; gap:8px; }
+    .dist-val { font-weight:800; color:#38bdf8; }
+    .dist-sub { font-size:10.5px; color:#64748b; margin-top:5px; }
+    .caps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:8px; }
+    .cap-item { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:8px; background:#020617; border:1px solid #1e293b; font-size:12px; }
+    .ai-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:12px; }
+    .ai-sec { background:#020617; border:1px solid #1e293b; border-radius:10px; padding:12px; }
+    .ai-sec h4 { margin:0 0 6px; font-size:13px; color:#38bdf8; } .ai-sec p { margin:0; font-size:12.5px; color:#cbd5e1; }
+    .mode-badge { font-size:10px; font-family:monospace; padding:2px 6px; border-radius:4px; font-weight:700; }
+    .mode-badge.live { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+    .mode-badge.sandbox { background:rgba(245,158,11,.2); color:#fbbf24; border:1px solid rgba(245,158,11,.5); }
+    .mode-badge.partial { background:rgba(56,189,248,.2); color:#38bdf8; border:1px solid rgba(56,189,248,.5); }
+    .plat-pill { font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; }
+    .plat-pill.shopee { background:rgba(249,115,22,.18); color:#fb923c; }
+    .plat-pill.lazada { background:rgba(59,130,246,.18); color:#60a5fa; }
+    .plat-pill.tiktok_shop { background:rgba(236,72,153,.18); color:#f472b6; }
+    .mall-pill { font-size:9.5px; background:#ef4444; color:#fff; padding:1px 4px; border-radius:3px; margin-left:4px; font-weight:700; }
+    .share-pill { padding:2px 7px; border-radius:999px; background:#1e293b; color:#38bdf8; font-weight:700; font-size:11px; }
+    .sub-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; overflow-x:auto; }
+    .sub-card-head { font-size:14px; font-weight:700; color:#f8fafc; margin-bottom:10px; }
+    .log-card { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; margin-top:14px; }
+    .log-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; padding-bottom:10px; border-bottom:1px solid #1e293b; margin-bottom:10px; }
+    .log-idx { display:inline-block; background:#1e293b; color:#38bdf8; font-family:monospace; font-size:11px; padding:2px 7px; border-radius:6px; margin-right:6px; }
+    .mono-pill { font-family:monospace; font-size:11px; padding:2px 7px; border-radius:4px; background:#0f172a; border:1px solid #334155; color:#cbd5e1; }
+    .log-3col { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px; }
+    .log-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px; display:flex; flex-direction:column; min-width:0; }
+    .log-box-title { font-size:11.5px; font-weight:700; color:#cbd5e1; margin-bottom:6px; }
+    .code-pre { margin:0; font-family:monospace; font-size:11px; color:#93c5fd; background:#020617; padding:8px; border-radius:6px; max-height:240px; overflow:auto; white-space:pre-wrap; word-break:break-word; }
+    .proc-list { margin:0; padding-left:16px; font-size:12px; color:#cbd5e1; } .proc-list li { margin-bottom:5px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <span class="pill">🎯 PRODUCT HUNTER · BÁO CÁO PHÂN TÍCH THỊ TRƯỜNG ĐA SÀN &bull; gpt-6-luna (codex-cli)</span>
+      <h1>Từ khóa: "Hộp giấy ăn gỗ tự nhiên"</h1>
+      <p class="hero-narrative">Thị trường hộp giấy ăn gỗ tự nhiên ghi nhận 70 sản phẩm từ 59 shop, đạt 3.394 lượt bán và GMV 497.712.414 đồng; giá trung bình là 193.199 đồng. HHI toàn thị trường ở mức 0,2303, với điểm đánh giá chung 78/100. TikTok Shop đóng góp GMV lớn nhất, 404.130.283 đồng, HHI 0,3306 và điểm 81/100; Shopee đạt 49.809.796 đồng, HHI 0,5898, điểm 58/100; Lazada đạt 43.772.335 đồng, HHI 0,8343, điểm 48/100. Phản hồi khách hàng tập trung vào giấy mỏng, dễ rách khi gặp nước hoặc bị kéo đứt vụn, số tờ thực tế thấp hơn mô tả, bụi giấy và mùi hương liệu nồng gây kích ứng.</p>
+    </div>
+
+    <div class="tabs-bar"><button type="button" class="tab-btn active" data-tab="all" onclick="switchMarketTab('all')">🌐 Tổng Hợp 3 Sàn</button><button type="button" class="tab-btn" data-tab="shopee" onclick="switchMarketTab('shopee')">🟠 Sàn Cam (Shopee)</button><button type="button" class="tab-btn" data-tab="lazada" onclick="switchMarketTab('lazada')">🔵 Sàn Xanh (Lazada)</button><button type="button" class="tab-btn" data-tab="tiktok_shop" onclick="switchMarketTab('tiktok_shop')">⚫ Sàn Đen (TikTok Shop)</button><button type="button" class="tab-btn log-tab" data-tab="logs" onclick="switchMarketTab('logs')">🪵 Logs Request / Response (8)</button></div>
+    
+    <section class="sa-tab-panel" id="panel_all">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🌐 Tổng Hợp 3 Sàn</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Tổng hợp 3 Sàn (Shopee / Lazada / TikTok Shop). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">10.0% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 70 SP từ 59 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 3 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">78</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:78%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.2303), tỷ lệ có đơn (51.4%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">70</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">59</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">3,394</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">497.712.414 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">193.199 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">22.500 đ – 1.422.738 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">51.4%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">36</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,2303</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">8,0%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (70 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('all', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('all', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('all')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_all">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn gỗ hương cỡ lớn loại 1 - đục khắc hoa văn tinh xảo/ độc đáo - cth752" data-gmv="206609352" data-sold="1388" data-price="148854">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-giay-an-go-huong-co-dien-thiet-ke-sang-trong-doc-dao/1729578173182675437" target="_blank" rel="noopener">Hộp giấy ăn gỗ Hương cỡ lớn loại 1 - Đục Khắc Hoa Văn Tinh Xảo/ Độc Đáo - CTH752</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HAHANCO Store</td>
+          <td>148.854 đ</td>
+          <td>1,388</td>
+          <td><strong>206.609.352 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy ăn gỗ mun cao cấp- sang trọng" data-gmv="88545209" data-sold="227" data-price="390067">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1730015390509337517" target="_blank" rel="noopener">Hộp đựng khăn giấy ăn Gỗ Mun cao cấp- sang trọng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Mỹ Nghệ Tuấn Đào</td>
+          <td>390.067 đ</td>
+          <td>227</td>
+          <td><strong>88.545.209 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy chiện trơn chất liệu gỗ hương cao cấp 22x12x8cm" data-gmv="48124160" data-sold="410" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-giay-chien-tron-go-huong-cao-cap-22x12x8cm-to-chuc-vat-dung-sang-trong-cho-khong-gian/1729798363792640144" target="_blank" rel="noopener">Hộp giấy Chiện Trơn chất liệu gỗ hương cao cấp 22x12x8cm</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Thành Long</td>
+          <td>117.376 đ</td>
+          <td>410</td>
+          <td><strong>48.124.160 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tủ giày gỗ cánh lật cao cấp kết hợp nệm ghế ngồi mang giày - nội thất an nhiên (tg01/03)" data-gmv="37975000" data-sold="49" data-price="775000">
+          <td><a href="https://shopee.vn/product/895365547/21662002533" target="_blank" rel="noopener">Tủ Giày Gỗ Cánh Lật Cao Cấp Kết Hợp Nệm Ghế Ngồi Mang Giày - Nội Thất An Nhiên (TG01/03)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Nội Thất An Nhiên</td>
+          <td>775.000 đ</td>
+          <td>49</td>
+          <td><strong>37.975.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn tre trúc tự nhiên có đáy rút" data-gmv="30463338" data-sold="443" data-price="68766">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-tre-truc-tu-nhien-co-day-rut-chong-moi-am/1730578079108008481" target="_blank" rel="noopener">Hộp đựng giấy ăn tre trúc tự nhiên có đáy rút</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia Dụng Nhà Voi Giá Rẻ</td>
+          <td>68.766 đ</td>
+          <td>443</td>
+          <td><strong>30.463.338 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.3★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality plain natural wood tissue box holder" data-gmv="14448000" data-sold="172" data-price="84000">
+          <td><a href="https://www.lazada.vn/products/pdp-i248150384.html" target="_blank" rel="noopener">High-Quality Plain Natural Wood Tissue Box Holder</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>84.000 đ</td>
+          <td>172</td>
+          <td><strong>14.448.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.78★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ mun cao cấp" data-gmv="12899498" data-sold="34" data-price="379397">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-mun-cao-cap-tien-loi-sang-trong/1729660152848222837" target="_blank" rel="noopener">Hộp đựng giấy ăn gỗ mun cao cấp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ mỹ nghệ phú lợi</td>
+          <td>379.397 đ</td>
+          <td>34</td>
+          <td><strong>12.899.498 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality tissue box made of 100% maitreya buddha temple incense wood" data-gmv="11880000" data-sold="135" data-price="88000">
+          <td><a href="https://www.lazada.vn/products/pdp-i245488811.html" target="_blank" rel="noopener">High-Quality Tissue Box Made of 100% Maitreya Buddha Temple Incense Wood</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>88.000 đ</td>
+          <td>135</td>
+          <td><strong>11.880.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.69★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality plain natural wood tissue box holder" data-gmv="7656000" data-sold="87" data-price="88000">
+          <td><a href="https://www.lazada.vn/products/pdp-i245487948.html" target="_blank" rel="noopener">High-Quality Plain Natural Wood Tissue Box Holder</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>88.000 đ</td>
+          <td>87</td>
+          <td><strong>7.656.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.46★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy chữ nhật bằng gỗ thông tự nhiên , hộp khăn giấy để bàn" data-gmv="6135525" data-sold="75" data-price="81807">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735671692143003569" target="_blank" rel="noopener">Hộp Khăn giấy chữ nhật bằng gỗ thông tự nhiên , Hộp khăn giấy để bàn</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Adecor.vn</td>
+          <td>81.807 đ</td>
+          <td>75</td>
+          <td><strong>6.135.525 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>1.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="wooden paper boxes of huong tram song ngu wood" data-gmv="3738000" data-sold="42" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i251014898.html" target="_blank" rel="noopener">Wooden Paper Boxes of Huong Tram Song Ngu Wood</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>89.000 đ</td>
+          <td>42</td>
+          <td><strong>3.738.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.52★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy,hộp đựng giấy ăn  gỗ hương  hộp giấy gỗ hương trạm hoa hồng ,đồ gỗ d&amp;t" data-gmv="3286528" data-sold="28" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-khan-giay-go-huong-d-t-sang-trong-sach-se-qua-tang-doc-dao/1731226924996724086" target="_blank" rel="noopener">hộp đựng khăn giấy,hộp đựng giấy ăn  gỗ hương  Hộp giấy gỗ hương trạm hoa hồng ,đồ gỗ D&amp;T</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ D&amp;T</td>
+          <td>117.376 đ</td>
+          <td>28</td>
+          <td><strong>3.286.528 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy gỗ tự nhiên dành cho bàn ăn, bàn làm việc, bàn tiệc, phòng khách gia đình" data-gmv="2821500" data-sold="19" data-price="148500">
+          <td><a href="https://shopee.vn/product/1585314035/52417371644" target="_blank" rel="noopener">Hộp đựng khăn giấy gỗ tự nhiên dành cho bàn ăn, bàn làm việc, bàn tiệc, phòng khách gia đình</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Góc Decor Shop</td>
+          <td>148.500 đ</td>
+          <td>19</td>
+          <td><strong>2.821.500 đ</strong></td>
+          <td>16.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn holly gỗ tự nhiên, tam giác, bền đẹp được sơn pu bóng mờ sang trọng, phù hợp mọi không gian" data-gmv="2400000" data-sold="75" data-price="32000">
+          <td><a href="https://shopee.vn/product/1921822016/48018090456" target="_blank" rel="noopener">Hộp đựng giấy ăn Holly gỗ tự nhiên, tam giác, bền đẹp được sơn PU bóng mờ sang trọng, phù hợp mọi không gian</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Holly Bếp Hay</td>
+          <td>32.000 đ</td>
+          <td>75</td>
+          <td><strong>2.400.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="wooden box for square napkins -- rosewood" data-gmv="2208000" data-sold="24" data-price="92000">
+          <td><a href="https://www.lazada.vn/products/pdp-i269954860.html" target="_blank" rel="noopener">Wooden Box for Square Napkins -- Rosewood</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>92.000 đ</td>
+          <td>24</td>
+          <td><strong>2.208.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.33★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy vuông, hình chữ nhật  bằng gỗ tự nhiên phun màu óc chó" data-gmv="1717947" data-sold="21" data-price="81807">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-khan-giay-go-tu-nhien-thiet-ke-hien-dai-tien-loi/1730940260390636250" target="_blank" rel="noopener">Hộp Đựng Khăn Giấy Vuông, Hình chữ nhật  Bằng Gỗ Tự Nhiên phun màu óc chó</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Kho Đồ Gỗ Dương Mai</td>
+          <td>81.807 đ</td>
+          <td>21</td>
+          <td><strong>1.717.947 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy gỗ óc chó tự nhiên – hộp đựng giấy ăn cao cấp chữ nhật decor" data-gmv="1680000" data-sold="24" data-price="70000">
+          <td><a href="https://shopee.vn/product/40029153/24073046861" target="_blank" rel="noopener">Hộp Khăn Giấy Gỗ Óc Chó Tự Nhiên – Hộp Đựng Giấy Ăn Cao Cấp Chữ Nhật Decor</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>khodogohanoi</td>
+          <td>70.000 đ</td>
+          <td>24</td>
+          <td><strong>1.680.000 đ</strong></td>
+          <td>15.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ hương cao cấp - sản phẩm chất lượng" data-gmv="1371760" data-sold="13" data-price="105520">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-cao-cap-thiet-ke-gon-gang-tien-loi/1732853790293919193" target="_blank" rel="noopener">Hộp đựng giấy ăn gỗ hương cao cấp - Sản phẩm chất lượng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Tiến Diệp</td>
+          <td>105.520 đ</td>
+          <td>13</td>
+          <td><strong>1.371.760 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn điêu khắc long phụng gỗ hương" data-gmv="1344000" data-sold="16" data-price="84000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1951244089.html" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Điêu Khắc Long Phụng Gỗ Hương</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xưởng Gỗ Hùng Huy</td>
+          <td>84.000 đ</td>
+          <td>16</td>
+          <td><strong>1.344.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp  đựng  giấy  ăn gỗ hương cao cấp" data-gmv="1291136" data-sold="11" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-cao-cap-gozen-thiet-ke-sang-trong/1731340130715993530" target="_blank" rel="noopener">Hộp  đựng  giấy  ăn gỗ hương cao cấp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ mini Hoàng Han</td>
+          <td>117.376 đ</td>
+          <td>11</td>
+          <td><strong>1.291.136 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy gỗ óc chó tự nhiên – hộp đựng giấy ăn cao cấp chữ nhật decor" data-gmv="1263600" data-sold="6" data-price="210600">
+          <td><a href="https://shopee.vn/product/1675903713/51401917152" target="_blank" rel="noopener">Hộp Khăn Giấy Gỗ Óc Chó Tự Nhiên – Hộp Đựng Giấy Ăn Cao Cấp Chữ Nhật Decor</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>House of Decor</td>
+          <td>210.600 đ</td>
+          <td>6</td>
+          <td><strong>1.263.600 đ</strong></td>
+          <td>9.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[furni home] hộp đựng giấy ăn gỗ tự nhiên nguyên khối cao cấp – sang trọng &amp; đẳng cấp không gian bếp" data-gmv="1253196" data-sold="14" data-price="89514">
+          <td><a href="https://shopee.vn/product/1175586212/50656512209" target="_blank" rel="noopener">[FURNI HOME] HỘP ĐỰNG GIẤY ĂN GỖ TỰ NHIÊN NGUYÊN KHỐI CAO CẤP – SANG TRỌNG &amp; ĐẲNG CẤP KHÔNG GIAN BẾP</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Furni Home</td>
+          <td>89.514 đ</td>
+          <td>14</td>
+          <td><strong>1.253.196 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.3★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ gõ trạm khắc tinh xảo nhiều mẫu lựa chọn" data-gmv="1246000" data-sold="14" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1834768220.html" target="_blank" rel="noopener">Hộp đựng giấy ăn Gỗ Gõ trạm khắc tinh xảo nhiều mẫu lựa chọn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>DOGO1992</td>
+          <td>89.000 đ</td>
+          <td>14</td>
+          <td><strong>1.246.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.88★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn gỗ hương di lặc kéo bao tiền loại to hàng đẹp chất liệu gỗ hương tự nhiên - sang trọng - đồ gỗ minh đăng" data-gmv="995666" data-sold="7" data-price="142238">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-giay-an-go-huong-di-lac-sang-trong-chat-lieu-tu-nhien/1736032482938095077" target="_blank" rel="noopener">Hộp Giấy Ăn Gỗ Hương Di Lặc Kéo Bao Tiền Loại To Hàng Đẹp Chất Liệu Gỗ Hương Tự Nhiên - Sang Trọng - Đồ Gỗ Minh Đăng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Minh Đăng</td>
+          <td>142.238 đ</td>
+          <td>7</td>
+          <td><strong>995.666 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn bằng gỗ 13cm – hộp khăn giấy để bàn, decor nhà bếp sang trọng" data-gmv="981693" data-sold="9" data-price="109077">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735045641501771485" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Bằng Gỗ 13cm – Hộp Khăn Giấy Để Bàn, Decor Nhà Bếp Sang Trọng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đăng Thư Gia Dụng</td>
+          <td>109.077 đ</td>
+          <td>9</td>
+          <td><strong>981.693 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy phong cách nhật bản, hộp đựng giấy ăn thiết kế đơn giản bằng gỗ tre tự nhiên" data-gmv="936000" data-sold="12" data-price="78000">
+          <td><a href="https://shopee.vn/product/993812957/21279931211" target="_blank" rel="noopener">Hộp Đựng Khăn Giấy Phong Cách Nhật Bản, Hộp Đựng Giấy Ăn Thiết Kế Đơn Giản Bằng Gỗ Tre Tự Nhiên</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Green Home - Nhà Mộc Decor</td>
+          <td>78.000 đ</td>
+          <td>12</td>
+          <td><strong>936.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn rút, bằng tre chống ấm mốc, loại dài to, kt: 23x12x8.5cm (ảnh thật)" data-gmv="844160" data-sold="8" data-price="105520">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735458684884387536" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Rút, Bằng Tre Chống Ấm Mốc, Loại Dài To, Kt: 23x12x8.5cm (ảnh thật)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Giadungphukien90HN</td>
+          <td>105.520 đ</td>
+          <td>8</td>
+          <td><strong>844.160 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp  đựng giấy ăn,vuông 14 cao 12 làm từ gỗ hương siêu víp" data-gmv="746935" data-sold="7" data-price="106705">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-sang-trong-kich-thuoc-14x12cm/1732771368917370329" target="_blank" rel="noopener">Hộp  đựng giấy ăn,vuông 14 cao 12 làm từ gỗ hương siêu víp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Tiến Diệp</td>
+          <td>106.705 đ</td>
+          <td>7</td>
+          <td><strong>746.935 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="maxgepc hộp đựng khăn giấy bằng gỗ tự nhiên, khay đựng khăn ăn, hoàn thiện thủ công bằng gỗ, phong cách mộc mạc, vừa vặn với các gói khăn giấy tiêu chuẩn, trang trí nhà nông thôn" data-gmv="682335" data-sold="5" data-price="136467">
+          <td><a href="https://www.lazada.vn/products/pdp-i13446123071.html" target="_blank" rel="noopener">MaxgePC Hộp đựng khăn giấy bằng gỗ tự nhiên, khay đựng khăn ăn, hoàn thiện thủ công bằng gỗ, phong cách mộc mạc, vừa vặn với các gói khăn giấy tiêu chuẩn, trang trí nhà nông thôn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>MaxgePC Vietnam</td>
+          <td>136.467 đ</td>
+          <td>5</td>
+          <td><strong>682.335 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="khay giấy bàn ăn - sugi | nu home | hộp để giấy ăn bằng gỗ tự nhiên cho bàn ăn nhà hàng" data-gmv="590000" data-sold="2" data-price="295000">
+          <td><a href="https://shopee.vn/product/85881120/20889936810" target="_blank" rel="noopener">Khay giấy bàn ăn - Sugi | NU Home | hộp để giấy ăn bằng gỗ tự nhiên cho bàn ăn nhà hàng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>nuhome.vn</td>
+          <td>295.000 đ</td>
+          <td>2</td>
+          <td><strong>590.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">22.500 – 255.872 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (80.6%)</span><div class="mini-track"><div class="mini-fill blue" style="width:80.6%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (71.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:71.9%"></div></div></div>
+          </div>
+          <div class="bin-val">357.702.707 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">255.873 – 489.245 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (16.4%)</span><div class="mini-track"><div class="mini-fill blue" style="width:16.4%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (20.5%)</span><div class="mini-track"><div class="mini-fill green" style="width:20.5%"></div></div></div>
+          </div>
+          <div class="bin-val">102.034.707 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">489.246 – 722.618 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">722.619 – 955.991 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (1.5%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (7.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:7.6%"></div></div></div>
+          </div>
+          <div class="bin-val">37.975.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">955.992 – 1.189.364 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">1.189.365 – 1.422.738 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (1.5%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (59 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>HAHANCO Store</strong></td><td>Shop Thường</td><td>1</td><td>1,388</td><td>206.609.352 đ</td><td><span class='share-pill'>41.5%</span></td></tr><tr><td><strong>Đồ Gỗ Mỹ Nghệ Tuấn Đào</strong></td><td>Shop Thường</td><td>1</td><td>227</td><td>88.545.209 đ</td><td><span class='share-pill'>17.8%</span></td></tr><tr><td><strong>Đồ Gỗ Thành Long</strong></td><td>Shop Thường</td><td>1</td><td>410</td><td>48.124.160 đ</td><td><span class='share-pill'>9.7%</span></td></tr><tr><td><strong>love69 shop</strong></td><td>Shop Thường</td><td>6</td><td>460</td><td>39.930.000 đ</td><td><span class='share-pill'>8.0%</span></td></tr><tr><td><strong>Nội Thất An Nhiên</strong></td><td>Shop Thường</td><td>1</td><td>49</td><td>37.975.000 đ</td><td><span class='share-pill'>7.6%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">41.5%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:41.5%"></div></div>
+          <div class="dist-sub">HAHANCO Store</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">69.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:69.0%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">84.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:84.6%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/70 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">71.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:71.9%"></div></div>
+          <div class="dist-sub">22.500 – 255.872 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">71.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:71.4%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">8,0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:32.0%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🌐 Tổng Hợp 3 Sàn"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Hộp giấy ăn gỗ tự nhiên&#x27; đạt 70 SKU từ 59 shop, tổng 3,394 lượt bán tương ứng 497.712.414 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 78/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 193.199 đ (khoảng giá 22.500 đ – 1.422.738 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 22.500 – 255.872 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2303 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 69.0% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Giấy mỏng, dễ rách khi gặp nước hoặc kéo bị đứt lắt nhắt • Số tờ thực tế trên một gói/thùng ít hơn mô tả quảng cáo • Bị bụi giấy nhiều hoặc mùi hương liệu nồng gây kích ứng • Thùng carton giao tới hay bị rách góc/móp méo nếu không bọc kỹ</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay test kéo giãn độ dai 4 lớp khi thấm nước trực tiếp trên video • Cân trọng lượng thùng / đếm rõ số tờ thực tế ngay trên ảnh bìa • Cam kết giấy nguyên sinh không tẩy trắng, an toàn cho da em bé</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_shopee" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🟠 Sàn Cam (Shopee)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: AddLiveTag Market API (LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">10.0% sản phẩm có đủ lịch sử cho số liệu 30 ngày.</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 30 SP từ 28 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 3 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#d97706">58</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#d97706;background:rgba(217,119,6,.18)">Khá tiềm năng</div>
+            <div class="bo-track"><div class="bo-fill" style="width:58%;background:#d97706"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.5898), tỷ lệ có đơn (40.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">30</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">28</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">211</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">49.809.796 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">211.030 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">22.500 đ – 775.000 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">40.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">12</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,5898</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="kpi-val slate">8,0%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (30 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('shopee', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('shopee', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('shopee')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_shopee">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="tủ giày gỗ cánh lật cao cấp kết hợp nệm ghế ngồi mang giày - nội thất an nhiên (tg01/03)" data-gmv="37975000" data-sold="49" data-price="775000">
+          <td><a href="https://shopee.vn/product/895365547/21662002533" target="_blank" rel="noopener">Tủ Giày Gỗ Cánh Lật Cao Cấp Kết Hợp Nệm Ghế Ngồi Mang Giày - Nội Thất An Nhiên (TG01/03)</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Nội Thất An Nhiên</td>
+          <td>775.000 đ</td>
+          <td>49</td>
+          <td><strong>37.975.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy gỗ tự nhiên dành cho bàn ăn, bàn làm việc, bàn tiệc, phòng khách gia đình" data-gmv="2821500" data-sold="19" data-price="148500">
+          <td><a href="https://shopee.vn/product/1585314035/52417371644" target="_blank" rel="noopener">Hộp đựng khăn giấy gỗ tự nhiên dành cho bàn ăn, bàn làm việc, bàn tiệc, phòng khách gia đình</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Góc Decor Shop</td>
+          <td>148.500 đ</td>
+          <td>19</td>
+          <td><strong>2.821.500 đ</strong></td>
+          <td>16.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn holly gỗ tự nhiên, tam giác, bền đẹp được sơn pu bóng mờ sang trọng, phù hợp mọi không gian" data-gmv="2400000" data-sold="75" data-price="32000">
+          <td><a href="https://shopee.vn/product/1921822016/48018090456" target="_blank" rel="noopener">Hộp đựng giấy ăn Holly gỗ tự nhiên, tam giác, bền đẹp được sơn PU bóng mờ sang trọng, phù hợp mọi không gian</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Holly Bếp Hay</td>
+          <td>32.000 đ</td>
+          <td>75</td>
+          <td><strong>2.400.000 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy gỗ óc chó tự nhiên – hộp đựng giấy ăn cao cấp chữ nhật decor" data-gmv="1680000" data-sold="24" data-price="70000">
+          <td><a href="https://shopee.vn/product/40029153/24073046861" target="_blank" rel="noopener">Hộp Khăn Giấy Gỗ Óc Chó Tự Nhiên – Hộp Đựng Giấy Ăn Cao Cấp Chữ Nhật Decor</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>khodogohanoi</td>
+          <td>70.000 đ</td>
+          <td>24</td>
+          <td><strong>1.680.000 đ</strong></td>
+          <td>15.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy gỗ óc chó tự nhiên – hộp đựng giấy ăn cao cấp chữ nhật decor" data-gmv="1263600" data-sold="6" data-price="210600">
+          <td><a href="https://shopee.vn/product/1675903713/51401917152" target="_blank" rel="noopener">Hộp Khăn Giấy Gỗ Óc Chó Tự Nhiên – Hộp Đựng Giấy Ăn Cao Cấp Chữ Nhật Decor</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>House of Decor</td>
+          <td>210.600 đ</td>
+          <td>6</td>
+          <td><strong>1.263.600 đ</strong></td>
+          <td>9.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[furni home] hộp đựng giấy ăn gỗ tự nhiên nguyên khối cao cấp – sang trọng &amp; đẳng cấp không gian bếp" data-gmv="1253196" data-sold="14" data-price="89514">
+          <td><a href="https://shopee.vn/product/1175586212/50656512209" target="_blank" rel="noopener">[FURNI HOME] HỘP ĐỰNG GIẤY ĂN GỖ TỰ NHIÊN NGUYÊN KHỐI CAO CẤP – SANG TRỌNG &amp; ĐẲNG CẤP KHÔNG GIAN BẾP</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Furni Home</td>
+          <td>89.514 đ</td>
+          <td>14</td>
+          <td><strong>1.253.196 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.3★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy phong cách nhật bản, hộp đựng giấy ăn thiết kế đơn giản bằng gỗ tre tự nhiên" data-gmv="936000" data-sold="12" data-price="78000">
+          <td><a href="https://shopee.vn/product/993812957/21279931211" target="_blank" rel="noopener">Hộp Đựng Khăn Giấy Phong Cách Nhật Bản, Hộp Đựng Giấy Ăn Thiết Kế Đơn Giản Bằng Gỗ Tre Tự Nhiên</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Green Home - Nhà Mộc Decor</td>
+          <td>78.000 đ</td>
+          <td>12</td>
+          <td><strong>936.000 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="khay giấy bàn ăn - sugi | nu home | hộp để giấy ăn bằng gỗ tự nhiên cho bàn ăn nhà hàng" data-gmv="590000" data-sold="2" data-price="295000">
+          <td><a href="https://shopee.vn/product/85881120/20889936810" target="_blank" rel="noopener">Khay giấy bàn ăn - Sugi | NU Home | hộp để giấy ăn bằng gỗ tự nhiên cho bàn ăn nhà hàng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>nuhome.vn</td>
+          <td>295.000 đ</td>
+          <td>2</td>
+          <td><strong>590.000 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn phong cách nhật bản, hộp đựng giấy thiết kế cách điệu bằng gỗ tre tự nhiên" data-gmv="532000" data-sold="7" data-price="76000">
+          <td><a href="https://shopee.vn/product/386090528/22203929432" target="_blank" rel="noopener">Hộp đựng giấy ăn phong cách Nhật Bản, Hộp đựng giấy thiết kế cách điệu bằng gỗ Tre tự nhiên</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Green Home - Mộc Decor</td>
+          <td>76.000 đ</td>
+          <td>7</td>
+          <td><strong>532.000 đ</strong></td>
+          <td>10.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="marbit walnut hộp khăn giấy gỗ cao cấp tự nhiên quả óc chó dung tích lớn trang trí khăn ăn giá đỡ cho văn phòng tại nhà khu tiếp tân fhs" data-gmv="220000" data-sold="1" data-price="220000">
+          <td><a href="https://shopee.vn/product/282564446/45469041612" target="_blank" rel="noopener">Marbit Walnut Hộp Khăn Giấy Gỗ Cao Cấp Tự Nhiên Quả óc chó Dung Tích Lớn Trang Trí Khăn Ăn Giá Đỡ Cho Văn Phòng Tại Nhà Khu Tiếp Tân FHS</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Marbit.VN</td>
+          <td>220.000 đ</td>
+          <td>1</td>
+          <td><strong>220.000 đ</strong></td>
+          <td>5.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="kệ đựng giấy ăn/khăn giấy kết hợp ống tăm gỗ tự nhiên cao cấp - phong cách bắc âu tối giản giba" data-gmv="116000" data-sold="1" data-price="116000">
+          <td><a href="https://shopee.vn/product/72243815/45300715237" target="_blank" rel="noopener">Kệ Đựng Giấy Ăn/Khăn Giấy Kết Hợp Ống Tăm Gỗ Tự Nhiên Cao Cấp - Phong Cách Bắc Âu Tối Giản GIBA</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Tiệm Gỗ GIBA</td>
+          <td>116.000 đ</td>
+          <td>1</td>
+          <td><strong>116.000 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="bút chì màu dạng cốc / hộp giấy - gỗ khô tự nhiên an toàn - 12/24/36màu sắc tươi sáng, chất chì cao cấp không dễ g" data-gmv="22500" data-sold="1" data-price="22500">
+          <td><a href="https://shopee.vn/product/24909781/4224453715" target="_blank" rel="noopener">Bút chì màu dạng cốc / hộp giấy - gỗ khô tự nhiên an toàn - 12/24/36màu sắc tươi sáng, chất chì cao cấp không dễ g</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>VĂN PHÒNG PHẨM- ĐỒ CHƠI AN YÊN</td>
+          <td>22.500 đ</td>
+          <td>1</td>
+          <td><strong>22.500 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy ăn bằng gỗ tre tự nhiên ecohub" data-gmv="0" data-sold="0" data-price="204000">
+          <td><a href="https://shopee.vn/product/304445423/11015839720" target="_blank" rel="noopener">Hộp khăn giấy ăn bằng gỗ tre tự nhiên ECOHUB</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>ECOHUB Hà Nội</td>
+          <td>204.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>3.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[firefly] hộp đựng khăn giấy bằng gỗ tự nhiên thủ công hộp đựng khăn ăn bề mặt nhẵn bộ sắp xếp trang trí cho phòng ngủ vanity phòng khách [vn]" data-gmv="0" data-sold="0" data-price="213400">
+          <td><a href="https://shopee.vn/product/365132564/49066699828" target="_blank" rel="noopener">[Firefly] Hộp đựng khăn giấy bằng gỗ tự nhiên thủ công Hộp đựng khăn ăn Bề mặt nhẵn Bộ sắp xếp trang trí cho phòng ngủ Vanity Phòng khách [VN]</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>firefly.vn</td>
+          <td>213.400 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[initiationdawn] hộp đựng khăn giấy bằng nhựa có vỏ gỗ tự nhiên giá đỡ khăn ăn phong cách đơn giản kiểu bắc âu thích hợp cho bàn làm việc tại nhà phòng tắm" data-gmv="0" data-sold="0" data-price="113300">
+          <td><a href="https://shopee.vn/product/1731055764/51465884461" target="_blank" rel="noopener">[Initiationdawn] Hộp đựng khăn giấy bằng nhựa có vỏ gỗ tự nhiên Giá đỡ khăn ăn phong cách đơn giản kiểu Bắc Âu Thích hợp cho bàn làm việc tại nhà Phòng tắm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>initiationdawnct.vn</td>
+          <td>113.300 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy để bàn hộp đựng khăn ăn bằng gỗ cuộn gỗ tự nhiên" data-gmv="0" data-sold="0" data-price="429000">
+          <td><a href="https://shopee.vn/product/296229451/51465638003" target="_blank" rel="noopener">Hộp đựng khăn giấy để bàn Hộp đựng khăn ăn bằng gỗ Cuộn gỗ tự nhiên</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Benboo</td>
+          <td>429.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy bằng gỗ yondr, hộp đựng khăn giấy bằng gỗ tự nhiên ổn định, dụng cụ sắp xếp trang trí ins đế chống trượt tối giản giá đỡ khăn ăn cổ điển sử dụng nhà bếp" data-gmv="0" data-sold="0" data-price="173800">
+          <td><a href="https://shopee.vn/product/1608587113/51511970512" target="_blank" rel="noopener">Hộp đựng khăn giấy bằng gỗ YONDR, Hộp đựng khăn giấy bằng gỗ tự nhiên ổn định, Dụng cụ sắp xếp trang trí INS Đế chống trượt Tối giản Giá đỡ khăn ăn cổ điển Sử dụng nhà bếp</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>trendywondersll.vn</td>
+          <td>173.800 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>8.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[pes] hộp đựng khăn giấy bằng gỗ óc chó tự nhiên cao cấp giá đỡ khăn ăn trang trí dung tích lớn cho khu vực tiếp tân văn phòng tại nhà [vn]" data-gmv="0" data-sold="0" data-price="220660">
+          <td><a href="https://shopee.vn/product/1362700038/44134923570" target="_blank" rel="noopener">[pes] Hộp đựng khăn giấy bằng gỗ óc chó tự nhiên cao cấp Giá đỡ khăn ăn trang trí dung tích lớn cho khu vực tiếp tân văn phòng tại nhà [VN]</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>pengtao32.vn</td>
+          <td>220.660 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="yashore thiết thực khăn ăn giá đỡ cho phòng trang trí khăn giấy cho phòng tắm gỗ tự nhiên hộp đựng khăn giấy trang trí hình chữ nhật hộp đựng khăn giấy tổ chức để bàn văn phòng" data-gmv="0" data-sold="0" data-price="234172">
+          <td><a href="https://shopee.vn/product/1516910443/45318311583" target="_blank" rel="noopener">Yashore Thiết Thực Khăn Ăn Giá Đỡ Cho Phòng Trang Trí Khăn Giấy Cho Phòng Tắm Gỗ Tự Nhiên Hộp Đựng Khăn Giấy Trang Trí Hình Chữ Nhật Hộp Đựng Khăn Giấy Tổ Chức Để Bàn Văn Phòng</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Yashore.vn</td>
+          <td>234.172 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>12.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="xoitu quả óc chó gỗ hộp đựng khăn giấy cạnh mịn chất liệu tự nhiên dung tích lớn khăn ăn cho trang trại trang trí nhà quà tặng vn" data-gmv="0" data-sold="0" data-price="231550">
+          <td><a href="https://shopee.vn/product/348161177/50268594105" target="_blank" rel="noopener">XOITU Quả óc chó Gỗ Hộp Đựng Khăn Giấy Cạnh Mịn Chất Liệu Tự Nhiên Dung Tích Lớn Khăn Ăn Cho Trang Trại Trang Trí Nhà Quà Tặng VN</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>xo94itu.vn</td>
+          <td>231.550 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="hdmnatalie gỗ óc chó hộp đựng khăn giấy cạnh mịn chất liệu tự nhiên dung tích lớn khăn ăn cho trang trại trang trí nhà quà tặng vn" data-gmv="0" data-sold="0" data-price="203170">
+          <td><a href="https://shopee.vn/product/1264215270/57967946253" target="_blank" rel="noopener">HdmNatalie Gỗ óc chó Hộp Đựng Khăn Giấy Cạnh Mịn Chất Liệu Tự Nhiên Dung Tích Lớn Khăn Ăn Cho Trang Trại Trang Trí Nhà Quà Tặng VN</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>hdmNatalie.vn</td>
+          <td>203.170 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>4.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship] [ảnh thật] hộp gỗ đựng giấy ăn . gỗ thông tự nhiên an toàn cho sức khỏe." data-gmv="0" data-sold="0" data-price="95000">
+          <td><a href="https://shopee.vn/product/153261430/20383954980" target="_blank" rel="noopener">[FreeShip] [Ảnh thật] Hộp gỗ đựng giấy ăn . gỗ thông tự nhiên an toàn cho sức khỏe.</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Xưởng Mộc Lê Nguyên</td>
+          <td>95.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>11.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[predolo] hộp đựng khăn giấy để bàn hộp đựng khăn ăn bằng gỗ cuộn gỗ tự nhiên" data-gmv="0" data-sold="0" data-price="419100">
+          <td><a href="https://shopee.vn/product/1608676813/40234408532" target="_blank" rel="noopener">[Predolo] Hộp đựng khăn giấy để bàn Hộp đựng khăn ăn bằng gỗ Cuộn gỗ tự nhiên</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>predolopi.vn</td>
+          <td>419.100 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="grouptree quả óc chó hộp đựng khăn giấy mộc mạc thiết kế thanh lịch dung tích lớn hộp đựng khăn ăn bằng gỗ tự nhiên cho trang trại trang trí nhà bếp vn" data-gmv="0" data-sold="0" data-price="209660">
+          <td><a href="https://shopee.vn/product/329891852/55318480794" target="_blank" rel="noopener">Grouptree Quả óc chó Hộp đựng khăn giấy mộc mạc Thiết kế thanh lịch Dung tích lớn Hộp đựng khăn ăn bằng gỗ tự nhiên cho trang trại Trang trí nhà bếp VN</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>grouptree.vn</td>
+          <td>209.660 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>9.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="1" data-title="xoitu hộp đựng khăn giấy bằng gỗ tự nhiên thủ công hộp đựng khăn ăn thân thiện với môi trường trang trí hoàn thiện bằng gỗ để tân gia quà tặng nhà hàng tại nhà sử dụng vn" data-gmv="0" data-sold="0" data-price="170280">
+          <td><a href="https://shopee.vn/product/348161177/55167900037" target="_blank" rel="noopener">XOITU Hộp đựng khăn giấy bằng gỗ tự nhiên thủ công Hộp đựng khăn ăn thân thiện với môi trường Trang trí hoàn thiện bằng gỗ để tân gia Quà tặng Nhà hàng tại nhà Sử dụng VN</a> <span class="mode-badge sandbox">Quà tặng</span></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>xo94itu.vn</td>
+          <td>170.280 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>6.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[pnu] hộp đựng khăn giấy bằng gỗ tự nhiên mộc mạc hộp đựng khăn ăn thủ công trang trí hoàn thiện cổ điển cho trang trại bàn ăn cafe tại nhà [vn]" data-gmv="0" data-sold="0" data-price="213400">
+          <td><a href="https://shopee.vn/product/344788201/56066667982" target="_blank" rel="noopener">[PNU] Hộp đựng khăn giấy bằng gỗ tự nhiên mộc mạc Hộp đựng khăn ăn thủ công Trang trí hoàn thiện cổ điển cho trang trại Bàn ăn Cafe tại nhà [VN]</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>panghu.vn</td>
+          <td>213.400 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>7.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp nhựa đựng giấy ăn vân gỗ tự nhiên có lò xo đẩy giấy tự động rút giấy dễ dàng nhựa pp nhẹ, bền bỉ" data-gmv="0" data-sold="0" data-price="235000">
+          <td><a href="https://shopee.vn/product/800676313/53600829847" target="_blank" rel="noopener">Hộp nhựa đựng giấy ăn vân gỗ tự nhiên có lò xo đẩy giấy tự động rút giấy dễ dàng nhựa PP nhẹ, bền bỉ</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>sieuthinoithat_hygge</td>
+          <td>235.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>13.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn cao cấp, hộp đựng giấy ăn bằng gỗ tre tự nhiên phù hợp cho khăn giấy tối đa 220x100mm" data-gmv="0" data-sold="0" data-price="165000">
+          <td><a href="https://shopee.vn/product/386090528/23041180063" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Cao Cấp, Hộp Đựng Giấy Ăn Bằng Gỗ Tre Tự Nhiên Phù Hợp Cho Khăn Giấy Tối Đa 220x100mm</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>Green Home - Mộc Decor</td>
+          <td>165.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>8.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.9★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy để bàn hộp đựng khăn ăn bằng gỗ cuộn gỗ tự nhiên" data-gmv="0" data-sold="0" data-price="393800">
+          <td><a href="https://shopee.vn/product/1202876152/56467245616" target="_blank" rel="noopener">Hộp đựng khăn giấy để bàn Hộp đựng khăn ăn bằng gỗ Cuộn gỗ tự nhiên</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>cbvupj.vn</td>
+          <td>393.800 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>11.0%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[p &amp; n} hộp đựng khăn giấy bằng gỗ tự nhiên hộp đựng khăn ăn thủ công trang trí hoàn thiện mịn màng cho phòng khách phòng tắm bàn ăn sử dụng tại nhà [vn]" data-gmv="0" data-sold="0" data-price="245410">
+          <td><a href="https://shopee.vn/product/366000884/40935128172" target="_blank" rel="noopener">[P &amp; N} Hộp đựng khăn giấy bằng gỗ tự nhiên Hộp đựng khăn ăn thủ công Trang trí hoàn thiện mịn màng cho phòng khách Phòng tắm Bàn ăn Sử dụng tại nhà [VN]</a></td>
+          <td><span class="plat-pill shopee">SHOPEE</span></td>
+          <td>♛ P&amp;N ♛</td>
+          <td>245.410 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td>2.5%</td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row">
+          <div class="bin-lbl">22.500 – 147.915 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (33.3%)</span><div class="mini-track"><div class="mini-fill blue" style="width:33.3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (13.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:13.9%"></div></div></div>
+          </div>
+          <div class="bin-val">6.939.696 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">147.916 – 273.331 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (48.1%)</span><div class="mini-track"><div class="mini-fill blue" style="width:48.1%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (8.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:8.6%"></div></div></div>
+          </div>
+          <div class="bin-val">4.305.100 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">273.332 – 398.747 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (7.4%)</span><div class="mini-track"><div class="mini-fill blue" style="width:7.4%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (1.2%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">590.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">398.748 – 524.163 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (7.4%)</span><div class="mini-track"><div class="mini-fill blue" style="width:7.4%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">524.164 – 649.579 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row sweet">
+          <div class="bin-lbl">649.580 – 775.000 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (3.7%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3.7%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (76.2%)</span><div class="mini-track"><div class="mini-fill green" style="width:76.2%"></div></div></div>
+          </div>
+          <div class="bin-val">37.975.000 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (28 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>Nội Thất An Nhiên</strong></td><td>Shop Thường</td><td>1</td><td>49</td><td>37.975.000 đ</td><td><span class='share-pill'>76.2%</span></td></tr><tr><td><strong>Góc Decor Shop</strong></td><td>Shop Thường</td><td>1</td><td>19</td><td>2.821.500 đ</td><td><span class='share-pill'>5.7%</span></td></tr><tr><td><strong>Holly Bếp Hay</strong></td><td>Shop Thường</td><td>1</td><td>75</td><td>2.400.000 đ</td><td><span class='share-pill'>4.8%</span></td></tr><tr><td><strong>khodogohanoi</strong></td><td>Shop Thường</td><td>1</td><td>24</td><td>1.680.000 đ</td><td><span class='share-pill'>3.4%</span></td></tr><tr><td><strong>House of Decor</strong></td><td>Shop Thường</td><td>1</td><td>6</td><td>1.263.600 đ</td><td><span class='share-pill'>2.5%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">76.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:76.2%"></div></div>
+          <div class="dist-sub">Nội Thất An Nhiên</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">86.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:86.7%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">92.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:92.6%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/30 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">76.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:76.2%"></div></div>
+          <div class="dist-sub">649.580 – 775.000 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">86.7%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:86.7%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="dist-val">8,0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:32.0%"></div></div>
+          <div class="dist-sub">Mức hoa hồng KOC/Affiliate</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🟠 Sàn Cam (Shopee)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Hộp giấy ăn gỗ tự nhiên&#x27; đạt 70 SKU từ 59 shop, tổng 3,394 lượt bán tương ứng 497.712.414 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 78/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 193.199 đ (khoảng giá 22.500 đ – 1.422.738 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 22.500 – 255.872 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2303 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 69.0% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Giấy mỏng, dễ rách khi gặp nước hoặc kéo bị đứt lắt nhắt • Số tờ thực tế trên một gói/thùng ít hơn mô tả quảng cáo • Bị bụi giấy nhiều hoặc mùi hương liệu nồng gây kích ứng • Thùng carton giao tới hay bị rách góc/móp méo nếu không bọc kỹ</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay test kéo giãn độ dai 4 lớp khi thấm nước trực tiếp trên video • Cân trọng lượng thùng / đếm rõ số tờ thực tế ngay trên ảnh bìa • Cam kết giấy nguyên sinh không tẩy trắng, an toàn cho da em bé</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_lazada" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>🔵 Sàn Xanh (Lazada)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify Lazada Scraper (memo23~lazada-scraper · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 12 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#d97706">48</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#d97706;background:rgba(217,119,6,.18)">Khá tiềm năng</div>
+            <div class="bo-track"><div class="bo-fill" style="width:48%;background:#d97706"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.8343), tỷ lệ có đơn (45.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">12</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">501</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">43.772.335 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">138.924 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">84.000 đ – 346.178 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">45.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">9</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,8343</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('lazada', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('lazada', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('lazada')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_lazada">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality plain natural wood tissue box holder" data-gmv="14448000" data-sold="172" data-price="84000">
+          <td><a href="https://www.lazada.vn/products/pdp-i248150384.html" target="_blank" rel="noopener">High-Quality Plain Natural Wood Tissue Box Holder</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>84.000 đ</td>
+          <td>172</td>
+          <td><strong>14.448.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.78★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality tissue box made of 100% maitreya buddha temple incense wood" data-gmv="11880000" data-sold="135" data-price="88000">
+          <td><a href="https://www.lazada.vn/products/pdp-i245488811.html" target="_blank" rel="noopener">High-Quality Tissue Box Made of 100% Maitreya Buddha Temple Incense Wood</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>88.000 đ</td>
+          <td>135</td>
+          <td><strong>11.880.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.69★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality plain natural wood tissue box holder" data-gmv="7656000" data-sold="87" data-price="88000">
+          <td><a href="https://www.lazada.vn/products/pdp-i245487948.html" target="_blank" rel="noopener">High-Quality Plain Natural Wood Tissue Box Holder</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>88.000 đ</td>
+          <td>87</td>
+          <td><strong>7.656.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.46★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="wooden paper boxes of huong tram song ngu wood" data-gmv="3738000" data-sold="42" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i251014898.html" target="_blank" rel="noopener">Wooden Paper Boxes of Huong Tram Song Ngu Wood</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>89.000 đ</td>
+          <td>42</td>
+          <td><strong>3.738.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.52★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="wooden box for square napkins -- rosewood" data-gmv="2208000" data-sold="24" data-price="92000">
+          <td><a href="https://www.lazada.vn/products/pdp-i269954860.html" target="_blank" rel="noopener">Wooden Box for Square Napkins -- Rosewood</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>92.000 đ</td>
+          <td>24</td>
+          <td><strong>2.208.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.33★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn điêu khắc long phụng gỗ hương" data-gmv="1344000" data-sold="16" data-price="84000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1951244089.html" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Điêu Khắc Long Phụng Gỗ Hương</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xưởng Gỗ Hùng Huy</td>
+          <td>84.000 đ</td>
+          <td>16</td>
+          <td><strong>1.344.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ gõ trạm khắc tinh xảo nhiều mẫu lựa chọn" data-gmv="1246000" data-sold="14" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1834768220.html" target="_blank" rel="noopener">Hộp đựng giấy ăn Gỗ Gõ trạm khắc tinh xảo nhiều mẫu lựa chọn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>DOGO1992</td>
+          <td>89.000 đ</td>
+          <td>14</td>
+          <td><strong>1.246.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.88★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="maxgepc hộp đựng khăn giấy bằng gỗ tự nhiên, khay đựng khăn ăn, hoàn thiện thủ công bằng gỗ, phong cách mộc mạc, vừa vặn với các gói khăn giấy tiêu chuẩn, trang trí nhà nông thôn" data-gmv="682335" data-sold="5" data-price="136467">
+          <td><a href="https://www.lazada.vn/products/pdp-i13446123071.html" target="_blank" rel="noopener">MaxgePC Hộp đựng khăn giấy bằng gỗ tự nhiên, khay đựng khăn ăn, hoàn thiện thủ công bằng gỗ, phong cách mộc mạc, vừa vặn với các gói khăn giấy tiêu chuẩn, trang trí nhà nông thôn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>MaxgePC Vietnam</td>
+          <td>136.467 đ</td>
+          <td>5</td>
+          <td><strong>682.335 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn bằng gỗ hương in hoa văn" data-gmv="570000" data-sold="6" data-price="95000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1839567335.html" target="_blank" rel="noopener">Hộp đựng giấy ăn bằng gỗ hương in hoa văn</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xàng Xê Shop</td>
+          <td>95.000 đ</td>
+          <td>6</td>
+          <td><strong>570.000 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn vuông tokdodo gỗ tự nhiên 14 x 14 x 11,5 cm ( nhiều mẫu )" data-gmv="0" data-sold="0" data-price="89000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2421403006.html" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Vuông TOKDODO Gỗ Tự Nhiên 14 x 14 x 11,5 cm ( Nhiều Mẫu )</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>TOKDODO NHÀ CỬA - ĐỜI SỐNG</td>
+          <td>89.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="aikenn natural wood tissue box vintage style premium napkin holder tabletop moisture resistant living room coffee table decor" data-gmv="0" data-sold="0" data-price="130000">
+          <td><a href="https://www.lazada.vn/products/pdp-i13419273333.html" target="_blank" rel="noopener">Aikenn Natural wood tissue box vintage style premium napkin holder tabletop moisture resistant living room coffee table decor</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Aikenn13</td>
+          <td>130.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn bằng tự nhiên, phù hợp cho khách, màu gỗ óc chó, có thể dùng làm đựng đồ trên bàn, hộp trang trí phòng tắm, phụ kiện gia đình." data-gmv="0" data-sold="0" data-price="346178">
+          <td><a href="https://www.lazada.vn/products/pdp-i13493352988.html" target="_blank" rel="noopener">Hộp giấy ăn bằng tự nhiên, phù hợp cho khách, màu gỗ óc chó, có thể dùng làm đựng đồ trên bàn, hộp trang trí phòng tắm, phụ kiện gia đình.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>hjmgd</td>
+          <td>346.178 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="【on sale】 hộp giấy ăn bằng tự nhiên, phù hợp cho khách, màu gỗ óc chó, có thể dùng làm đựng đồ trên bàn, hộp trang trí phòng tắm, phụ kiện gia đình." data-gmv="0" data-sold="0" data-price="291648">
+          <td><a href="https://www.lazada.vn/products/pdp-i13492571827.html" target="_blank" rel="noopener">【On Sale】 Hộp giấy ăn bằng tự nhiên, phù hợp cho khách, màu gỗ óc chó, có thể dùng làm đựng đồ trên bàn, hộp trang trí phòng tắm, phụ kiện gia đình.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>dfgbg</td>
+          <td>291.648 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="[freeship max]hộp đựng giấy ăn bằng gỗ hương tự nhiên phong cách á đông (ctl752)." data-gmv="0" data-sold="0" data-price="125000">
+          <td><a href="https://www.lazada.vn/products/pdp-i1494205907.html" target="_blank" rel="noopener">[FREESHIP MAX]Hộp đựng giấy ăn bằng gỗ hương tự nhiên phong cách Á Đông (CTL752).</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>bepmoc</td>
+          <td>125.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp gỗ đựng giấy ăn vuông trạm hoa văn gỗ hương" data-gmv="0" data-sold="0" data-price="99000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2128138196.html" target="_blank" rel="noopener">Hộp Gỗ Đựng Giấy ăn Vuông trạm hoa văn gỗ hương</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xàng Xê Shop</td>
+          <td>99.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="wooden tissue box with apricot blossom scent" data-gmv="0" data-sold="0" data-price="88000">
+          <td><a href="https://www.lazada.vn/products/pdp-i269972152.html" target="_blank" rel="noopener">Wooden Tissue Box with Apricot Blossom Scent</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>love69 shop</td>
+          <td>88.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn bằng tự nhiên, phù hợp cho khách, màu gỗ óc chó, có thể dùng làm đựng đồ trên bàn, hộp trang trí phòng tắm, phụ kiện gia đình." data-gmv="0" data-sold="0" data-price="346178">
+          <td><a href="https://www.lazada.vn/products/pdp-i13490655171.html" target="_blank" rel="noopener">Hộp giấy ăn bằng tự nhiên, phù hợp cho khách, màu gỗ óc chó, có thể dùng làm đựng đồ trên bàn, hộp trang trí phòng tắm, phụ kiện gia đình.</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>ftnzdz</td>
+          <td>346.178 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="high-quality wooden paper box" data-gmv="0" data-sold="0" data-price="119000">
+          <td><a href="https://www.lazada.vn/products/pdp-i165416864.html" target="_blank" rel="noopener">High-Quality Wooden Paper Box</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xàng Xê Shop</td>
+          <td>119.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn vuông trạm khắc gỗ hương - ảnh thật" data-gmv="0" data-sold="0" data-price="99000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2028650461.html" target="_blank" rel="noopener">Hộp đựng giấy ăn vuông trạm khắc gỗ hương - ảnh thật</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Xàng Xê Shop</td>
+          <td>99.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="incense wood tissue box - size 22cmx12cmx10cm (real picture)" data-gmv="0" data-sold="0" data-price="200000">
+          <td><a href="https://www.lazada.vn/products/pdp-i2714758555.html" target="_blank" rel="noopener">Incense Wood Tissue Box - Size 22Cmx12Cmx10Cm (Real Picture)</a></td>
+          <td><span class="plat-pill lazada">LAZADA</span></td>
+          <td>Minh Anh ( Mian.vn )</td>
+          <td>200.000 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">84.000 – 127.695 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (70.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:70.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (98.4%)</span><div class="mini-track"><div class="mini-fill green" style="width:98.4%"></div></div></div>
+          </div>
+          <div class="bin-val">43.090.000 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">127.696 – 171.391 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (10.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:10.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (1.6%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">682.335 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">171.392 – 215.087 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">215.088 – 258.783 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">258.784 – 302.479 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">302.480 – 346.178 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (10.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:10.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (12 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>love69 shop</strong></td><td>Shop Thường</td><td>6</td><td>460</td><td>39.930.000 đ</td><td><span class='share-pill'>91.2%</span></td></tr><tr><td><strong>Xưởng Gỗ Hùng Huy</strong></td><td>Shop Thường</td><td>1</td><td>16</td><td>1.344.000 đ</td><td><span class='share-pill'>3.1%</span></td></tr><tr><td><strong>DOGO1992</strong></td><td>Shop Thường</td><td>1</td><td>14</td><td>1.246.000 đ</td><td><span class='share-pill'>2.8%</span></td></tr><tr><td><strong>MaxgePC Vietnam</strong></td><td>Shop Thường</td><td>1</td><td>5</td><td>682.335 đ</td><td><span class='share-pill'>1.6%</span></td></tr><tr><td><strong>Xàng Xê Shop</strong></td><td>Shop Thường</td><td>4</td><td>6</td><td>570.000 đ</td><td><span class='share-pill'>1.3%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">91.2%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:91.2%"></div></div>
+          <div class="dist-sub">love69 shop</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">97.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:97.1%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">98.4%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:98.4%"></div></div>
+          <div class="dist-sub">84.000 – 127.695 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">40.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:40.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "🔵 Sàn Xanh (Lazada)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Hộp giấy ăn gỗ tự nhiên&#x27; đạt 70 SKU từ 59 shop, tổng 3,394 lượt bán tương ứng 497.712.414 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 78/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 193.199 đ (khoảng giá 22.500 đ – 1.422.738 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 22.500 – 255.872 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2303 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 69.0% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Giấy mỏng, dễ rách khi gặp nước hoặc kéo bị đứt lắt nhắt • Số tờ thực tế trên một gói/thùng ít hơn mô tả quảng cáo • Bị bụi giấy nhiều hoặc mùi hương liệu nồng gây kích ứng • Thùng carton giao tới hay bị rách góc/móp méo nếu không bọc kỹ</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay test kéo giãn độ dai 4 lớp khi thấm nước trực tiếp trên video • Cân trọng lượng thùng / đếm rõ số tờ thực tế ngay trên ảnh bìa • Cam kết giấy nguyên sinh không tẩy trắng, an toàn cho da em bé</p></div></div>
+      </div>
+    </section>
+    <section class="sa-tab-panel" id="panel_tiktok_shop" style="display:none">
+      <!-- 1. Toàn cảnh thị trường -->
+      <div class="sa-panel">
+        <div class="sa-sub">Phân tích chuẩn đa sàn: <strong>⚫ Sàn Đen (TikTok Shop)</strong> <span class="mode-badge live">LIVE API</span></div>
+        <h2 class="sa-title">Toàn cảnh thị trường</h2>
+        <div class="sa-hint">Nguồn thu thập: Apify TikTok Shop (pro100chok~tiktok-shop-scraper-usage · LIVE). Các mục API chưa cung cấp được đánh dấu <code>(API đang phát triển)</code>.</div>
+
+        <div class="alert-row">
+          <div class="alert-card warn"><div class="alert-title">Độ phủ lịch sử cần lưu ý</div><div class="alert-desc">Độ phủ lịch sử 30d: (API đang phát triển)</div></div>
+          <div class="alert-card ok"><div class="alert-title">Khớp đúng cụm từ</div><div class="alert-desc">Chuẩn hóa theo từ khóa &amp; loại nhiễu giữa các sàn.</div></div>
+          <div class="alert-card info"><div class="alert-title">Phạm vi dữ liệu nguồn</div><div class="alert-desc">Đang thống kê 20 SP từ 19 shop đang bán.</div></div>
+          <div class="alert-card warn"><div class="alert-title">Quà tặng &amp; SKU giá 0-2k</div><div class="alert-desc">Phát hiện 0 SKU quà tặng; đã tách khỏi Giá trung bình.</div></div>
+        </div>
+
+        <div class="overview-split">
+          <div class="blue-ocean-card">
+            <div class="bo-caption">Điểm Đại dương xanh</div>
+            <div class="bo-score-line"><span class="bo-num" style="color:#10b981">81</span><span class="bo-den">/ 100</span></div>
+            <div class="bo-badge" style="color:#10b981;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+            <div class="bo-track"><div class="bo-fill" style="width:81%;background:#10b981"></div></div>
+            <p class="bo-note">Tổng hợp từ độ phân tán HHI (0.3306), tỷ lệ có đơn (75.0%) và dư địa shop ngoài Mall (100.0%).</p>
+          </div>
+
+          <div class="kpi-panel">
+            <div class="kpi-panel-head">Chỉ số toàn cảnh</div>
+            <div class="kpi-grid">
+              <div class="kpi-box"><div class="kpi-lbl">SP khớp từ khóa</div><div class="kpi-val blue">20</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Shop đang bán</div><div class="kpi-val blue">19</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Lượt bán lũy kế</div><div class="kpi-val purple">2,682</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Doanh thu ước tính</div><div class="kpi-val slate">404.130.283 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Giá trung bình</div><div class="kpi-val amber">223.401 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Khoảng giá nguồn</div><div class="kpi-val amber" style="font-size:14px">68.766 đ – 1.422.738 đ</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán</div><div class="kpi-val green">75.0%</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Sản phẩm có lượt bán</div><div class="kpi-val green">15</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">HHI (Độ tập trung)</div><div class="kpi-val slate">0,3306</div></div>
+              <div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình</div><span class="api-dev">(API đang phát triển)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Danh sách sản phẩm + Bộ lọc tương tác -->
+      <div class="sa-panel">
+        <div class="table-toolbar">
+          <div>
+            <h3 style="margin:0;font-size:15px">📦 Danh sách sản phẩm (20 SKU)</h3>
+            <span class="sa-hint">Sắp xếp, lọc nhanh theo tên, loại gian hàng hoặc xuất CSV.</span>
+          </div>
+          <div class="filter-controls">
+            <input type="text" class="ctrl-input" placeholder="Tìm tên SP..." oninput="filterTabTable('tiktok_shop', this.value, null)" />
+            <select class="ctrl-select" onchange="filterTabTable('tiktok_shop', null, this.value)">
+              <option value="all">Tất cả Shop</option>
+              <option value="mall">Chỉ Mall</option>
+              <option value="nogift">Ẩn Quà tặng</option>
+            </select>
+            <button type="button" class="ctrl-btn" onclick="exportTabCsv('tiktok_shop')">⬇ Tải CSV</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table id="tbl_tiktok_shop">
+            <thead><tr><th>Sản phẩm</th><th>Sàn</th><th>Gian hàng</th><th>Giá bán</th><th>Lượt bán</th><th>Doanh thu ước tính</th><th>Hoa hồng</th><th>KOC</th><th>Sao</th></tr></thead>
+            <tbody>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn gỗ hương cỡ lớn loại 1 - đục khắc hoa văn tinh xảo/ độc đáo - cth752" data-gmv="206609352" data-sold="1388" data-price="148854">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-giay-an-go-huong-co-dien-thiet-ke-sang-trong-doc-dao/1729578173182675437" target="_blank" rel="noopener">Hộp giấy ăn gỗ Hương cỡ lớn loại 1 - Đục Khắc Hoa Văn Tinh Xảo/ Độc Đáo - CTH752</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>HAHANCO Store</td>
+          <td>148.854 đ</td>
+          <td>1,388</td>
+          <td><strong>206.609.352 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.8★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy ăn gỗ mun cao cấp- sang trọng" data-gmv="88545209" data-sold="227" data-price="390067">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1730015390509337517" target="_blank" rel="noopener">Hộp đựng khăn giấy ăn Gỗ Mun cao cấp- sang trọng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Mỹ Nghệ Tuấn Đào</td>
+          <td>390.067 đ</td>
+          <td>227</td>
+          <td><strong>88.545.209 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy chiện trơn chất liệu gỗ hương cao cấp 22x12x8cm" data-gmv="48124160" data-sold="410" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-giay-chien-tron-go-huong-cao-cap-22x12x8cm-to-chuc-vat-dung-sang-trong-cho-khong-gian/1729798363792640144" target="_blank" rel="noopener">Hộp giấy Chiện Trơn chất liệu gỗ hương cao cấp 22x12x8cm</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Thành Long</td>
+          <td>117.376 đ</td>
+          <td>410</td>
+          <td><strong>48.124.160 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.6★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn tre trúc tự nhiên có đáy rút" data-gmv="30463338" data-sold="443" data-price="68766">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-tre-truc-tu-nhien-co-day-rut-chong-moi-am/1730578079108008481" target="_blank" rel="noopener">Hộp đựng giấy ăn tre trúc tự nhiên có đáy rút</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Gia Dụng Nhà Voi Giá Rẻ</td>
+          <td>68.766 đ</td>
+          <td>443</td>
+          <td><strong>30.463.338 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.3★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ mun cao cấp" data-gmv="12899498" data-sold="34" data-price="379397">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-mun-cao-cap-tien-loi-sang-trong/1729660152848222837" target="_blank" rel="noopener">Hộp đựng giấy ăn gỗ mun cao cấp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ mỹ nghệ phú lợi</td>
+          <td>379.397 đ</td>
+          <td>34</td>
+          <td><strong>12.899.498 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.5★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp khăn giấy chữ nhật bằng gỗ thông tự nhiên , hộp khăn giấy để bàn" data-gmv="6135525" data-sold="75" data-price="81807">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735671692143003569" target="_blank" rel="noopener">Hộp Khăn giấy chữ nhật bằng gỗ thông tự nhiên , Hộp khăn giấy để bàn</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Adecor.vn</td>
+          <td>81.807 đ</td>
+          <td>75</td>
+          <td><strong>6.135.525 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>1.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy,hộp đựng giấy ăn  gỗ hương  hộp giấy gỗ hương trạm hoa hồng ,đồ gỗ d&amp;t" data-gmv="3286528" data-sold="28" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-khan-giay-go-huong-d-t-sang-trong-sach-se-qua-tang-doc-dao/1731226924996724086" target="_blank" rel="noopener">hộp đựng khăn giấy,hộp đựng giấy ăn  gỗ hương  Hộp giấy gỗ hương trạm hoa hồng ,đồ gỗ D&amp;T</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ D&amp;T</td>
+          <td>117.376 đ</td>
+          <td>28</td>
+          <td><strong>3.286.528 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy vuông, hình chữ nhật  bằng gỗ tự nhiên phun màu óc chó" data-gmv="1717947" data-sold="21" data-price="81807">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-khan-giay-go-tu-nhien-thiet-ke-hien-dai-tien-loi/1730940260390636250" target="_blank" rel="noopener">Hộp Đựng Khăn Giấy Vuông, Hình chữ nhật  Bằng Gỗ Tự Nhiên phun màu óc chó</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Kho Đồ Gỗ Dương Mai</td>
+          <td>81.807 đ</td>
+          <td>21</td>
+          <td><strong>1.717.947 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ hương cao cấp - sản phẩm chất lượng" data-gmv="1371760" data-sold="13" data-price="105520">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-cao-cap-thiet-ke-gon-gang-tien-loi/1732853790293919193" target="_blank" rel="noopener">Hộp đựng giấy ăn gỗ hương cao cấp - Sản phẩm chất lượng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Tiến Diệp</td>
+          <td>105.520 đ</td>
+          <td>13</td>
+          <td><strong>1.371.760 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp  đựng  giấy  ăn gỗ hương cao cấp" data-gmv="1291136" data-sold="11" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-cao-cap-gozen-thiet-ke-sang-trong/1731340130715993530" target="_blank" rel="noopener">Hộp  đựng  giấy  ăn gỗ hương cao cấp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ mini Hoàng Han</td>
+          <td>117.376 đ</td>
+          <td>11</td>
+          <td><strong>1.291.136 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn gỗ hương di lặc kéo bao tiền loại to hàng đẹp chất liệu gỗ hương tự nhiên - sang trọng - đồ gỗ minh đăng" data-gmv="995666" data-sold="7" data-price="142238">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-giay-an-go-huong-di-lac-sang-trong-chat-lieu-tu-nhien/1736032482938095077" target="_blank" rel="noopener">Hộp Giấy Ăn Gỗ Hương Di Lặc Kéo Bao Tiền Loại To Hàng Đẹp Chất Liệu Gỗ Hương Tự Nhiên - Sang Trọng - Đồ Gỗ Minh Đăng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Minh Đăng</td>
+          <td>142.238 đ</td>
+          <td>7</td>
+          <td><strong>995.666 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>5.0★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn bằng gỗ 13cm – hộp khăn giấy để bàn, decor nhà bếp sang trọng" data-gmv="981693" data-sold="9" data-price="109077">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735045641501771485" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Bằng Gỗ 13cm – Hộp Khăn Giấy Để Bàn, Decor Nhà Bếp Sang Trọng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đăng Thư Gia Dụng</td>
+          <td>109.077 đ</td>
+          <td>9</td>
+          <td><strong>981.693 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn rút, bằng tre chống ấm mốc, loại dài to, kt: 23x12x8.5cm (ảnh thật)" data-gmv="844160" data-sold="8" data-price="105520">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1735458684884387536" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Rút, Bằng Tre Chống Ấm Mốc, Loại Dài To, Kt: 23x12x8.5cm (ảnh thật)</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Giadungphukien90HN</td>
+          <td>105.520 đ</td>
+          <td>8</td>
+          <td><strong>844.160 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp  đựng giấy ăn,vuông 14 cao 12 làm từ gỗ hương siêu víp" data-gmv="746935" data-sold="7" data-price="106705">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-sang-trong-kich-thuoc-14x12cm/1732771368917370329" target="_blank" rel="noopener">Hộp  đựng giấy ăn,vuông 14 cao 12 làm từ gỗ hương siêu víp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Tiến Diệp</td>
+          <td>106.705 đ</td>
+          <td>7</td>
+          <td><strong>746.935 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp giấy ăn bằng gỗ hương mẫu hoa hồng, kt 22x12x9cm tiện lợi sang trọng" data-gmv="117376" data-sold="1" data-price="117376">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1737080811486479947" target="_blank" rel="noopener">Hộp giấy ăn bằng gỗ hương mẫu hoa hồng, kt 22x12x9cm tiện lợi sang trọng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ gỗ Hoàng Dũng</td>
+          <td>117.376 đ</td>
+          <td>1</td>
+          <td><strong>117.376 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đứng giấy ăn bằng gỗ đẹp sang trọng cho gia đình - thiết kế tinh tế, chất liệu gỗ tự nhiên, phù hợp cho mọi không gian" data-gmv="0" data-sold="0" data-price="99592">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1738400367127660392" target="_blank" rel="noopener">Hộp đứng giấy ăn bằng gỗ đẹp sang trọng cho gia đình - Thiết kế tinh tế, chất liệu gỗ tự nhiên, phù hợp cho mọi không gian</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Tổng Kho A Chuối 79</td>
+          <td>99.592 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ hương tự nhiên chạm khắc tinh sảo kích thước 22x12x10cm chất liệu 100% gỗ hương tự nhiên bề mặt phủ pu an toàn" data-gmv="0" data-sold="0" data-price="284548">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-huong-tu-nhien-mian-an-toan-ben-dep-qua-tang/1729443260467349522" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Gỗ Hương Tự Nhiên Chạm Khắc Tinh Sảo Kích Thước 22x12x10cm Chất Liệu 100% Gỗ Hương Tự Nhiên Bề Mặt Phủ PU An Toàn</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>chieuhatgomian</td>
+          <td>284.548 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ hương tự nhiên loại lớn chạm khắc hoa văn tinh xảo sang trọng" data-gmv="0" data-sold="0" data-price="92478">
+          <td><a href="https://shop.tiktok.com/vn/pdp/1737919379909871166" target="_blank" rel="noopener">Hộp Đựng Giấy Ăn Gỗ Hương Tự Nhiên Loại Lớn Chạm Khắc Hoa Văn Tinh Xảo Sang Trọng</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>9K Mart</td>
+          <td>92.478 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng giấy ăn gỗ nu hương đá cao cấp" data-gmv="0" data-sold="0" data-price="1422738">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-go-nu-huong-da-cao-cap-thiet-ke-tinh-xao/1733987579927692895" target="_blank" rel="noopener">Hộp đựng giấy ăn gỗ nu hương đá cao cấp</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Đồ Gỗ Lệ Lee</td>
+          <td>1.422.738 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr>
+        <tr class="sku-row" data-mall="0" data-gift="0" data-title="hộp đựng khăn giấy, hộp đựng giấy ăn bằng gỗ cẩm lai hàng cao cấp xuất khẩu, ghép mộng tỉ mỉ." data-gmv="0" data-sold="0" data-price="379397">
+          <td><a href="https://shop.tiktok.com/vn/pdp/hop-dung-khan-giay-go-cam-lai-cao-cap-sang-trong-ghep-mong-ti-mi/1732185313805175177" target="_blank" rel="noopener">Hộp đựng khăn giấy, hộp đựng giấy ăn bằng gỗ Cẩm Lai hàng Cao Cấp xuất khẩu, ghép mộng tỉ mỉ.</a></td>
+          <td><span class="plat-pill tiktok_shop">TIKTOK_SHOP</span></td>
+          <td>Mộc Dương Gia</td>
+          <td>379.397 đ</td>
+          <td>0</td>
+          <td><strong>0 đ</strong></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td><span class="api-dev">(API đang phát triển)</span></td>
+          <td>4.7★</td>
+        </tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Phân bố khoảng giá 6 dải + Top Shop CR5 -->
+      <div class="grid2">
+        <div class="sa-panel" style="margin-bottom:0">
+          <h3 style="margin:0 0 10px;font-size:15px">📊 Phân bố theo khoảng giá (6 dải · Highlight Sweet Spot)</h3>
+          
+        <div class="bin-row sweet">
+          <div class="bin-lbl">68.766 – 294.427 đ <span class="sweet-tag">Sweet Spot</span></div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (80.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:80.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (74.9%)</span><div class="mini-track"><div class="mini-fill green" style="width:74.9%"></div></div></div>
+          </div>
+          <div class="bin-val">302.685.576 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">294.428 – 520.089 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (15.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:15.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (25.1%)</span><div class="mini-track"><div class="mini-fill green" style="width:25.1%"></div></div></div>
+          </div>
+          <div class="bin-val">101.444.707 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">520.090 – 745.751 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">745.752 – 971.413 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">971.414 – 1.197.075 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (0.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:3%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        <div class="bin-row">
+          <div class="bin-lbl">1.197.076 – 1.422.738 đ</div>
+          <div class="bin-bars">
+            <div class="bin-line"><span class="mini-tag">SKU (5.0%)</span><div class="mini-track"><div class="mini-fill blue" style="width:5.0%"></div></div></div>
+            <div class="bin-line"><span class="mini-tag">GMV (0.0%)</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div>
+          </div>
+          <div class="bin-val">0 đ</div>
+        </div>
+        </div>
+        <div class="sa-panel" style="margin-bottom:0;overflow-x:auto">
+          <h3 style="margin:0 0 10px;font-size:15px">🏪 Top Shop trong mẫu (19 Shop)</h3>
+          <table>
+            <thead><tr><th>Shop</th><th>Loại</th><th>SKU</th><th>Đã bán</th><th>GMV</th><th>Thị phần</th></tr></thead>
+            <tbody><tr><td><strong>HAHANCO Store</strong></td><td>Shop Thường</td><td>1</td><td>1,388</td><td>206.609.352 đ</td><td><span class='share-pill'>51.1%</span></td></tr><tr><td><strong>Đồ Gỗ Mỹ Nghệ Tuấn Đào</strong></td><td>Shop Thường</td><td>1</td><td>227</td><td>88.545.209 đ</td><td><span class='share-pill'>21.9%</span></td></tr><tr><td><strong>Đồ Gỗ Thành Long</strong></td><td>Shop Thường</td><td>1</td><td>410</td><td>48.124.160 đ</td><td><span class='share-pill'>11.9%</span></td></tr><tr><td><strong>Gia Dụng Nhà Voi Giá Rẻ</strong></td><td>Shop Thường</td><td>1</td><td>443</td><td>30.463.338 đ</td><td><span class='share-pill'>7.5%</span></td></tr><tr><td><strong>Đồ gỗ mỹ nghệ phú lợi</strong></td><td>Shop Thường</td><td>1</td><td>34</td><td>12.899.498 đ</td><td><span class='share-pill'>3.2%</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. 10 Chỉ số phân bố & Cạnh tranh -->
+      <div class="sa-panel" style="margin-top:14px">
+        <h3 style="margin:0 0 12px;font-size:15px">📐 Phân bố chi tiết nguồn hàng, Shop &amp; Kênh bán</h3>
+        <div class="dist-grid">
+        <div class="dist-card">
+          <div class="dist-top"><span>Thị phần Top #1 Shop</span><span class="dist-val">51.1%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:51.1%"></div></div>
+          <div class="dist-sub">HAHANCO Store</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 3 Shop (CR3)</span><span class="dist-val">84.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:84.9%"></div></div>
+          <div class="dist-sub">Tổng GMV 3 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Độ tập trung Top 5 Shop (CR5)</span><span class="dist-val">95.6%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:95.6%"></div></div>
+          <div class="dist-sub">Tổng GMV 5 shop dẫn đầu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Doanh thu Mall</span><span class="dist-val">0.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">0/20 SKU là Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dư địa Shop Thường (Non-Mall)</span><span class="dist-val">100.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:100%"></div></div>
+          <div class="dist-sub">Thị phần thuộc shop ngoài Mall</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Dải giá ngọt (Sweet Spot GMV)</span><span class="dist-val">74.9%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:74.9%"></div></div>
+          <div class="dist-sub">68.766 – 294.427 đ</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ lệ SP đạt Rating &gt;= 4.7★</span><span class="dist-val">80.0%</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:80.0%"></div></div>
+          <div class="dist-sub">Chất lượng đánh giá trung bình toàn mẫu</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tín hiệu Hoa hồng Affiliate</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Mật độ KOC / Creator</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div>
+        <div class="dist-card">
+          <div class="dist-top"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div>
+          <div class="mini-track"><div class="mini-fill blue" style="width:0%"></div></div>
+          <div class="dist-sub">(API đang phát triển)</div>
+        </div></div>
+      </div>
+
+      <!-- 5. Tình trạng đáp ứng API theo sàn -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🔌 Trạng thái trường dữ liệu API cho "⚫ Sàn Đen (TikTok Shop)"</h3>
+        <div class="caps-grid"><div class="cap-item"><span>Sản phẩm khớp từ khóa</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Thống kê gian hàng (Shop / Mall)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Lượt bán 30 ngày</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Doanh thu ước tính (GMV)</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Giá trung bình & Khoảng giá</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Tỷ lệ có bán & HHI</span><span class="mode-badge live">Đang lấy được</span></div><div class="cap-item"><span>Hoa hồng Affiliate (%)</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Độ phủ lịch sử giá/bán 30 ngày</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Số lượng KOC gắn giỏ hàng</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Tỷ trọng Video vs Livestream</span><span class="api-dev">(API đang phát triển)</span></div><div class="cap-item"><span>Lượng tìm kiếm từ khóa / tháng</span><span class="api-dev">(API đang phát triển)</span></div></div>
+      </div>
+
+      <!-- 6. Phân tích AI chuyên sâu -->
+      <div class="sa-panel">
+        <h3 style="margin:0 0 10px;font-size:15px">🧠 Phân tích thị trường chuyên sâu theo cấu trúc chuẩn</h3>
+        <div class="ai-grid"><div class="ai-sec"><h4>1. Đánh giá tổng quan quy mô &amp; sức cầu</h4><p>Từ khóa &#x27;Hộp giấy ăn gỗ tự nhiên&#x27; đạt 70 SKU từ 59 shop, tổng 3,394 lượt bán tương ứng 497.712.414 đ. Tỷ lệ có bán đạt 51.4% (36 sản phẩm phát sinh đơn), Điểm Đại dương xanh đạt 78/100 (Đại dương xanh).</p></div><div class="ai-sec"><h4>2. Phân khúc giá &amp; Dải giá ngọt (Sweet Spot)</h4><p>Giá trung bình toàn mẫu là 193.199 đ (khoảng giá 22.500 đ – 1.422.738 đ, đã tách 3 mẫu quà tặng giá thấp). Dải giá tập trung doanh thu cao nhất nằm ở mức 22.500 – 255.872 đ.</p></div><div class="ai-sec"><h4>3. Mức độ cạnh tranh &amp; Tỷ trọng Shop Mall</h4><p>Chỉ số tập trung HHI toàn thị trường ở mức 0.2303 (Mall chiếm 0.0% doanh thu). Top 3 shop dẫn đầu giữ 69.0% GMV — Sàn dẫn đầu về GMV trong mẫu hiện tại là TIKTOK_SHOP.</p></div><div class="ai-sec"><h4>4. Hoa hồng Affiliate &amp; Tín hiệu KOC</h4><p>Sàn Cam &amp; Sàn Đen hỗ trợ dữ liệu hoa hồng trung bình 8,0%; trên Sàn Xanh (Lazada) các trường Hoa hồng Affiliate &amp; KOC hiện ghi nhận trạng thái (API đang phát triển).</p></div><div class="ai-sec"><h4>5. Điểm yếu đối thủ từ phản hồi khách hàng (VOC 1★–3★)</h4><p>Giấy mỏng, dễ rách khi gặp nước hoặc kéo bị đứt lắt nhắt • Số tờ thực tế trên một gói/thùng ít hơn mô tả quảng cáo • Bị bụi giấy nhiều hoặc mùi hương liệu nồng gây kích ứng • Thùng carton giao tới hay bị rách góc/móp méo nếu không bọc kỹ</p></div><div class="ai-sec"><h4>6. Gợi ý nội dung SEO, Ảnh bìa &amp; Video chuyển đổi</h4><p>Quay test kéo giãn độ dai 4 lớp khi thấm nước trực tiếp trên video • Cân trọng lượng thùng / đếm rõ số tờ thực tế ngay trên ảnh bìa • Cam kết giấy nguyên sinh không tẩy trắng, an toàn cho da em bé</p></div></div>
+      </div>
+    </section>
+    
+    <section class="sa-tab-panel" id="panel_logs" style="display:none">
+      <div class="sa-panel">
+        <h2 class="sa-title">🪵 Logs Toàn Bộ Request / Response &amp; Cách Xử Lý Dữ Liệu</h2>
+        <div class="sa-hint">Mỗi API key hoặc token trong URL/Headers được che tự động dạng <code>ab***1234</code> để an toàn khi xuất báo cáo hoặc đẩy Git.</div>
+
+        <div class="sub-card" style="margin-top:12px">
+          <div class="sub-card-head">🧮 Bảng Truy Vết Công Thức Ra Số Liệu Thực Tế Của Lần Chạy Này</div>
+          <table>
+            <thead><tr><th>Phạm vi</th><th>Công thức Giá TB (Tách quà tặng)</th><th>Công thức HHI</th><th>Công thức Điểm Đại Dương Xanh (/100)</th></tr></thead>
+            <tbody>
+        <tr>
+          <td><strong>TỔNG HỢP 3 SÀN</strong></td>
+          <td><code>sum(67 non-gift prices) / 67 = 193.199 đ</code></td>
+          <td><code>sum((shop_gmv / 497.712.414 đ)^2 across 59 shops) = 0.2303</code></td>
+          <td><code>HHI_pts(34.6) + Demand_pts(18.0) + NonMall_pts(25.0) = 78/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>SHOPEE</strong></td>
+          <td><code>sum(27 non-gift prices) / 27 = 211.030 đ</code></td>
+          <td><code>sum((shop_gmv / 49.809.796 đ)^2 across 28 shops) = 0.5898</code></td>
+          <td><code>HHI_pts(18.5) + Demand_pts(14.0) + NonMall_pts(25.0) = 58/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>LAZADA</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 138.924 đ</code></td>
+          <td><code>sum((shop_gmv / 43.772.335 đ)^2 across 12 shops) = 0.8343</code></td>
+          <td><code>HHI_pts(7.5) + Demand_pts(15.8) + NonMall_pts(25.0) = 48/100</code></td>
+        </tr>
+        <tr>
+          <td><strong>TIKTOK_SHOP</strong></td>
+          <td><code>sum(20 non-gift prices) / 20 = 223.401 đ</code></td>
+          <td><code>sum((shop_gmv / 404.130.283 đ)^2 across 19 shops) = 0.3306</code></td>
+          <td><code>HHI_pts(30.1) + Demand_pts(26.2) + NonMall_pts(25.0) = 81/100</code></td>
+        </tr></tbody>
+          </table>
+        </div>
+
+        
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#1</span>
+              <strong style="color:#f8fafc">telegram_receive_request</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_telegram_liaison &bull; 925 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP -</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (0 records)</div>
+              <pre class="code-pre">{}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#2</span>
+              <strong style="color:#f8fafc">serper_ecommerce_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_market_strategist &bull; 2849 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://google.serper.dev/search&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-KEY&quot;: &quot;b7***8a2f&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;site:shopee.vn OR site:lazada.vn Hộp giấy ăn gỗ tự nhiên&quot;,
+    &quot;gl&quot;: &quot;vn&quot;,
+    &quot;hl&quot;: &quot;vi&quot;,
+    &quot;num&quot;: 8
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (8 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 8,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;organic_sample&quot;: [
+      {
+        &quot;title&quot;: &quot;Hộp Đựng Khăn Giấy Phong Cách Nhật Bản ... - Shopee&quot;,
+        &quot;link&quot;: &quot;https://shopee.vn/H%E1%BB%99p-%C4%90%E1%BB%B1ng-Kh%C4%83n-Gi%E1%BA%A5y-Phong-C%C3%A1ch-Nh%E1%BA%ADt-B%E1%BA%A3n-H%E1%BB%99p-%C4%90%E1%BB%B1ng-Gi%E1%BA%A5y-%C4%82n-Thi%E1%BA%BFt-K%E1%BA%BF-%C4%90%C6%A1n-Gi%E1%BA%A3n-B%E1%BA%B1ng-G%E1%BB%97-Tre-T%E1%BB%B1-Nhi%C3%AAn-100--i.993812957.21279931211&quot;,
+        &quot;snippet&quot;: &quot;Mua Hộp Đựng Khăn Giấy Phong Cách Nhật Bản, Hộp Đựng Giấy Ăn Thiết Kế Đơn Giản Bằng Gỗ Tre Tự Nhiên giá tốt. Mua hàng qua mạng uy tín, tiện lợi.&quot;
+      },
+      {
+        &quot;title&quot;: &quot;Hộp Đựng Giấy Ăn Cao Cấp Chữ Nhật Decor&quot;,
+        &quot;link&quot;: &quot;https://shopee.vn/H%E1%BB%99p-Kh%C4%83n-Gi%E1%BA%A5y-G%E1%BB%97-%C3%93c-Ch%C3%B3-T%E1%BB%B1-Nhi%C3%AAn-%E2%80%93-H%E1%BB%99p-%C4%90%E1%BB%B1ng-Gi%E1%BA%A5y-%C4%82n-Cao-C%E1%BA%A5p-Ch%E1%BB%AF-Nh%E1%BA%ADt-Decor-i.40029153.24073046861&quot;,
+        &quot;snippet&quot;: &quot;Hộp Khăn Giấy Gỗ Óc Chó Tự Nhiên – Hộp Đựng Giấy Ăn Cao Cấp Chữ Nhật Decor · 1.Hộp Đựng Khăn Giấy Dán Tường Nhà Bếp Nhà Tắm Đa Năng Tiện Dụng 8831027.220₫ · 2.Hộp ...&quot;
+      }
+    ],
+    &quot;relatedSearches&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi truy vấn đa sàn Google VN (`gl=vn`, `hl=vi`) tới Serper.dev.</li><li>2. Trích xuất 0 cụm từ khóa tìm kiếm liên quan (`relatedSearches`) làm ma trận mở rộng.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#3</span>
+              <strong style="color:#f8fafc">addlivetag_market_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 556 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/search/market.php?q=H%E1%BB%99p+gi%E1%BA%A5y+%C4%83n+g%E1%BB%97+t%E1%BB%B1+nhi%C3%AAn&amp;sort=revenue&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;q&quot;: &quot;Hộp giấy ăn gỗ tự nhiên&quot;,
+    &quot;sort&quot;: &quot;revenue&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (39 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 39,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: {
+    &quot;keys&quot;: [
+      &quot;query&quot;,
+      &quot;giftsExcluded&quot;,
+      &quot;market&quot;,
+      &quot;last30Days&quot;,
+      &quot;topShops&quot;,
+      &quot;products&quot;,
+      &quot;paging&quot;,
+      &quot;status&quot;,
+      &quot;cached&quot;,
+      &quot;tookMs&quot;,
+      &quot;scopeNote&quot;
+    ],
+    &quot;market&quot;: {
+      &quot;totalProducts&quot;: 39,
+      &quot;totalShops&quot;: 36,
+      &quot;totalSold&quot;: 211,
+      &quot;totalRevenue&quot;: 49809796,
+      &quot;avgPrice&quot;: 219224,
+      &quot;minPrice&quot;: 22500,
+      &quot;maxPrice&quot;: 1246500,
+      &quot;avgCommissionRate&quot;: 0.08,
+      &quot;maxCommissionRate&quot;: 0.16,
+      &quot;productsWithSales&quot;: 12,
+      &quot;sellThroughRate&quot;: 0.3077,
+      &quot;hhi&quot;: 0.5898,
+      &quot;blueOceanScore&quot;: 28.4
+    },
+    &quot;last30Days&quot;: {
+      &quot;totalSold&quot;: 5,
+      &quot;totalRevenue&quot;: 468225,
+      &quot;trackedProducts&quot;: 3,
+      &quot;coverage&quot;: 0.0769,
+      &quot;note&quot;: &quot;Only counts products with 8+ days of history. The `market` block above is all-time and covers 100% of products.&quot;
+    },
+    &quot;total_raw_items&quot;: 39,
+    &quot;sample_items&quot;: [
+      {
+        &quot;itemId&quot;: 21662002533,
+        &quot;productName&quot;: &quot;Tủ Giày Gỗ Cánh Lật Cao Cấp Kết Hợp Nệm Ghế Ngồi Mang Giày - Nội Thất An Nhiên (TG01/03)&quot;,
+        &quot;shopName&quot;: &quot;Nội Thất An Nhiên&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-820l4-mibfqwuiqmtd44&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/895365547/21662002533&quot;,
+        &quot;price&quot;: 775000,
+        &quot;sales&quot;: 49,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 37975000,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 775000,
+        &quot;priceMax&quot;: 775000,
+        &quot;priceCv&quot;: 0,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 2,
+        &quot;commissionRate&quot;: 0.045,
+        &quot;shopId&quot;: 895365547,
+        &quot;catId&quot;: 100636,
+        &quot;rating&quot;: 4.8
+      },
+      {
+        &quot;itemId&quot;: 52417371644,
+        &quot;productName&quot;: &quot;Hộp đựng khăn giấy gỗ tự nhiên dành cho bàn ăn, bàn làm việc, bàn tiệc, phòng khách gia đình&quot;,
+        &quot;shopName&quot;: &quot;Góc Decor Shop&quot;,
+        &quot;imageUrl&quot;: &quot;https://cf.shopee.vn/file/vn-11134207-81ztc-mtn2tnxdl3wj94&quot;,
+        &quot;productLink&quot;: &quot;https://shopee.vn/product/1585314035/52417371644&quot;,
+        &quot;price&quot;: 148500,
+        &quot;sales&quot;: 19,
+        &quot;sold7d&quot;: 0,
+        &quot;sold30d&quot;: 0,
+        &quot;revenueAll&quot;: 2821500,
+        &quot;revenue30d&quot;: 0,
+        &quot;priceMin&quot;: 123750,
+        &quot;priceMax&quot;: 148500,
+        &quot;priceCv&quot;: 0.0753,
+        &quot;growth&quot;: 0,
+        &quot;daysTracked&quot;: 4,
+        &quot;commissionRate&quot;: 0.16,
+        &quot;shopId&quot;: 1585314035,
+        &quot;catId&quot;: 100636,
+        &quot;rating&quot;: 5
+      }
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Bóc danh sách sản phẩm thật từ payload[&#x27;products&#x27;] (39 bản ghi, lấy 30 SKU) + block market/last30Days.</li><li>2. Chuẩn hóa camelCase Shopee: itemId, productName, shopId, shopName, price, sales -&gt; sold_30d, revenueAll -&gt; gmv_30d_vnd, commissionRate*100 -&gt; commission_pct (%).</li><li>3. Độ phủ lịch sử 30d đánh giá theo quy tắc AddLiveTag (`daysTracked &gt;= 8`); quà tặng &lt;= 2.000đ tách khỏi Giá trung bình.</li><li>4. KOC/Creator &amp; phân tách Video/Live nội sàn chưa có trên endpoint search -&gt; gắn cờ (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#4</span>
+              <strong style="color:#f8fafc">addlivetag_product_batch</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_shopee_hunter &bull; 481 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://data.addlivetag.com/product-data/product-data-batch.php&quot;,
+  &quot;headers&quot;: {
+    &quot;X-API-Key&quot;: &quot;60***9019&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;itemIds&quot;: [
+      21662002533,
+      52417371644,
+      48018090456,
+      24073046861,
+      51401917152
+    ]
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (5 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 5,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;item_id&quot;: &quot;21662002533&quot;,
+      &quot;product_name&quot;: &quot;Tủ Giày Gỗ Cánh Lật Cao Cấp Kết Hợp Nệm Ghế Ngồi Mang Giày - Nội Thất An Nhiên (TG01/03)&quot;,
+      &quot;cat_name&quot;: &quot;Kệ giày, hộp giày&quot;,
+      &quot;price_vnd&quot;: 775000,
+      &quot;sales&quot;: 2000,
+      &quot;shopee_commission_pct&quot;: 2.5,
+      &quot;seller_commission_pct&quot;: 2.0,
+      &quot;total_commission_pct&quot;: 4.5,
+      &quot;is_xtra&quot;: true,
+      &quot;cap_vnd&quot;: 40000,
+      &quot;data_source&quot;: &quot;db_stale&quot;
+    },
+    {
+      &quot;item_id&quot;: &quot;52417371644&quot;,
+      &quot;product_name&quot;: &quot;Hộp đựng khăn giấy gỗ tự nhiên dành cho bàn ăn, bàn làm việc, bàn tiệc, phòng khách gia đình&quot;,
+      &quot;cat_name&quot;: null,
+      &quot;price_vnd&quot;: 0,
+      &quot;sales&quot;: 17,
+      &quot;shopee_commission_pct&quot;: 0.0,
+      &quot;seller_commission_pct&quot;: 0.0,
+      &quot;total_commission_pct&quot;: 0.0,
+      &quot;is_xtra&quot;: false,
+      &quot;cap_vnd&quot;: 50000,
+      &quot;data_source&quot;: &quot;db_stale&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gửi mảng itemIds (5 SKU) lên product-data-batch.php trong 1 HTTP POST.</li><li>2. Bóc `productInfo` từ `payload[&#x27;products&#x27;]`: shopeeRatePercent, sellerRatePercent, totalRatePercent, isXtra, catName, cap.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#5</span>
+              <strong style="color:#f8fafc">apify_lazada_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_lazada_hunter &bull; 10900 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/memo23~lazada-scraper/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;searchQueries&quot;: [
+      &quot;Hộp giấy ăn gỗ tự nhiên&quot;
+    ],
+    &quot;country&quot;: &quot;vn&quot;,
+    &quot;maxItems&quot;: 20,
+    &quot;scrapeDetails&quot;: false
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;name&quot;: &quot;MaxgePC Hộp đựng khăn giấy bằng gỗ tự nhiên, khay đựng khăn ăn, hoàn thiện thủ công bằng gỗ, phong cách mộc mạc, vừa vặn với các gói khăn giấy tiêu chuẩn, trang trí nhà nông thôn&quot;,
+      &quot;image&quot;: &quot;https://sg-test-11.slatic.net/p/b5e9313e8351bfb33921c287e5bd4075.jpg&quot;,
+      &quot;categories&quot;: &quot;12644 &gt; 12650 &gt; 10100068 &gt; 10100074&quot;,
+      &quot;brandName&quot;: &quot;MaxgePC&quot;,
+      &quot;brandId&quot;: &quot;127494838&quot;,
+      &quot;sellerName&quot;: &quot;MaxgePC Vietnam&quot;,
+      &quot;sellerId&quot;: &quot;200742512558&quot;,
+      &quot;location&quot;: &quot;China&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: &quot;5 sold&quot;,
+      &quot;reviewCount&quot;: 2,
+      &quot;ratingScore&quot;: 5,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫136,467&quot;,
+      &quot;priceValue&quot;: 136467,
+      &quot;originalPrice&quot;: &quot;245641&quot;,
+      &quot;discountPct&quot;: 44,
+      &quot;itemId&quot;: &quot;13446123071&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i13446123071.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;Hộp giấy ăn gỗ tự nhiên&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T05:36:20.122Z&quot;
+    },
+    {
+      &quot;name&quot;: &quot;Hộp Đựng Giấy Ăn Vuông TOKDODO Gỗ Tự Nhiên 14 x 14 x 11,5 cm ( Nhiều Mẫu )&quot;,
+      &quot;image&quot;: &quot;https://vn-live-01.slatic.net/p/5c1000cbb09bd2988fedd030574933b3.jpg&quot;,
+      &quot;categories&quot;: &quot;12648 &gt; 62552404 &gt; 12674 &gt; 12791&quot;,
+      &quot;brandName&quot;: &quot;TOKDODO&quot;,
+      &quot;brandId&quot;: &quot;124166289&quot;,
+      &quot;sellerName&quot;: &quot;TOKDODO NHÀ CỬA - ĐỜI SỐNG&quot;,
+      &quot;sellerId&quot;: &quot;200171970058&quot;,
+      &quot;location&quot;: &quot;Vietnam&quot;,
+      &quot;isSponsored&quot;: true,
+      &quot;inStock&quot;: true,
+      &quot;soldCount&quot;: null,
+      &quot;reviewCount&quot;: 1,
+      &quot;ratingScore&quot;: 5,
+      &quot;currency&quot;: &quot;VND&quot;,
+      &quot;price&quot;: &quot;₫89,000&quot;,
+      &quot;priceValue&quot;: 89000,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPct&quot;: null,
+      &quot;itemId&quot;: &quot;2421403006&quot;,
+      &quot;productUrl&quot;: &quot;https://www.lazada.vn/products/pdp-i2421403006.html&quot;,
+      &quot;country&quot;: &quot;vn&quot;,
+      &quot;sourceQuery&quot;: &quot;Hộp giấy ăn gỗ tự nhiên&quot;,
+      &quot;scrapedAt&quot;: &quot;2026-11-23T05:36:20.122Z&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gọi đồng bộ Apify Actor `memo23~lazada-scraper` (country=&#x27;vn&#x27;, scrapeDetails=False) nhận 20 bản ghi.</li><li>2. Đọc `priceValue` (fallback chuỗi `price`/`priceShow`) và parse `soldCount` (VD &#x27;494 sold&#x27;, &#x27;1.2K sold&#x27;) -&gt; tính `gmv = price_vnd * sold`.</li><li>3. Nhận diện LazMall qua cờ `isLazMall` hoặc nhãn gian hàng Mall/Official.</li><li>4. Do Lazada Scraper chưa trả Hoa hồng Affiliate &amp; Lịch sử 30 ngày -&gt; gắn nhãn (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#6</span>
+              <strong style="color:#f8fafc">apify_tiktok_shop_search</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_tiktok_hunter &bull; 13285 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 201</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;POST&quot;,
+  &quot;url&quot;: &quot;https://api.apify.com/v2/acts/pro100chok~tiktok-shop-scraper-usage/run-sync-get-dataset-items?token=ap***PWNL&amp;limit=20&quot;,
+  &quot;headers&quot;: {
+    &quot;Content-Type&quot;: &quot;application/json&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;region&quot;: &quot;vn&quot;,
+    &quot;scrapeType&quot;: &quot;search&quot;,
+    &quot;searchKeywords&quot;: [
+      &quot;Hộp giấy ăn gỗ tự nhiên&quot;
+    ],
+    &quot;maxItems&quot;: 20,
+    &quot;sortBy&quot;: &quot;best_sellers&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (20 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 201,
+  &quot;records_received&quot;: 20,
+  &quot;warning&quot;: &quot;&quot;,
+  &quot;raw_sample&quot;: [
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1729578173182675437&quot;,
+      &quot;title&quot;: &quot;Hộp giấy ăn gỗ Hương cỡ lớn loại 1 - Đục Khắc Hoa Văn Tinh Xảo/ Độc Đáo - CTH752&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/hop-giay-an-go-huong-co-dien-thiet-ke-sang-trong-doc-dao/1729578173182675437&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/838c5e0bf6014e19bf208504bda7485d~tplv-o3syd03w52-crop-webp:1200:1200.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;,
+        &quot;https://p19-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/838c5e0bf6014e19bf208504bda7485d~tplv-o3syd03w52-crop-webp:1200:1200.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;148854&quot;,
+      &quot;originalPrice&quot;: &quot;177842&quot;,
+      &quot;discountPercent&quot;: &quot;16%&quot;,
+      &quot;salesVolume&quot;: 1388,
+      &quot;rating&quot;: 4.8,
+      &quot;reviewCount&quot;: &quot;150&quot;,
+      &quot;sellerName&quot;: &quot;HAHANCO Store&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 1,
+      &quot;query&quot;: &quot;Hộp giấy ăn gỗ tự nhiên&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    },
+    {
+      &quot;type&quot;: &quot;product_card&quot;,
+      &quot;productId&quot;: &quot;1730578079108008481&quot;,
+      &quot;title&quot;: &quot;Hộp đựng giấy ăn tre trúc tự nhiên có đáy rút&quot;,
+      &quot;productUrl&quot;: &quot;https://shop.tiktok.com/vn/pdp/hop-dung-giay-an-tre-truc-tu-nhien-co-day-rut-chong-moi-am/1730578079108008481&quot;,
+      &quot;imageUrls&quot;: [
+        &quot;https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/7be057e3567443b29813a725b0e536e7~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;,
+        &quot;https://p21-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/7be057e3567443b29813a725b0e536e7~tplv-o3syd03w52-crop-webp:800:800.webp?dr=15592&amp;t=555f072d&amp;ps=933b5bde&amp;shp=8dbd94bf&amp;shcp=a6e80448&amp;idc=my&amp;from=2378011839&quot;
+      ],
+      &quot;currentPrice&quot;: &quot;68766&quot;,
+      &quot;originalPrice&quot;: null,
+      &quot;discountPercent&quot;: null,
+      &quot;salesVolume&quot;: 443,
+      &quot;rating&quot;: 4.3,
+      &quot;reviewCount&quot;: &quot;15&quot;,
+      &quot;sellerName&quot;: &quot;Gia Dụng Nhà Voi Giá Rẻ&quot;,
+      &quot;tags&quot;: [],
+      &quot;searchRank&quot;: 2,
+      &quot;query&quot;: &quot;Hộp giấy ăn gỗ tự nhiên&quot;,
+      &quot;storefront&quot;: &quot;vn&quot;,
+      &quot;currency&quot;: &quot;VND&quot;
+    }
+  ]
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Thu thập dataset TikTok Shop (VN) từ Actor `pro100chok~tiktok-shop-scraper-usage` (20 mục).</li><li>2. Ánh xạ `currentPrice`, `salesVolume`, `sellerName`, `rating`, `reviewCount` -&gt; tính GMV = price_vnd * salesVolume.</li><li>3. Kiểm tra thực tế payload: chỉ số KOC / Hoa hồng Affiliate / Video-Live / Lịch sử 30d nếu chưa có trong kết quả tìm kiếm sẽ đánh dấu minh bạch (API đang phát triển).</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#7</span>
+              <strong style="color:#f8fafc">market_metrics_aggregation_pipeline</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_pricing_analyst &bull; 12 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge partial">COMPUTED</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;PIPELINE_REDUCE&quot;,
+  &quot;url&quot;: &quot;internal://analytics/shopee-grade-aggregator&quot;,
+  &quot;headers&quot;: {},
+  &quot;payload&quot;: {
+    &quot;platforms&quot;: [
+      &quot;shopee&quot;,
+      &quot;lazada&quot;,
+      &quot;tiktok_shop&quot;
+    ],
+    &quot;total_raw_skus&quot;: 70,
+    &quot;exclude_keywords&quot;: []
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (70 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 70,
+  &quot;raw_sample&quot;: {
+    &quot;sp_count&quot;: 70,
+    &quot;gift_excluded_from_avg_price&quot;: 3,
+    &quot;avg_price_formula&quot;: &quot;sum(67 non-gift prices) / 67 = 193.199 đ&quot;,
+    &quot;hhi_formula&quot;: &quot;sum((shop_gmv / 497.712.414 đ)^2 across 59 shops) = 0.2303&quot;,
+    &quot;blue_ocean_formula&quot;: &quot;HHI_pts(34.6) + Demand_pts(18.0) + NonMall_pts(25.0) = 78/100&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Gom nhóm 70 SKU từ 3 sàn; tách 3 SKU quà tặng (&lt;= 2.000đ) ra khỏi Giá trung bình.</li><li>2. Tính Giá trung bình: sum(67 non-gift prices) / 67 = 193.199 đ.</li><li>3. Tính chỉ số tập trung thị phần HHI: sum((shop_gmv / 497.712.414 đ)^2 across 59 shops) = 0.2303.</li><li>4. Tính Điểm Đại dương xanh: HHI_pts(34.6) + Demand_pts(18.0) + NonMall_pts(25.0) = 78/100.</li><li>5. Chia dải giá thành 6 bậc đều nhau để tìm Sweet Spot (dải có GMV cao nhất) &amp; xếp Top 5 Shop (CR5).</li><li>6. Các chỉ số API không có (Hoa hồng Lazada, KOC/Live Shopee, Lịch sử 30d Lazada/TikTok) gán nguyên văn &#x27;(API đang phát triển)&#x27;.</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="log-card">
+          <div class="log-head">
+            <div>
+              <span class="log-idx">#8</span>
+              <strong style="color:#f8fafc">codex_cli_market_synthesis</strong>
+              <span class="sa-hint" style="margin-left:8px">Agent: agent_report_architect &bull; 1800 ms</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="mode-badge live">LIVE</span>
+              <span class="mono-pill">HTTP 200</span>
+            </div>
+          </div>
+          <div class="log-3col">
+            <div class="log-box">
+              <div class="log-box-title">📤 Request gửi đi (Secrets đã che)</div>
+              <pre class="code-pre">{
+  &quot;method&quot;: &quot;CODEX_CLI_EXEC&quot;,
+  &quot;url&quot;: &quot;local://codex.exe exec --skip-git-repo-check --ephemeral -s read-only&quot;,
+  &quot;headers&quot;: {
+    &quot;model&quot;: &quot;gpt-6-luna (codex-cli)&quot;
+  },
+  &quot;payload&quot;: {
+    &quot;prompt&quot;: &quot;Bạn là Chuyên gia Nghiên cứu Thị trường TMĐT Việt Nam. Viết ĐÚNG 1 đoạn tóm tắt điều hành súc tích (85-115 từ, tiếng Việt chuẩn, chỉ phân tích thị trường khách quan, KHÔNG tư vấn giá vốn):\n- Từ khóa: Hộp giấy ăn gỗ tự nhiên\n- Tổng quan 3 sàn: 70 SP, 59 shop, 3,394 lượt bán, GMV 497.712.414 đ, Giá TB 193.199 đ, HHI 0.2303, ĐĐX 78/100.\n- Chi tiết sàn: SHOPEE: GMV 49.809.796 đ, HHI 0.5898, ĐĐX 58/100, LAZADA: GMV 43.772.335 đ, HHI 0.8343, ĐĐX 48/100, TIKTOK_SHOP: GMV 404.130.283 đ, HHI 0.3306, ĐĐX 81/100\n- Nỗi đau khách hàng: Giấy mỏng, dễ rách khi gặp nước hoặc kéo bị đứt lắt nhắt; Số tờ thực tế trên một gói/thùng ít hơn mô tả quảng cáo; Bị bụi giấy nhiều hoặc mùi hương liệu nồng gây kích ứng&quot;
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">📥 Response nhận về (1 records)</div>
+              <pre class="code-pre">{
+  &quot;http_status&quot;: 200,
+  &quot;records_received&quot;: 1,
+  &quot;raw_sample&quot;: {
+    &quot;narrative&quot;: &quot;Thị trường hộp giấy ăn gỗ tự nhiên ghi nhận 70 sản phẩm từ 59 shop, đạt 3.394 lượt bán và GMV 497.712.414 đồng; giá trung bình là 193.199 đồng. HHI toàn thị trường ở mức 0,2303, với điểm đánh giá chung 78/100. TikTok Shop đóng góp GMV lớn nhất, 404.130.283 đồng, HHI 0,3306 và điểm 81/100; Shopee đạt 49.809.796 đồng, HHI 0,5898, điểm 58/100; Lazada đạt 43.772.335 đồng, HHI 0,8343, điểm 48/100. Phản hồi khách hàng tập trung vào giấy mỏng, dễ rách khi gặp nước hoặc bị kéo đứt vụn, số tờ thực tế thấp hơn mô tả, bụi giấy và mùi hương liệu nồng gây kích ứng.&quot;,
+    &quot;tokens_used&quot;: 4230
+  }
+}</pre>
+            </div>
+            <div class="log-box">
+              <div class="log-box-title">⚙️ Cách xử lý dữ liệu để ra số liệu</div>
+              <ul class="proc-list"><li>1. Nạp toàn bộ KPI đã kiểm toán (SP, Shop, GMV, HHI, ĐĐX, Tỷ lệ có bán, VOC) vào prompt phân tích điều hành.</li><li>2. Trích xuất đoạn tóm tắt điều hành khách quan hiển thị ở phần đầu Báo cáo và sinh 6 khối Phân tích AI chuyên sâu.</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    var tabFilterState = {};
+    function switchMarketTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+      document.querySelectorAll('.sa-tab-panel').forEach(function(panel) {
+        panel.style.display = (panel.id === 'panel_' + tabId) ? 'block' : 'none';
+      });
+    }
+    function filterTabTable(tabId, queryVal, shopFilterVal) {
+      var st = tabFilterState[tabId] || { q: '', shop: 'all' };
+      if (queryVal !== null) st.q = queryVal.toLowerCase().trim();
+      if (shopFilterVal !== null) st.shop = shopFilterVal;
+      tabFilterState[tabId] = st;
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+        var t = tr.getAttribute('data-title') || '';
+        var m = tr.getAttribute('data-mall') === '1';
+        var g = tr.getAttribute('data-gift') === '1';
+        var ok = (!st.q || t.indexOf(st.q) !== -1);
+        if (st.shop === 'mall' && !m) ok = false;
+        if (st.shop === 'nogift' && g) ok = false;
+        tr.style.display = ok ? '' : 'none';
+      });
+    }
+    function exportTabCsv(tabId) {
+      var tbl = document.getElementById('tbl_' + tabId);
+      if (!tbl) return;
+      var rows = Array.from(tbl.querySelectorAll('tr')).filter(function(r) { return r.style.display !== 'none'; });
+      var csv = rows.map(function(r) {
+        return Array.from(r.children).map(function(c) {
+          return '"' + (c.innerText || '').replace(/"/g, '""').trim() + '"';
+        }).join(',');
+      }).join('\n');
+      var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'product_hunter_' + tabId + '.csv';
+      a.click();
+    }
+  </script>
+</body>
+</html>
