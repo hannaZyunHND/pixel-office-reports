@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh Việt Nam trong Tết N</title><style>
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: Inter, Segoe UI, system-ui, sans-serif; background:#020617; color:#e2e8f0; line-height:1.5; }
+.wrap { max-width:1320px; margin:0 auto; padding:20px; }
+.hero { background:linear-gradient(135deg,#0f172a,#1e293b); border:1px solid #334155; border-radius:14px; padding:18px 22px; margin-bottom:14px; }
+.pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:700; background:rgba(56,189,248,.15); color:#38bdf8; border:1px solid rgba(56,189,248,.4); }
+.hero h1 { margin:6px 0 8px; font-size:22px; color:#f8fafc; }
+.hero-narrative { margin:0; font-size:13.5px; color:#cbd5e1; white-space:pre-wrap; }
+.tabs-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; position:sticky; top:0; z-index:10; background:rgba(2,6,23,.92); backdrop-filter:blur(6px); padding:8px 0; }
+.tab-btn { padding:8px 14px; border-radius:10px; border:1px solid #334155; background:#0f172a; color:#94a3b8; font-weight:700; font-size:13px; cursor:pointer; }
+.tab-btn:hover { color:#f8fafc; border-color:#475569; }
+.tab-btn.active { background:#1e293b; color:#38bdf8; border-color:#38bdf8; box-shadow:0 0 0 1px rgba(56,189,248,.35); }
+.sa-panel { background:#0f172a; border:1px solid #334155; border-radius:14px; padding:18px; margin-bottom:14px; }
+.sa-sub { font-size:12px; color:#94a3b8; }
+.sa-title { margin:2px 0 8px; font-size:18px; color:#f8fafc; display:flex; align-items:center; gap:8px; }
+.sa-hint { font-size:12px; color:#64748b; margin:0 0 12px; }
+.banner { background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.45); color:#fde68a; border-radius:10px; padding:8px 10px; font-size:12.5px; margin:0 0 12px; }
+.alert-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-bottom:14px; }
+.alert-card { padding:10px 12px; border-radius:10px; background:#020617; border:1px solid #334155; }
+.alert-card.warn { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.06); }
+.alert-card.ok { border-color:rgba(34,197,94,.45); background:rgba(34,197,94,.06); }
+.alert-card.info { border-color:rgba(56,189,248,.45); background:rgba(56,189,248,.06); }
+.alert-title { font-size:12px; font-weight:700; color:#f8fafc; display:flex; align-items:center; gap:6px; }
+.alert-desc { font-size:11.5px; color:#94a3b8; margin-top:2px; }
+.overview-split { display:grid; grid-template-columns:270px 1fr; gap:14px; }
+@media (max-width:860px) {
+  .overview-split { grid-template-columns:1fr; }
+  .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .bin-row { grid-template-columns:1fr; }
+  .bin-lbl { white-space:normal; }
+}
+.blue-ocean-card { background:#020617; border:1px solid rgba(245,158,11,.45); border-radius:12px; padding:16px; }
+.bo-caption { font-size:12.5px; font-weight:700; color:#cbd5e1; display:flex; align-items:center; gap:6px; }
+.bo-num { font-size:40px; font-weight:800; line-height:1; }
+.bo-den { font-size:15px; color:#94a3b8; font-weight:700; }
+.bo-badge { display:inline-block; margin-top:8px; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:800; }
+.bo-track { height:8px; background:#1e293b; border-radius:999px; overflow:hidden; margin:10px 0; }
+.bo-fill { height:100%; border-radius:999px; }
+.bo-note { margin:0; font-size:11.5px; color:#94a3b8; }
+.kpi-panel { background:#020617; border:1px solid #334155; border-radius:12px; padding:14px; }
+.kpi-panel-head { font-size:12.5px; font-weight:700; color:#cbd5e1; margin-bottom:10px; }
+.kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+.kpi-box { background:#0f172a; border:1px solid #1e293b; border-radius:9px; padding:10px 12px; min-width:0; }
+.kpi-lbl { font-size:11px; color:#94a3b8; display:flex; align-items:center; gap:5px; }
+.help-wrap { position:relative; display:inline-flex; flex:none; }
+.help { width:15px; height:15px; border-radius:50%; border:1px solid #64748b; background:#020617; color:#e2e8f0; font-size:10px; font-weight:800; line-height:1; padding:0; cursor:pointer; }
+.help:hover, .help-wrap.open .help, .help-wrap:focus-within .help { border-color:#38bdf8; color:#7dd3fc; }
+.help-pop { display:none; position:fixed; z-index:80; width:280px; text-align:left; }
+.help-wrap.show .help-pop, .help-wrap:focus-within .help-pop, .help-wrap.open .help-pop { display:block; }
+.help-card { display:block; background:#0f172a; border:1px solid #38bdf8; border-radius:10px; padding:10px 12px; color:#e2e8f0; font-size:12px; font-weight:500; line-height:1.45; letter-spacing:0; text-transform:none; box-shadow:0 16px 40px rgba(0,0,0,.72); }
+.help-card b { display:block; margin:7px 0 1px; color:#7dd3fc; font-size:10px; letter-spacing:.04em; text-transform:uppercase; }
+.help-card b:first-child { margin-top:0; }
+.kpi-val { font-size:15px; font-weight:800; margin-top:4px; color:#f8fafc; white-space:nowrap; font-variant-numeric:tabular-nums; }
+.kpi-range { display:flex; flex-direction:column; gap:1px; font-size:13px; line-height:1.25; }
+.kpi-val.blue { color:#38bdf8; } .kpi-val.purple { color:#c084fc; } .kpi-val.amber { color:#fbbf24; } .kpi-val.green { color:#4ade80; }
+.table-toolbar { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
+.filter-controls, .pager { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.ctrl-input, .ctrl-select, .ctrl-btn { background:#020617; border:1px solid #334155; color:#f8fafc; border-radius:8px; padding:6px 10px; font-size:12px; }
+.ctrl-btn { cursor:pointer; background:#1e293b; font-weight:700; }
+.ctrl-btn:hover { border-color:#38bdf8; color:#38bdf8; }
+.page-label { font-size:12px; color:#94a3b8; }
+.tbl-wrap { overflow:auto; border:1px solid #1e293b; border-radius:10px; }
+table { width:max-content; min-width:100%; border-collapse:collapse; font-size:12px; }
+th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #1e293b; vertical-align:middle; white-space:nowrap; }
+.sku td:nth-child(2) { white-space:normal; min-width:280px; max-width:420px; }
+th { background:#020617; color:#94a3b8; font-size:10.5px; text-transform:uppercase; position:sticky; top:0; }
+a { color:#38bdf8; text-decoration:none; } a:hover { text-decoration:underline; }
+img.thumb { width:44px; height:44px; object-fit:cover; border-radius:8px; background:#1e293b; }
+.no-photo { color:#64748b; font-size:11px; }
+.name { font-weight:700; color:#f8fafc; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.meta { color:#94a3b8; font-size:11px; margin-top:2px; }
+.grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:14px; }
+.bin-row { display:grid; grid-template-columns:minmax(220px,280px) minmax(160px,1fr) auto; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; margin-bottom:6px; background:#020617; border:1px solid #1e293b; }
+.bin-row.sweet { border-color:rgba(16,185,129,.6); background:rgba(16,185,129,.08); }
+.sweet-tag { font-size:9.5px; background:#10b981; color:#020617; font-weight:800; padding:1px 5px; border-radius:4px; margin-left:4px; }
+.bin-lbl { font-size:11.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bin-line { display:flex; align-items:center; gap:8px; margin:3px 0; }
+.mini-tag { width:92px; font-size:10px; color:#94a3b8; flex:none; }
+.mini-track { flex:1; height:8px; background:#1e293b; border-radius:999px; overflow:hidden; }
+.mini-fill { height:100%; border-radius:999px; }
+.mini-fill.blue { background:#38bdf8; } .mini-fill.green { background:#10b981; } .mini-fill.amber { background:#fbbf24; }
+.bin-val { text-align:right; font-size:12px; font-weight:700; white-space:nowrap; min-width:88px; font-variant-numeric:tabular-nums; }
+.share-pill { padding:2px 7px; border-radius:999px; background:#1e293b; color:#38bdf8; font-weight:800; font-size:11px; }
+.mall-pill { font-size:9.5px; background:#ef4444; color:#fff; padding:1px 4px; border-radius:3px; margin-left:4px; font-weight:800; }
+.mode-badge { font-size:10px; font-family:ui-monospace,monospace; padding:2px 6px; border-radius:4px; font-weight:800; }
+.mode-badge.live { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.5); }
+.mode-badge.sandbox { background:rgba(245,158,11,.2); color:#fbbf24; border:1px solid rgba(245,158,11,.5); }
+</style></head><body><div class="wrap">
+<div class="hero"><span class="pill">PRODUCT HUNTER · BÁO CÁO THỊ TRƯỜNG</span><h1>đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh Việt Nam trong Tết N</h1>
+<p class="hero-narrative">Cửa sổ hỏi: Tết. Tên tìm trên sàn gắn “Tết” nếu tên gốc chưa có chữ đó. Số là số sàn trả lúc đo.
+Một phần số liệu là mẫu mô phỏng vì sàn chưa trả số thật.
+Sàn Cam: số từ mẫu vừa lấy, mẫu mô phỏng. 20 SP, 10 shop, 7.019 lượt bán, doanh thu 1.332.992.000 đ. Giá thường gặp 215.105 đ (1.000 đ – 417.000 đ). Khoảng giá bán chạy của danh sách đang xem: 194.332 – 249.997 đ. Độ tập trung HHI 0.1746. Chỗ còn trống 80.0/100 (Đại dương xanh). hoa hồng 11.0%.</p></div>
+<div class="keyword-block" id="kw_0"><div class="tabs-bar"><button type="button" class="tab-btn active" data-tab="t0" onclick="switchTab('t0', this)">🟠 Sàn Cam</button></div><section class="sa-tab-panel" id="panel_t0"><div class="sa-panel"><div class="sa-sub">đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh Việt Nam trong Tết N · 🟠 Sàn Cam <span class="mode-badge sandbox">sandbox</span></div><h2 class="sa-title">Toàn cảnh</h2><p class="banner">Mẫu tìm kiếm. Các số trong tab này là của mẫu vừa lấy.</p><p class="banner">Mẫu mô phỏng, vì sàn chưa trả số thật.</p>
+    <div class="overview-split">
+      <div class="blue-ocean-card">
+        <div class="bo-caption">Chỗ còn trống<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Điểm 0–100 nói mẫu này còn dễ chen hay đã chật.<b>Tính từ</b>Ghép từ mẫu vừa lấy: độ phân tán doanh thu giữa các shop tối đa 40 điểm, tỷ lệ có bán tối đa 35 điểm, tỷ lệ món ngoài Mall tối đa 25 điểm. Điểm được kẹp từ 8 đến 96. Từ 68 là còn rộng, từ 45 là khá, từ 28 là trung bình, dưới 28 là cạnh tranh gắt.<b>Dùng để</b>Nhìn nhanh mẫu tìm được. Điểm này không đại diện cho cả sàn.</span></span></span></div>
+        <div><span class="bo-num" style="color:#4ade80">80</span><span class="bo-den"> / 100</span></div>
+        <div class="bo-badge" style="color:#4ade80;background:rgba(16,185,129,.18)">Đại dương xanh</div>
+        <div class="bo-track"><div class="bo-fill" style="width:80.0%;background:#4ade80"></div></div>
+        <p class="bo-note">Thẻ này là số của mẫu tìm được. HHI 0,1746.</p>
+      </div>
+      <div class="kpi-panel"><div class="kpi-panel-head">Chỉ số toàn cảnh</div><div class="kpi-grid"><div class="kpi-box"><div class="kpi-lbl">Sản phẩm<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Số món có trong mẫu vừa lấy.<b>Tính từ</b>Đếm dòng nguồn trả cho lần tìm này, không phải toàn bộ món trên sàn.<b>Dùng để</b>Biết mẫu dày hay mỏng trước khi đọc các tỷ lệ.</span></span></span></div><div class="kpi-val blue">20</div></div><div class="kpi-box"><div class="kpi-lbl">Shop<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Số shop khác nhau trong mẫu.<b>Tính từ</b>Đếm shop của các món vừa lấy.<b>Dùng để</b>Thấy mẫu có nhiều người bán hay chỉ vài shop.</span></span></span></div><div class="kpi-val blue">10</div></div><div class="kpi-box"><div class="kpi-lbl">Lượt bán<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Tổng lượt bán của các món trong mẫu.<b>Tính từ</b>Cộng lượt bán nguồn ghi trên từng món vừa lấy.<b>Dùng để</b>Ước sức bán của mẫu, không suy ra cả sàn.</span></span></span></div><div class="kpi-val purple">7.019</div></div><div class="kpi-box"><div class="kpi-lbl">Doanh thu<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Tiền hàng của các món trong mẫu.<b>Tính từ</b>Cộng doanh thu từng món. Sàn không có doanh thu riêng thì lấy giá nhân lượt bán.<b>Dùng để</b>So quy mô tiền trong mẫu, không phải doanh thu cả sàn.</span></span></span></div><div class="kpi-val">1.332.992.000 đ</div></div><div class="kpi-box"><div class="kpi-lbl">Giá trung bình<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Giá thường gặp trong mẫu.<b>Tính từ</b>Trung bình giá các món không bị coi là quà. Quà là giá từ 2.000 đ trở xuống hoặc tên có chữ quà tặng.<b>Dùng để</b>Đặt mốc giá của đúng mẫu này.</span></span></span></div><div class="kpi-val amber">215.105 đ</div></div><div class="kpi-box"><div class="kpi-lbl">Biên giá<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Giá thấp nhất và cao nhất trong mẫu.<b>Tính từ</b>Min và max giá của các món vừa lấy.<b>Dùng để</b>Thấy biên giá của mẫu, không phải biên của cả sàn.</span></span></span></div><div class="kpi-val amber kpi-range"><span>1.000 đ</span><span>417.000 đ</span></div></div><div class="kpi-box"><div class="kpi-lbl">Tỷ lệ có bán<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Phần món trong mẫu đã có lượt bán.<b>Tính từ</b>Số món có lượt bán lớn hơn 0 chia số món trong mẫu.<b>Dùng để</b>Biết trong mẫu này hàng có chạy hay phần lớn chưa có đơn.</span></span></span></div><div class="kpi-val green">65%</div></div><div class="kpi-box"><div class="kpi-lbl">Món có bán<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Số món trong mẫu đã có lượt bán.<b>Tính từ</b>Đếm món có lượt bán lớn hơn 0.<b>Dùng để</b>Đọc cùng tỷ lệ có bán để thấy mẫu số.</span></span></span></div><div class="kpi-val green">13</div></div><div class="kpi-box"><div class="kpi-lbl">HHI<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Độ tập trung doanh thu trong mẫu. Gần 0 là tiền chia nhiều shop. Gần 1 là một shop chiếm gần hết.<b>Tính từ</b>Tổng bình phương thị phần doanh thu từng shop trong mẫu. Không có doanh thu thì lấy 1 chia số shop.<b>Dùng để</b>Thấy trong mẫu một shop có nuốt phần lớn tiền không.</span></span></span></div><div class="kpi-val">0,1746</div></div><div class="kpi-box"><div class="kpi-lbl">Hoa hồng trung bình<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Mức hoa hồng thường gặp trong mẫu.<b>Tính từ</b>Trung bình hoa hồng của các món có ghi hoa hồng.<b>Dùng để</b>Ước chi phí affiliate của mẫu, chỉ khi nguồn có ghi.</span></span></span></div><div class="kpi-val">11%</div></div></div></div>
+    </div><p class="sa-hint">Doanh thu của sàn không có khối tổng là ước tính giá nhân lượt bán.</p></div><div class="sa-panel"><h3 class="sa-title">Khoảng giá của danh sách đang xem<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Sáu dải giá của đúng danh sách đang xem.<b>Tính từ</b>Chia các món trong danh sách thành sáu khoảng giá, rồi tính phần món và phần doanh thu của từng khoảng. Không phải toàn bộ món trên sàn.<b>Dùng để</b>Thấy khoảng giá nào đang gom tiền. Dải ghi Bán chạy là dải doanh thu cao nhất trong danh sách.</span></span></span></h3><p class="sa-hint">Sáu dải của đúng danh sách này, không phải của toàn bộ món trên sàn.</p><div class="bin-row"><div class="bin-lbl">83.000 – 138.665 đ</div><div><div class="bin-line"><span class="mini-tag">Món 26,3%</span><div class="mini-track"><div class="mini-fill blue" style="width:26.3%"></div></div></div><div class="bin-line"><span class="mini-tag">Doanh thu 27,7%</span><div class="mini-track"><div class="mini-fill green" style="width:27.7%"></div></div></div></div><div class="bin-val">369.089.000 đ</div></div><div class="bin-row"><div class="bin-lbl">138.666 – 194.331 đ</div><div><div class="bin-line"><span class="mini-tag">Món 10,5%</span><div class="mini-track"><div class="mini-fill blue" style="width:10.5%"></div></div></div><div class="bin-line"><span class="mini-tag">Doanh thu 0%</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div></div><div class="bin-val">0 đ</div></div><div class="bin-row sweet"><div class="bin-lbl">194.332 – 249.997 đ<span class="sweet-tag">Bán chạy</span></div><div><div class="bin-line"><span class="mini-tag">Món 36,8%</span><div class="mini-track"><div class="mini-fill blue" style="width:36.8%"></div></div></div><div class="bin-line"><span class="mini-tag">Doanh thu 50,9%</span><div class="mini-track"><div class="mini-fill green" style="width:50.9%"></div></div></div></div><div class="bin-val">678.845.000 đ</div></div><div class="bin-row"><div class="bin-lbl">249.998 – 305.663 đ</div><div><div class="bin-line"><span class="mini-tag">Món 5,3%</span><div class="mini-track"><div class="mini-fill blue" style="width:5.3%"></div></div></div><div class="bin-line"><span class="mini-tag">Doanh thu 0,8%</span><div class="mini-track"><div class="mini-fill green" style="width:3%"></div></div></div></div><div class="bin-val">10.040.000 đ</div></div><div class="bin-row"><div class="bin-lbl">305.664 – 361.329 đ</div><div><div class="bin-line"><span class="mini-tag">Món 10,5%</span><div class="mini-track"><div class="mini-fill blue" style="width:10.5%"></div></div></div><div class="bin-line"><span class="mini-tag">Doanh thu 8,5%</span><div class="mini-track"><div class="mini-fill green" style="width:8.5%"></div></div></div></div><div class="bin-val">113.639.000 đ</div></div><div class="bin-row"><div class="bin-lbl">361.330 – 417.000 đ</div><div><div class="bin-line"><span class="mini-tag">Món 10,5%</span><div class="mini-track"><div class="mini-fill blue" style="width:10.5%"></div></div></div><div class="bin-line"><span class="mini-tag">Doanh thu 12,1%</span><div class="mini-track"><div class="mini-fill green" style="width:12.1%"></div></div></div></div><div class="bin-val">161.379.000 đ</div></div></div><div class="sa-panel"><h3 class="sa-title">Shop dẫn đầu<span class="help-wrap"><button type="button" class="help" aria-expanded="false" aria-label="Giải thích chỉ số">?</button><span class="help-pop" role="tooltip"><span class="help-card"><b>Là gì</b>Những shop chiếm nhiều tiền nhất.<b>Tính từ</b>Thị phần là doanh thu của shop chia tổng doanh thu đang dùng. Có khối tổng thì lấy khối đó, không thì lấy danh sách đang xem.<b>Dùng để</b>Thấy một shop có nuốt nhóm không.</span></span></span></h3><p class="sa-hint">Thị phần lấy từ danh sách đang xem.</p><div class="tbl-wrap"><table><thead><tr><th>Shop</th><th>Món</th><th>Doanh thu</th><th>Thị phần</th></tr></thead><tbody><tr><td>Shop Yêu Thích+ #2</td><td>1</td><td>316.404.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:23.7%"></div></div><span class="share-pill">23,7%</span></div></td></tr><tr><td>Shopee Mall #1</td><td>1</td><td>267.330.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:20.1%"></div></div><span class="share-pill">20,1%</span></div></td></tr><tr><td>Shop Yêu Thích+ #3</td><td>2</td><td>203.947.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:15.3%"></div></div><span class="share-pill">15,3%</span></div></td></tr><tr><td>Shop Yêu Thích+ #4</td><td>3</td><td>199.282.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:14.9%"></div></div><span class="share-pill">14,9%</span></div></td></tr><tr><td>Shop Yêu Thích+ #5</td><td>3</td><td>187.739.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:14.1%"></div></div><span class="share-pill">14,1%</span></div></td></tr><tr><td>Shopee Mall #6</td><td>2</td><td>148.250.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:11.1%"></div></div><span class="share-pill">11,1%</span></div></td></tr><tr><td>Shop Yêu Thích+ #7</td><td>2</td><td>10.040.000 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:3%"></div></div><span class="share-pill">0,8%</span></div></td></tr><tr><td>Shop Yêu Thích+ #8</td><td>2</td><td>0 đ</td><td><div class="bin-line"><div class="mini-track"><div class="mini-fill amber" style="width:3%"></div></div><span class="share-pill">0%</span></div></td></tr></tbody></table></div></div>
+    <div class="sa-panel">
+      <div class="table-toolbar">
+        <div>
+          <h3 class="sa-title" style="margin:0">Danh sách đang xem</h3>
+          <p class="sa-hint">20 món · 10 dòng mỗi trang</p>
+        </div>
+        <div class="filter-controls">
+          <input class="ctrl-input" placeholder="Tìm tên món" oninput="filterTab('t0', this.value, null)">
+          <select class="ctrl-select" onchange="filterTab('t0', null, this.value)">
+            <option value="all">Mọi shop</option>
+            <option value="mall">Chỉ Mall</option>
+            <option value="nogift">Ẩn quà</option>
+          </select>
+          <button type="button" class="ctrl-btn" onclick="sortTab('t0', 'gmvN')">Doanh thu</button>
+          <button type="button" class="ctrl-btn" onclick="sortTab('t0', 'soldN')">Lượt bán</button>
+          <button type="button" class="ctrl-btn" onclick="sortTab('t0', 'priceN')">Giá</button>
+          <button type="button" class="ctrl-btn" onclick="exportCsv('t0')">Tải CSV</button>
+        </div>
+      </div>
+      <script type="application/json" class="sku-data" data-tab="t0">[{"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Combo 10 Gói Dùng Thử", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #2", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — combo 10 gói dùng thử", "price": "198.000 đ", "band": "", "s7": "—", "s30": "1.598", "sall": "—", "g30": "316.404.000 đ", "gall": "—", "rating": "4,7", "comm": "7%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 198000, "soldN": 1598, "gmvN": 316404000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Thùng Tiết Kiệm Gia Đình", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shopee Mall #1", "shopUrl": "", "mall": true, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — thùng tiết kiệm gia đình", "price": "133.000 đ", "band": "", "s7": "—", "s30": "2.010", "sall": "—", "g30": "267.330.000 đ", "gall": "—", "rating": "4,4", "comm": "9,1%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 133000, "soldN": 2010, "gmvN": 267330000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Phiên Bản Nội Địa Cao Cấp", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #5", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — phiên bản nội địa cao cấp", "price": "214.000 đ", "band": "", "s7": "—", "s30": "805", "sall": "—", "g30": "172.270.000 đ", "gall": "—", "rating": "4,8", "comm": "13,4%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 214000, "soldN": 805, "gmvN": 172270000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Bản Cao Cấp Chính Hãng", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #3", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — bản cao cấp chính hãng", "price": "209.000 đ", "band": "", "s7": "—", "s30": "813", "sall": "—", "g30": "169.917.000 đ", "gall": "—", "rating": "4,63", "comm": "13,7%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 209000, "soldN": 813, "gmvN": 169917000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Phiên Bản Không Hương Liệu", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #4", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — phiên bản không hương liệu", "price": "417.000 đ", "band": "", "s7": "—", "s30": "387", "sall": "—", "g30": "161.379.000 đ", "gall": "—", "rating": "4,54", "comm": "13,6%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 417000, "soldN": 387, "gmvN": 161379000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Set Tiện Lợi Mini", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #6", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — set tiện lợi mini", "price": "331.000 đ", "band": "", "s7": "—", "s30": "290", "sall": "—", "g30": "95.990.000 đ", "gall": "—", "rating": "4,58", "comm": "12,1%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 331000, "soldN": 290, "gmvN": 95990000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Bản Cao Cấp Chính Hãng", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shopee Mall #6", "shopUrl": "", "mall": true, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — bản cao cấp chính hãng", "price": "134.000 đ", "band": "", "s7": "—", "s30": "390", "sall": "—", "g30": "52.260.000 đ", "gall": "—", "rating": "4,52", "comm": "13,6%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 134000, "soldN": 390, "gmvN": 52260000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Combo Kèm Quà Độc Quyền", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shopee Mall #3", "shopUrl": "", "mall": true, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — combo kèm quà độc quyền", "price": "83.000 đ", "band": "", "s7": "—", "s30": "410", "sall": "—", "g30": "34.030.000 đ", "gall": "—", "rating": "4,37", "comm": "5,2%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 83000, "soldN": 410, "gmvN": 34030000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Set Tiện Lợi Mini", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #4", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — set tiện lợi mini", "price": "247.000 đ", "band": "", "s7": "—", "s30": "82", "sall": "—", "g30": "20.254.000 đ", "gall": "—", "rating": "4,61", "comm": "9,2%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 247000, "soldN": 82, "gmvN": 20254000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Mẫu Bán Chạy Top Tuần", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #4", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — mẫu bán chạy top tuần", "price": "333.000 đ", "band": "", "s7": "—", "s30": "53", "sall": "—", "g30": "17.649.000 đ", "gall": "—", "rating": "4,51", "comm": "4,5%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 333000, "soldN": 53, "gmvN": 17649000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Thùng Tiết Kiệm Gia Đình", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #5", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — thùng tiết kiệm gia đình", "price": "113.000 đ", "band": "", "s7": "—", "s30": "112", "sall": "—", "g30": "12.656.000 đ", "gall": "—", "rating": "4,74", "comm": "15,7%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 113000, "soldN": 112, "gmvN": 12656000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Phiên Bản Nội Địa Cao Cấp", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #7", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — phiên bản nội địa cao cấp", "price": "251.000 đ", "band": "", "s7": "—", "s30": "40", "sall": "—", "g30": "10.040.000 đ", "gall": "—", "rating": "4,58", "comm": "9,9%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 251000, "soldN": 40, "gmvN": 10040000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Combo 10 Gói Dùng Thử", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #5", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — combo 10 gói dùng thử", "price": "97.000 đ", "band": "", "s7": "—", "s30": "29", "sall": "—", "g30": "2.813.000 đ", "gall": "—", "rating": "4,57", "comm": "14,4%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 97000, "soldN": 29, "gmvN": 2813000}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Combo Kèm Quà Độc Quyền", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #7", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — combo kèm quà độc quyền", "price": "216.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,5", "comm": "14,2%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 216000, "soldN": 0, "gmvN": 0}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Mẫu Bán Chạy Top Tuần", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #8", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — mẫu bán chạy top tuần", "price": "213.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,42", "comm": "9,6%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 213000, "soldN": 0, "gmvN": 0}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Phiên Bản Không Hương Liệu", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shopee Mall #8", "shopUrl": "", "mall": true, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — phiên bản không hương liệu", "price": "363.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,78", "comm": "15,4%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 363000, "soldN": 0, "gmvN": 0}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Thùng Tiết Kiệm Gia Đình", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #9", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — thùng tiết kiệm gia đình", "price": "171.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,46", "comm": "11,5%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 171000, "soldN": 0, "gmvN": 0}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Combo 10 Gói Dùng Thử", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #9", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — combo 10 gói dùng thử", "price": "210.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,75", "comm": "8,9%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 210000, "soldN": 0, "gmvN": 0}, {"title": "Đóng Vai Của Chuyên Gia Sản Phẩm Phù Hợp Nhất Để Kinh Doanh Việt Nam Trong Tết N — Bản Cao Cấp Chính Hãng", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #10", "shopUrl": "", "mall": false, "gift": false, "image": "", "q": "đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n — bản cao cấp chính hãng", "price": "154.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,5", "comm": "5,7%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 154000, "soldN": 0, "gmvN": 0}, {"title": "[Quà tặng] Mẫu dùng thử kèm đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh Việt Nam trong Tết N", "url": "https://shopee.vn/search?keyword=%C4%91%C3%B3ng%20vai%20c%E1%BB%A7a%20chuy%C3%AAn%20gia%20s%E1%BA%A3n%20ph%E1%BA%A9m%20ph%C3%B9%20h%E1%BB%A3p%20nh%E1%BA%A5t%20%C4%91%E1%BB%83%20kinh%20doanh%20Vi%E1%BB%87t%20Nam%20trong%20T%E1%BA%BFt%20N", "shop": "Shop Yêu Thích+ #10", "shopUrl": "", "mall": false, "gift": true, "image": "", "q": "[quà tặng] mẫu dùng thử kèm đóng vai của chuyên gia sản phẩm phù hợp nhất để kinh doanh việt nam trong tết n", "price": "1.000 đ", "band": "", "s7": "—", "s30": "0", "sall": "—", "g30": "0 đ", "gall": "—", "rating": "4,51", "comm": "14,1%", "meta": "chưa có số ngày theo dõi · hệ số —", "priceN": 1000, "soldN": 0, "gmvN": 0}]</script>
+      <div class="tbl-wrap"><table class="sku" id="tbl_t0" data-tab="t0"><thead><tr>
+        <th>Ảnh</th><th>Tên</th><th>Shop</th><th>Giá</th><th>7 ngày</th><th>30 ngày</th><th>Tích lũy</th>
+        <th>DT 30 ngày</th><th>DT tích lũy</th><th>Điểm</th><th>Hoa hồng</th>
+      </tr></thead><tbody></tbody></table></div>
+      <div class="pager" style="margin-top:10px">
+        <button type="button" class="ctrl-btn" onclick="turn('t0', -1)">Trước</button>
+        <span class="page-label" id="page_t0">Trang 1</span>
+        <button type="button" class="ctrl-btn" onclick="turn('t0', 1)">Sau</button>
+      </div>
+    </div></section></div>
+</div><script>
+var PAGE = 10;
+var state = {};
+function st(tab) {
+  if (!state[tab]) state[tab] = { q: '', shop: 'all', page: 1, sort: 'gmvN', dir: -1 };
+  return state[tab];
+}
+var SKU = {};
+function loadSku() {
+  document.querySelectorAll('script.sku-data').forEach(function(node) {
+    var tab = node.getAttribute('data-tab');
+    try { SKU[tab] = JSON.parse(node.textContent || '[]'); }
+    catch (err) { SKU[tab] = []; }
+  });
+}
+function visibleRows(tab) {
+  var s = st(tab);
+  var shown = (SKU[tab] || []).filter(function(row) {
+    if (s.q && String(row.q || '').indexOf(s.q) === -1) return false;
+    if (s.shop === 'mall' && !row.mall) return false;
+    if (s.shop === 'nogift' && row.gift) return false;
+    return true;
+  });
+  if (s.sort) {
+    shown.sort(function(a, b) {
+      return ((Number(a[s.sort]) || 0) - (Number(b[s.sort]) || 0)) * s.dir;
+    });
+  }
+  return shown;
+}
+function skuText(value) {
+  var td = document.createElement('td');
+  td.textContent = value == null || value === '' ? '—' : String(value);
+  return td;
+}
+function skuLink(href, label) {
+  if (!href) return document.createTextNode(label || '—');
+  var link = document.createElement('a');
+  link.href = href;
+  link.textContent = label || href;
+  return link;
+}
+function renderSkuRow(row) {
+  var tr = document.createElement('tr');
+  var photo = document.createElement('td');
+  if (row.image) {
+    var img = document.createElement('img');
+    img.className = 'thumb';
+    img.alt = '';
+    img.referrerPolicy = 'no-referrer';
+    img.loading = 'lazy';
+    img.src = row.image;
+    photo.appendChild(img);
+  } else {
+    var empty = document.createElement('span');
+    empty.className = 'no-photo';
+    empty.textContent = 'Không ảnh';
+    photo.appendChild(empty);
+  }
+  var name = document.createElement('td');
+  var title = document.createElement('div');
+  title.className = 'name';
+  title.appendChild(skuLink(row.url, row.title || '—'));
+  var meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.textContent = row.meta || '';
+  name.appendChild(title);
+  name.appendChild(meta);
+  var shop = document.createElement('td');
+  shop.appendChild(skuLink(row.shopUrl, row.shop || '—'));
+  if (row.mall) {
+    var pill = document.createElement('span');
+    pill.className = 'mall-pill';
+    pill.textContent = 'Mall';
+    shop.appendChild(pill);
+  }
+  var price = document.createElement('td');
+  price.appendChild(document.createTextNode(row.price || '—'));
+  if (row.band) {
+    var band = document.createElement('div');
+    band.className = 'meta';
+    band.textContent = row.band;
+    price.appendChild(band);
+  }
+  tr.appendChild(photo);
+  tr.appendChild(name);
+  tr.appendChild(shop);
+  tr.appendChild(price);
+  ['s7', 's30', 'sall', 'g30', 'gall', 'rating', 'comm'].forEach(function(key) {
+    tr.appendChild(skuText(row[key]));
+  });
+  return tr;
+}
+function apply(tab) {
+  var s = st(tab);
+  var shown = visibleRows(tab);
+  var pages = Math.max(1, Math.ceil(shown.length / PAGE));
+  if (s.page > pages) s.page = pages;
+  if (s.page < 1) s.page = 1;
+  var start = (s.page - 1) * PAGE;
+  var body = document.querySelector('#tbl_' + tab + ' tbody');
+  if (body) {
+    body.textContent = '';
+    var slice = shown.slice(start, start + PAGE);
+    if (!slice.length) {
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 11;
+      td.textContent = 'Chưa có món.';
+      tr.appendChild(td);
+      body.appendChild(tr);
+    } else {
+      slice.forEach(function(row) { body.appendChild(renderSkuRow(row)); });
+    }
+  }
+  var label = document.getElementById('page_' + tab);
+  if (label) label.textContent = 'Trang ' + s.page + ' / ' + pages + ' · ' + shown.length + ' món';
+}
+function filterTab(tab, queryVal, shopVal) {
+  var s = st(tab);
+  if (queryVal !== null) s.q = String(queryVal || '').toLowerCase().trim();
+  if (shopVal !== null) s.shop = shopVal;
+  s.page = 1;
+  apply(tab);
+}
+function turn(tab, delta) { st(tab).page += delta; apply(tab); }
+function sortTab(tab, key) {
+  var s = st(tab);
+  s.dir = s.sort === key ? -s.dir : -1;
+  s.sort = key;
+  s.page = 1;
+  apply(tab);
+}
+function switchTab(tabId, btn) {
+  var root = btn.closest('.keyword-block') || document;
+  root.querySelectorAll('.tab-btn').forEach(function(b) {
+    if (b.classList.contains('kw-btn')) return;
+    b.classList.toggle('active', b.getAttribute('data-tab') === tabId);
+  });
+  root.querySelectorAll('.sa-tab-panel').forEach(function(panel) {
+    panel.style.display = panel.id === 'panel_' + tabId ? 'block' : 'none';
+  });
+}
+function showKeyword(id) {
+  document.querySelectorAll('.keyword-block').forEach(function(el) {
+    el.style.display = el.id === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.kw-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute('data-kw') === id);
+  });
+}
+function exportCsv(tab) {
+  var shown = visibleRows(tab);
+  var header = ['Tên', 'Shop', 'Giá', '7 ngày', '30 ngày', 'Tích lũy', 'DT 30 ngày', 'DT tích lũy', 'Điểm', 'Hoa hồng'];
+  var lines = [header].concat(shown.map(function(row) {
+    return [row.title, row.shop, row.price, row.s7, row.s30, row.sall, row.g30, row.gall, row.rating, row.comm];
+  }));
+  var csv = lines.map(function(cols) {
+    return cols.map(function(value) {
+      return '"' + String(value == null ? '' : value).replace(/"/g, '""') + '"';
+    }).join(',');
+  }).join('\n');
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bao_cao_' + tab + '.csv';
+  a.click();
+}
+loadSku();
+document.querySelectorAll('table.sku').forEach(function(tbl) { apply(tbl.getAttribute('data-tab')); });
+function placeHelp(wrap) {
+  var pop = wrap.querySelector('.help-pop');
+  var btn = wrap.querySelector('.help');
+  if (!pop || !btn) return;
+  var width = Math.min(280, window.innerWidth - 24);
+  pop.style.width = width + 'px';
+  var rect = btn.getBoundingClientRect();
+  var height = pop.offsetHeight || 220;
+  var left = Math.min(Math.max(12, rect.left - 12), window.innerWidth - width - 12);
+  var below = rect.bottom + 8;
+  var above = rect.top - height - 8;
+  var top = below + height > window.innerHeight - 8 && above > 8 ? above : below;
+  pop.style.left = left + 'px';
+  pop.style.top = top + 'px';
+}
+function closeHelp(wrap) {
+  wrap.classList.remove('open');
+  wrap.classList.remove('show');
+  var btn = wrap.querySelector('.help');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+document.querySelectorAll('.help-wrap').forEach(function(wrap) {
+  var hideTimer = 0;
+  var pop = wrap.querySelector('.help-pop');
+  if (pop) {
+    pop.addEventListener('mouseenter', function() {
+      clearTimeout(hideTimer);
+      wrap.classList.add('show');
+    });
+    pop.addEventListener('mouseleave', function() {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function() {
+        if (!wrap.classList.contains('open')) wrap.classList.remove('show');
+      }, 180);
+    });
+  }
+  wrap.addEventListener('mouseenter', function() {
+    clearTimeout(hideTimer);
+    wrap.classList.add('show');
+    placeHelp(wrap);
+  });
+  wrap.addEventListener('mouseleave', function() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(function() {
+      if (!wrap.classList.contains('open')) wrap.classList.remove('show');
+    }, 180);
+  });
+  wrap.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    if (!ev.target.closest('.help')) return;
+    ev.preventDefault();
+    var open = !wrap.classList.contains('open');
+    document.querySelectorAll('.help-wrap.open').forEach(closeHelp);
+    if (open) {
+      wrap.classList.add('open');
+      wrap.classList.add('show');
+      var btn = wrap.querySelector('.help');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+      placeHelp(wrap);
+    }
+  });
+});
+document.addEventListener('click', function() {
+  document.querySelectorAll('.help-wrap.open').forEach(closeHelp);
+});
+document.addEventListener('keydown', function(ev) {
+  if (ev.key !== 'Escape') return;
+  document.querySelectorAll('.help-wrap.open').forEach(closeHelp);
+});
+</script></body></html>
